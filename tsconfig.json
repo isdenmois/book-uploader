@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "target": "esnext",
+    "jsx": "react-native",
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "noEmit": true,
+    "rootDirs": ["./src"],
+    "paths": {
+      "*": ["./src/*"],
+      "api": ["./src/services/api"]
+    }
+  },
+  "exclude": ["dev-tools", "node_modules", "babel.config.js", "metro.config.js"]
+}

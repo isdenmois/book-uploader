@@ -1,0 +1,70 @@
+diff --git a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
+index 5324a36..ab3ccd1 100644
+--- a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
++++ b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
+@@ -51,8 +51,10 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+         String twoHyphens = "--";
+         String boundary = "*****";
+         String tail = crlf + twoHyphens + boundary + twoHyphens + crlf;
+-        String metaData = "", stringData = "";
+-        String[] fileHeader;
++        StringBuilder metaData = new StringBuilder();
++        byte[] metaDataBytes;
++        byte[][] fileHeader;
++        int stringData = 0;
+         int statusCode, byteSentTotal;
+         int fileCount = 0;
+         long totalFileLength = 0;
+@@ -81,10 +83,11 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+             while (fieldsIterator.hasNextKey()) {
+                 String key = fieldsIterator.nextKey();
+                 String value = params.fields.getString(key);
+-                metaData += twoHyphens + boundary + crlf + "Content-Disposition: form-data; name=\"" + key + "\"" + crlf + crlf + value +crlf;
++                metaData.append(twoHyphens).append(boundary).append(crlf).append("Content-Disposition: form-data; name=\"").append(key).append("\"").append(crlf).append(crlf).append(value).append(crlf);
+             }
+-            stringData += metaData;
+-            fileHeader = new String[files.length];
++            metaDataBytes = metaData.toString().getBytes("UTF-8");
++            stringData += metaDataBytes.length;
++            fileHeader = new byte[files.length][];
+             for (ReadableMap map : params.files) {
+                 try {
+                     name = map.getString("name");
+@@ -108,8 +111,8 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+                     }
+ 
+                     String fileLengthHeader = "Content-length: " + fileLength + crlf;
+-                    fileHeader[fileCount] = fileHeaderType + fileLengthHeader + crlf;
+-                    stringData += fileHeaderType + fileLengthHeader + crlf;
++                    fileHeader[fileCount] = (fileHeaderType + fileLengthHeader + crlf).getBytes("UTF-8");
++                    stringData += fileHeader[fileCount].length;
+                 }
+                 fileCount++;
+             }
+@@ -119,7 +122,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+             }
+             if (!binaryStreamOnly) {
+                 long requestLength = totalFileLength;
+-                requestLength += stringData.length() + files.length * crlf.length();
++                requestLength += stringData + files.length * crlf.length();
+                 connection.setRequestProperty("Content-length", "" +(int) requestLength);
+                 connection.setFixedLengthStreamingMode((int)requestLength);
+             }
+@@ -127,7 +130,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+ 
+             request = new DataOutputStream(connection.getOutputStream());
+             if (!binaryStreamOnly) {
+-                request.writeBytes(metaData);
++                request.write(metaDataBytes);
+             }
+ 
+             byteSentTotal = 0;
+@@ -135,7 +138,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+ 
+             for (ReadableMap map : params.files) {
+                 if (!binaryStreamOnly) {
+-                    request.writeBytes(fileHeader[fileCount]);
++                    request.write(fileHeader[fileCount]);
+                 }
+                 File file = new File(map.getString("filepath"));
+                 int fileLength = (int) file.length();
