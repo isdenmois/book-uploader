@@ -14,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ImportActivity">
+        <activity
+            android:name=".ImportActivity"
+            android:label="@string/import_dialog_title"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:excludeFromRecents="true">
             <intent-filter
                 android:icon="@mipmap/ic_launcher"
                 android:label="Import book to upload">
@@ -24,8 +28,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="*" android:scheme="content" />
-<!--                <data android:mimeType="*/*" />-->
+                <data
+                    android:host="*"
+                    android:scheme="content" />
+                <!--                <data android:mimeType="*/*" />-->
                 <data android:mimeType="text/fb2+xml" />
                 <data android:mimeType="application/octet-stream" />
                 <data android:mimeType="application/x-fb2" />
@@ -50,7 +56,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="*" android:scheme="content" android:mimeType="*/*" android:pathPattern="*\\.fb2" />
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern="*\\.fb2"
+                    android:scheme="content" />
             </intent-filter>
         </activity>
         <activity
