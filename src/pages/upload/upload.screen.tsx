@@ -1,9 +1,10 @@
 import React, { createContext, useState, useCallback, memo, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-import { ReadDirItem } from 'react-native-fs';
+import { Alert, Text, View, StyleSheet, Button } from 'react-native';
+import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
 import AsyncStorage from '@react-native-community/async-storage';
+import { RemoveIcon } from 'components/icons';
 
 export const UploadContext = createContext(null);
 
@@ -19,13 +20,28 @@ const titles = {
   PARSE: 'Парсинг',
 };
 
+function confirm({ title, message }, onSuccess) {
+  Alert.alert(title, message, [
+    {
+      text: 'Cancel',
+      style: 'cancel',
+    },
+    { text: 'OK', onPress: onSuccess, style: 'destructive' },
+  ]);
+}
+
 function useUploader() {
   const [files, setFiles] = useState<FileData[]>([]);
   const [state, setState] = useState(null);
   const prepare = useCallback((fs: ReadDirItem[]) => {
     let toUpload: FileData[] = [];
     const update = () => setFiles([...toUpload]);
-    toUpload = fs.map(f => new FileData(f, update));
+    const createRemover = id => () => {
+      toUpload = toUpload.filter(f => f.id !== id);
+      update();
+    };
+
+    toUpload = fs.map(f => new FileData(f, update, createRemover(f.name)));
 
     setFiles(toUpload);
     setState('PRE-UPLOAD');
@@ -71,13 +87,19 @@ class FileData {
   error: string;
 
   private update: () => void;
+  private remove: () => void;
   private path: string;
 
-  constructor(data: ReadDirItem, update: () => void) {
+  constructor(data: ReadDirItem, update: () => void, removeFromList) {
     this.id = data.name;
     this.title = data.name;
     this.path = data.path;
     this.update = update;
+    this.remove = () =>
+      confirm({ title: 'Удалить файл?', message: this.title }, () => {
+        removeFromList();
+        this.destroy();
+      });
   }
 
   async upload() {
@@ -116,6 +138,10 @@ class FileData {
 
     this.set('progress', progress);
   }
+
+  private destroy() {
+    RNFS.unlink(this.path);
+  }
 }
 
 export function UploadScreen({ children }) {
@@ -134,13 +160,15 @@ export function UploadScreen({ children }) {
 
           <View style={s.files}>
             {files.map(f => (
-              <FileLine key={f.id} title={f.title} progress={f.progress} error={f.error} />
+              <FileLine key={f.id} title={f.title} progress={f.progress} error={f.error} remove={f.remove} />
             ))}
           </View>
 
           <View style={s.buttons}>
             {state === 'PRE-UPLOAD' && <Button title='Отменить' onPress={reset} />}
-            {state !== 'UPLOAD' && <Button title='Продолжить' onPress={state === 'PRE-UPLOAD' ? startUpload : reset} />}
+            {state !== 'UPLOAD' && files?.length > 0 && (
+              <Button title='Продолжить' onPress={state === 'PRE-UPLOAD' ? startUpload : reset} />
+            )}
           </View>
         </View>
       )}
@@ -148,22 +176,26 @@ export function UploadScreen({ children }) {
   );
 }
 
-const FileLine = memo(({ title, progress, error }) => {
+const FileLine = memo(({ title, progress, error, remove }) => {
   return (
-    <View style={{ marginBottom: 20 }}>
-      <Text>{title}</Text>
+    <View style={{ marginBottom: 20, flexDirection: 'row' }}>
+      <View style={{ flex: 1 }}>
+        <Text>{title}</Text>
 
-      {!error && progress > 0 && (
-        <View style={s.progress}>
-          <View
-            style={progress > 100 ? [s.progressLine, s.progressDone] : [s.progressLine, { width: `${progress}%` }]}
-          />
-        </View>
-      )}
+        {!error && progress > 0 && (
+          <View style={s.progress}>
+            <View
+              style={progress > 100 ? [s.progressLine, s.progressDone] : [s.progressLine, { width: `${progress}%` }]}
+            />
+          </View>
+        )}
 
-      {!error && progress === PARSE && <Text>Парсинг</Text>}
+        {!error && progress === PARSE && <Text>Парсинг</Text>}
 
-      {Boolean(error) && <Text>{error}</Text>}
+        {Boolean(error) && <Text>{error}</Text>}
+      </View>
+
+      <RemoveIcon style={{ paddingHorizontal: 10 }} size={25} onPress={remove} />
     </View>
   );
 });

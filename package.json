@@ -25,6 +25,7 @@
     "react-native-reanimated": "1.8.0",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "2.7.0",
+    "react-native-svg": "^12.1.0",
     "translit": "0.1.0",
     "translit-russian": "0.0.2",
     "xml-query": "1.5.0",
