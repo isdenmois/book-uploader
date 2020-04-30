@@ -13,9 +13,9 @@ function useAddress(navigation) {
   return { address, setAddress };
 }
 
-function useScan(navigation) {
+function useScan(navigation, initialScan) {
   const { address, setAddress } = useAddress(navigation);
-  const [scan, setScan] = useState(false);
+  const [scan, setScan] = useState(initialScan);
 
   const openScan = useCallback(() => setScan(true), []);
   const onScan = useCallback(({ data }) => {
@@ -28,8 +28,9 @@ function useScan(navigation) {
   return { address, scan, openScan, onScan };
 }
 
-export function ScanScreen({ navigation }) {
-  const { address, scan, openScan, onScan } = useScan(navigation);
+export function ScanScreen({ navigation, route: { params } }) {
+  const { address, scan, openScan, onScan } = useScan(navigation, params.scan);
+  const onContinue = useCallback(() => (params.scan ? navigation.goBack() : navigation.push('home')), []);
 
   if (scan) {
     return (
@@ -50,7 +51,7 @@ export function ScanScreen({ navigation }) {
     <View style={s.container}>
       <Button title='Сканировать' onPress={openScan} />
       <View style={s.spacer} />
-      {!!address && <Button title='Продолжить' onPress={() => navigation.push('home')} />}
+      {!!address && <Button title='Продолжить' onPress={onContinue} />}
     </View>
   );
 }

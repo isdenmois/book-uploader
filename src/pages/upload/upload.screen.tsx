@@ -1,10 +1,11 @@
-import React, { createContext, useState, useCallback, memo, useContext } from 'react';
+import React, { createContext, useState, useCallback, memo, useContext, useEffect, useRef } from 'react';
 import { Alert, Text, View, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
-import { ParseIcon, RemoveIcon } from 'components/icons';
+import { ParseIcon, RemoveIcon, QrIcon } from 'components/icons';
 import { AddressContext } from 'utils/address';
+import { useNavigation } from '@react-navigation/native';
 
 export const UploadContext = createContext(null);
 
@@ -30,21 +31,18 @@ function confirm({ title, message }, onSuccess) {
   ]);
 }
 
-function useUploader() {
-  const [files, setFiles] = useState<FileData[]>([]);
-  const [state, setState] = useState(null);
-  const prepare = useCallback((fs: ReadDirItem[]) => {
-    let toUpload: FileData[] = [];
-    const update = () => setFiles([...toUpload]);
-    const createRemover = id => () => {
-      toUpload = toUpload.filter(f => f.id !== id);
+function useUploader(books: ReadDirItem[], navigation) {
+  const filesRef = useRef<any>(null);
+  const [files, setFiles] = useState<FileData[]>(books.map(f => FileData.create(f, filesRef)));
+  const [state, setState] = useState('PRE-UPLOAD');
+
+  useEffect(() => {
+    const update = () => setFiles([...filesRef.current.files]);
+    const remove = id => {
+      filesRef.current = filesRef.current.files.filter(f => f.id !== id);
       update();
     };
-
-    toUpload = fs.map(f => new FileData(f, update, createRemover(f.name)));
-
-    setFiles(toUpload);
-    setState('PRE-UPLOAD');
+    filesRef.current = { files, update, remove };
   }, []);
 
   const startUpload = useCallback(async () => {
@@ -61,9 +59,10 @@ function useUploader() {
   const reset = useCallback(() => {
     setState(null);
     setFiles([]);
+    navigation.goBack();
   }, []);
 
-  return { files, state, prepare, startUpload, reset };
+  return { files, state, startUpload, reset };
 }
 
 function useAddress() {
@@ -81,10 +80,18 @@ class FileData {
   error: string;
 
   parsed: any;
+  remove: () => void;
 
   private update: () => void;
-  private remove: () => void;
   private path: string;
+
+  static create(data: ReadDirItem, fileRef) {
+    return new FileData(
+      data,
+      () => fileRef.current.update(),
+      () => fileRef.current.remove(data.name),
+    );
+  }
 
   constructor(data: ReadDirItem, update: () => void, removeFromList) {
     this.id = data.name;
@@ -150,43 +157,41 @@ class FileData {
   }
 }
 
-export function UploadScreen({ children }) {
-  const { files, state, prepare, startUpload, reset } = useUploader();
+export function UploadScreen({ route, navigation }) {
+  const { files, state, startUpload, reset } = useUploader(route.params.books, navigation);
   const address = useAddress();
   const title = useTitle(state, address);
-  const [context] = useState<any>({ upload: prepare });
+  const openQrScanner = useCallback(() => navigation.push('scan', { scan: true }), []);
 
   return (
-    <UploadContext.Provider value={context}>
-      <View style={state ? s.hidden : s.visible}>{children}</View>
+    <View style={s.visible}>
+      <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <Text style={s.title}>{title}</Text>
 
-      {state && (
-        <View style={s.visible}>
-          <Text style={s.title}>{title}</Text>
+        {state === 'PRE-UPLOAD' && <QrIcon style={{ paddingHorizontal: 10 }} size={25} onPress={openQrScanner} />}
+      </View>
 
-          <View style={s.files}>
-            {files.map(f => (
-              <FileLine
-                key={f.id}
-                state={state}
-                file={f}
-                title={f.title}
-                progress={f.progress}
-                error={f.error}
-                isParsed={Boolean(f.parsed)}
-              />
-            ))}
-          </View>
+      <View style={s.files}>
+        {files.map(f => (
+          <FileLine
+            key={f.id}
+            state={state}
+            file={f}
+            title={f.title}
+            progress={f.progress}
+            error={f.error}
+            isParsed={Boolean(f.parsed)}
+          />
+        ))}
+      </View>
 
-          <View style={s.buttons}>
-            {state === 'PRE-UPLOAD' && <Button title='Отменить' onPress={reset} />}
-            {state !== 'UPLOAD' && files?.length > 0 && (
-              <Button title='Продолжить' onPress={state === 'PRE-UPLOAD' ? startUpload : reset} />
-            )}
-          </View>
-        </View>
-      )}
-    </UploadContext.Provider>
+      <View style={s.buttons}>
+        {state === 'PRE-UPLOAD' && <Button title='Отменить' onPress={reset} />}
+        {state !== 'UPLOAD' && files?.length > 0 && (
+          <Button title='Продолжить' onPress={state === 'PRE-UPLOAD' ? startUpload : reset} />
+        )}
+      </View>
+    </View>
   );
 }
 
@@ -233,12 +238,13 @@ const s = StyleSheet.create({
     height: 0,
   },
   title: {
+    flex: 1,
     fontSize: 18,
-    marginTop: 20,
     textAlign: 'center',
   },
   files: {
     flex: 1,
+    marginTop: 15,
   },
   buttons: {
     flexDirection: 'row',

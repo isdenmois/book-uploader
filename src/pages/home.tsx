@@ -1,21 +1,18 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import RNFS from 'react-native-fs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { UploadContext } from 'pages/upload/upload.screen';
 import { FilesScreen } from './files';
 const Tab = createBottomTabNavigator();
 
 const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/;
 
-function useImportedFiles() {
-  const uploader = useContext(UploadContext);
-
+function useImportedFiles(navigation) {
   useEffect(() => {
     RNFS.readDir(RNFS.DocumentDirectoryPath).then(result => {
       const books = result.filter(f => f.name.match(FILE_NAME));
 
       if (books.length) {
-        uploader.upload(books);
+        navigation.push('upload', { books });
       }
     });
 
@@ -23,8 +20,8 @@ function useImportedFiles() {
   }, []);
 }
 
-export function HomeScreen() {
-  useImportedFiles();
+export function HomeScreen({ navigation }) {
+  useImportedFiles(navigation);
 
   return (
     <Tab.Navigator>
