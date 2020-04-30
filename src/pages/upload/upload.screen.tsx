@@ -1,10 +1,10 @@
-import React, { createContext, useState, useCallback, memo, useEffect } from 'react';
+import React, { createContext, useState, useCallback, memo, useContext } from 'react';
 import { Alert, Text, View, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
-import AsyncStorage from '@react-native-community/async-storage';
 import { ParseIcon, RemoveIcon } from 'components/icons';
+import { AddressContext } from 'utils/address';
 
 export const UploadContext = createContext(null);
 
@@ -67,13 +67,7 @@ function useUploader() {
 }
 
 function useAddress() {
-  const [address, set] = useState<string>(null);
-
-  useEffect(() => {
-    AsyncStorage.getItem('address').then(set);
-  }, []);
-
-  return address;
+  return useContext(AddressContext).address;
 }
 
 function useTitle(state, address) {
@@ -136,7 +130,6 @@ class FileData {
 
   private set<T extends 'title' | 'error' | 'progress'>(key: T, value: this[T]) {
     if (this[key] !== value) {
-      console.log('set', key, value);
       this[key] = value;
       this.update();
     }

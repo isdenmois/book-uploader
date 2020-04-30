@@ -1,29 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { View, Button, StyleSheet, ViewStyle } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import { RNCamera } from 'react-native-camera';
-import { BASE } from 'utils/request';
+import { AddressContext } from 'utils/address';
 
 function useAddress(navigation) {
-  const [address, setAddress] = useState('');
-  const changeAddress = useCallback(a => {
-    if (a) {
-      setAddress(a);
-      navigation.setOptions({ title: a });
-      AsyncStorage.setItem('address', a);
-      BASE.URL = __DEV__ ? `http://${a}:4000` : `http://${a}:8080`;
-    }
-  }, []);
+  const { address, setAddress } = useContext(AddressContext);
 
   useEffect(() => {
-    AsyncStorage.getItem('address').then(changeAddress);
-  }, []);
+    navigation.setOptions({ title: address });
+  }, [address]);
 
-  return { address, changeAddress };
+  return { address, setAddress };
 }
 
 function useScan(navigation) {
-  const { address, changeAddress } = useAddress(navigation);
+  const { address, setAddress } = useAddress(navigation);
   const [scan, setScan] = useState(false);
 
   const openScan = useCallback(() => setScan(true), []);
@@ -31,7 +22,7 @@ function useScan(navigation) {
     if (!data) return;
 
     setScan(false);
-    changeAddress(data.replace('http://', '').replace(':8080', ''));
+    setAddress(data.replace('http://', '').replace(':8080', ''));
   }, []);
 
   return { address, scan, openScan, onScan };
