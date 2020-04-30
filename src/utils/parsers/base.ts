@@ -1,16 +1,16 @@
 import xmlQuery from 'xml-query';
-import translit from 'translit'
-import translitRussian from 'translit-russian'
+import translit from 'translit';
+import translitRussian from 'translit-russian';
 import RNFS, { UploadFileItem } from 'react-native-fs';
 
 export type UploadFile = Pick<UploadFileItem, 'filename' | 'filepath' | 'filetype'>;
 
 export abstract class BookParser {
-  protected xq: any
-  protected t = translit(translitRussian)
+  protected xq: any;
+  protected t = translit(translitRussian);
   protected coverPath: string;
 
-  constructor(public path: string, public fileName: string) { }
+  constructor(public path: string, public fileName: string) {}
 
   abstract parse(): Promise<void>;
 
@@ -20,12 +20,12 @@ export abstract class BookParser {
   cover: UploadFile = null;
 
   protected findByAttr(name: string, attr: string, value: any) {
-    const result: any[] = []
+    const result: any[] = [];
     this.xq.find(name).each((node: any) => {
       if (node.attributes[attr] === value) {
-        result.push(node)
+        result.push(node);
       }
-    })
+    });
 
     return xmlQuery(result);
   }

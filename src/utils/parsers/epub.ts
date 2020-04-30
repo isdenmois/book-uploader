@@ -11,45 +11,45 @@ export class EpubParser extends BookParser {
 
     await epub.loadAsync(file, { base64: true });
 
-    const contents = epub.file(/\.opf$/)
+    const contents = epub.file(/\.opf$/);
 
-    if (!contents.length) return
-    const contentPath = contents[0].name
-    const dir = contentPath.substring(0, contentPath.lastIndexOf('/'))
-    const xml: string = await contents[0].async('text')
-    const ast = XmlReader.parseSync(xml)
+    if (!contents.length) return;
+    const contentPath = contents[0].name;
+    const dir = contentPath.substring(0, contentPath.lastIndexOf('/'));
+    const xml: string = await contents[0].async('text');
+    const ast = XmlReader.parseSync(xml);
 
     this.xq = xmlQuery(ast);
 
     this.author = this.getDcText('creator');
     this.title = this.getDcText('title');
 
-    const author = this.author.replace(/\s+/g, '-').toLowerCase()
-    const title = this.title.replace(/\s+/g, '-').toLowerCase()
+    const author = this.author.replace(/\s+/g, '-').toLowerCase();
+    const title = this.title.replace(/\s+/g, '-').toLowerCase();
 
     this.file = {
       filename: `${author}_${title}.epub`,
       filepath: this.path,
       filetype: 'application/epub',
-    }
-    this.cover = await this.parseCover(epub, dir, `${author}_${title}`)
+    };
+    this.cover = await this.parseCover(epub, dir, `${author}_${title}`);
   }
 
   private async parseCover(zip: JSZip, dir: string, fileName: string) {
-    const coverNode = this.findByAttr('meta', 'name', 'cover')
-    const coverId = coverNode.attr('content')
+    const coverNode = this.findByAttr('meta', 'name', 'cover');
+    const coverId = coverNode.attr('content');
 
-    if (!coverId) return null
+    if (!coverId) return null;
 
-    const itemNode = this.findByAttr('item', 'id', coverId)
-    const href = itemNode.attr('href')
-    const fileZip = zip.file(dir ? `${dir}/${href}` : href)
+    const itemNode = this.findByAttr('item', 'id', coverId);
+    const href = itemNode.attr('href');
+    const fileZip = zip.file(dir ? `${dir}/${href}` : href);
 
-    if (!fileZip) return null
+    if (!fileZip) return null;
 
-    const content = await fileZip.async('base64')
-    const ext = href.slice(href.lastIndexOf('.'))
-    const filename = this.t(fileName + ext).toLowerCase()
+    const content = await fileZip.async('base64');
+    const ext = href.slice(href.lastIndexOf('.'));
+    const filename = this.t(fileName + ext).toLowerCase();
 
     return {
       filename,
@@ -59,6 +59,6 @@ export class EpubParser extends BookParser {
   }
 
   private getDcText(path: string) {
-    return this.xq.find(path).text() || this.xq.find(`dc:${path}`).text()
+    return this.xq.find(path).text() || this.xq.find(`dc:${path}`).text();
   }
 }

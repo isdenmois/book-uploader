@@ -1,25 +1,23 @@
-import RNFS, { ReadDirItem, UploadProgressCallbackResult } from 'react-native-fs';
-import { BASE } from 'utils/request'
+import RNFS, { UploadProgressCallbackResult } from 'react-native-fs';
+import { BASE } from 'utils/request';
 
-const BOOKS_ENDPOINT = '/api/book'
+const BOOKS_ENDPOINT = '/api/book';
 
-interface CreateBookParams {
-  file: any
-  author: string
-  title: string
-  cover?: any
+interface CreateParams {
+  file: any;
+  author: string;
+  title: string;
+  cover?: any;
 }
 
-export async function createBook(
-  { file, author, title, cover }: CreateBookParams,
-  progress?: (ev: UploadProgressCallbackResult) => void,
-) {
+type ProgressCallback = (ev: UploadProgressCallbackResult) => void;
+
+export async function createBook({ file, author, title, cover }: CreateParams, progress?: ProgressCallback) {
   const files = [{ name: 'file', ...file }];
-  const fields: any = { author, title };
+  const fields: Record<string, string> = { author, title };
   const toUrl = `${BASE.URL}${BOOKS_ENDPOINT}`;
 
   if (cover) {
-    fields['image-name'] = cover.filename;
     files.push({ name: 'image', ...cover });
   }
 
@@ -27,7 +25,7 @@ export async function createBook(
 }
 
 export async function deleteBook(id: string) {
-  const requestURL = `${BOOKS_ENDPOINT}/${id}`
-  const options = { method: 'DELETE' }
-  await request(requestURL, options)
+  const requestURL = `${BOOKS_ENDPOINT}/${id}`;
+  const options = { method: 'DELETE' };
+  await request(requestURL, options);
 }

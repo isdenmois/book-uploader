@@ -1,15 +1,15 @@
-import JSZip from 'jszip'
-import XmlReader from 'xml-reader'
-import xmlQuery from 'xml-query'
+import JSZip from 'jszip';
+import XmlReader from 'xml-reader';
+import xmlQuery from 'xml-query';
 import RNFS from 'react-native-fs';
-import base64 from 'base-64'
-import utf8 from 'utf8'
-import { BookParser } from './base'
+import base64 from 'base-64';
+import utf8 from 'utf8';
+import { BookParser } from './base';
 
 export class FB2Parser extends BookParser {
-  private description: any
-  private titleInfo: any
-  private publishInfo: any
+  private description: any;
+  private titleInfo: any;
+  private publishInfo: any;
 
   private extractedPath: string;
 
@@ -44,37 +44,34 @@ export class FB2Parser extends BookParser {
   }
 
   private parseContent(content: string) {
-    const ast = XmlReader.parseSync(content)
+    const ast = XmlReader.parseSync(content);
 
-    this.xq = xmlQuery(ast)
-    this.description = this.xq.find('description')
-    this.titleInfo = this.description.find('title-info')
-    this.publishInfo = this.description.find('publish-info')
+    this.xq = xmlQuery(ast);
+    this.description = this.xq.find('description');
+    this.titleInfo = this.description.find('title-info');
+    this.publishInfo = this.description.find('publish-info');
 
     const authorNode = this.titleInfo.find('author');
-    const firstName = authorNode.find('first-name').text()
-    const lastName = authorNode.find('last-name').text()
+    const firstName = authorNode.find('first-name').text();
+    const lastName = authorNode.find('last-name').text();
 
-    this.author = `${firstName} ${lastName}`
+    this.author = `${firstName} ${lastName}`;
     this.title = this.titleInfo.find('book-title').text();
   }
 
   private async parseCover() {
-    let id = this.titleInfo
-      .find('coverpage')
-      .find('image')
-      .attr('l:href')
+    let id = this.titleInfo.find('coverpage').find('image').attr('l:href');
 
     if (!id) {
-      return null
+      return null;
     }
 
-    id = id.replace('#', '')
-    const binary = this.findByAttr('binary', 'id', id).first()
-    const ext = id.slice(id.lastIndexOf('.'))
+    id = id.replace('#', '');
+    const binary = this.findByAttr('binary', 'id', id).first();
+    const ext = id.slice(id.lastIndexOf('.'));
 
     if (binary.length === 0) {
-      return null
+      return null;
     }
 
     let fileName = `${this.author}_${this.title}${ext}`.replace(/\s+/g, '_').toLowerCase();
@@ -84,7 +81,7 @@ export class FB2Parser extends BookParser {
       filename: fileName,
       filepath: await this.createCoverFile(fileName, binary.text()),
       filetype: binary.attr('content-type'),
-    }
+    };
   }
 
   public destroy() {

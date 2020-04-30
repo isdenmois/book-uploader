@@ -1,6 +1,6 @@
 import React, { createContext, useState, useCallback, memo } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
-import RNFS, { ReadDirItem } from 'react-native-fs';
+import { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
 
@@ -31,17 +31,17 @@ function useUploader() {
 
     // await new Promise(resolve => setTimeout(resolve));
 
-      for (let i = 0; i < files.length; i++) {
-        await files[i].upload();
-      }
+    for (let i = 0; i < files.length; i++) {
+      await files[i].upload();
+    }
 
-      const type = files.some(f => f.error) ? 'HAS_ERRORS' : 'FINISH';
+    const type = files.some(f => f.error) ? 'HAS_ERRORS' : 'FINISH';
 
-      setState(type);
+    setState(type);
   }, []);
   const reset = useCallback(() => {
     setState(null);
-     setFiles([])
+    setFiles([]);
   }, []);
 
   return { files: prevFiles, state, upload, reset };
@@ -73,7 +73,9 @@ class FileData {
 
       this.setProgress(50);
 
-      await createBook({ file, author, title, cover }, ev => this.setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100));
+      await createBook({ file, author, title, cover }, ev =>
+        this.setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100),
+      );
 
       await destroy();
 
@@ -100,7 +102,7 @@ class FileData {
 }
 
 export function UploadScreen({ children }) {
-  const { files, state, upload,reset} = useUploader();
+  const { files, state, upload, reset } = useUploader();
   const [context] = useState<any>({ upload });
 
   return (
@@ -117,7 +119,7 @@ export function UploadScreen({ children }) {
             ))}
           </View>
 
-        { state !== 'UPLOAD' && <Button title='Продолжить' onPress={reset}/>}
+          {state !== 'UPLOAD' && <Button title='Продолжить' onPress={reset} />}
         </View>
       )}
     </UploadContext.Provider>
@@ -126,12 +128,16 @@ export function UploadScreen({ children }) {
 
 const FileLine = memo(({ title, progress, error }) => {
   return (
-    <View style={{marginBottom: 20}}>
+    <View style={{ marginBottom: 20 }}>
       <Text>{title}</Text>
 
-      {!error && progress > 0 && <View style={s.progress}>
-        <View style={progress > 100 ? [s.progressLine, s.progressDone] : [s.progressLine, { width: `${progress}%` }]} />
-      </View>}
+      {!error && progress > 0 && (
+        <View style={s.progress}>
+          <View
+            style={progress > 100 ? [s.progressLine, s.progressDone] : [s.progressLine, { width: `${progress}%` }]}
+          />
+        </View>
+      )}
 
       {!error && progress === PARSE && <Text>Парсинг</Text>}
 
@@ -162,12 +168,12 @@ const s = StyleSheet.create({
   progressLine: {
     position: 'absolute',
     backgroundColor: '#00f',
-    left:0,
-    top:0,
+    left: 0,
+    top: 0,
     bottom: 0,
   },
   progressDone: {
     width: '100%',
     backgroundColor: '#0f0',
-  }
+  },
 });
