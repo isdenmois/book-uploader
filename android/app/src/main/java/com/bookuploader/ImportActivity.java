@@ -85,7 +85,7 @@ public class ImportActivity extends AppCompatActivity {
         PackageInfo p = m.getPackageInfo(s, 0);
         s = p.applicationInfo.dataDir;
 
-        InputStreamToFile(is, s + "/files/" + name);
+        inputStreamToFile(is, s + "/files/" + name);
     }
 
     private String getContentName(ContentResolver resolver, Uri uri) {
@@ -99,7 +99,7 @@ public class ImportActivity extends AppCompatActivity {
         }
     }
 
-    private void InputStreamToFile(InputStream in, String file) {
+    private void inputStreamToFile(InputStream in, String file) {
         try {
             OutputStream out = new FileOutputStream(new File(file));
 

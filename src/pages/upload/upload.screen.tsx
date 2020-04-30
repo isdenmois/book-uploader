@@ -1,8 +1,9 @@
-import React, { createContext, useState, useCallback, memo } from 'react';
+import React, { createContext, useState, useCallback, memo, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const UploadContext = createContext(null);
 
@@ -19,17 +20,19 @@ const titles = {
 };
 
 function useUploader() {
-  const [prevFiles, setFiles] = useState<FileData[]>([]);
+  const [files, setFiles] = useState<FileData[]>([]);
   const [state, setState] = useState(null);
-  const upload = useCallback(async (fs: ReadDirItem[]) => {
-    let files: FileData[] = [];
-    const update = () => setFiles([...files]);
-    files = fs.map(f => new FileData(f, update));
+  const prepare = useCallback((fs: ReadDirItem[]) => {
+    let toUpload: FileData[] = [];
+    const update = () => setFiles([...toUpload]);
+    toUpload = fs.map(f => new FileData(f, update));
 
-    setFiles(files);
+    setFiles(toUpload);
+    setState('PRE-UPLOAD');
+  }, []);
+
+  const startUpload = useCallback(async () => {
     setState('UPLOAD');
-
-    // await new Promise(resolve => setTimeout(resolve));
 
     for (let i = 0; i < files.length; i++) {
       await files[i].upload();
@@ -38,13 +41,27 @@ function useUploader() {
     const type = files.some(f => f.error) ? 'HAS_ERRORS' : 'FINISH';
 
     setState(type);
-  }, []);
+  }, [files]);
   const reset = useCallback(() => {
     setState(null);
     setFiles([]);
   }, []);
 
-  return { files: prevFiles, state, upload, reset };
+  return { files, state, prepare, startUpload, reset };
+}
+
+function useAddress() {
+  const [address, set] = useState<string>(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem('address').then(set);
+  }, []);
+
+  return address;
+}
+
+function useTitle(state, address) {
+  return state === 'PRE-UPLOAD' ? address : titles[state];
 }
 
 class FileData {
@@ -102,8 +119,10 @@ class FileData {
 }
 
 export function UploadScreen({ children }) {
-  const { files, state, upload, reset } = useUploader();
-  const [context] = useState<any>({ upload });
+  const { files, state, prepare, startUpload, reset } = useUploader();
+  const address = useAddress();
+  const title = useTitle(state, address);
+  const [context] = useState<any>({ upload: prepare });
 
   return (
     <UploadContext.Provider value={context}>
@@ -111,7 +130,7 @@ export function UploadScreen({ children }) {
 
       {state && (
         <View style={s.visible}>
-          <Text style={s.title}>{titles[state]}</Text>
+          <Text style={s.title}>{title}</Text>
 
           <View style={s.files}>
             {files.map(f => (
@@ -119,7 +138,10 @@ export function UploadScreen({ children }) {
             ))}
           </View>
 
-          {state !== 'UPLOAD' && <Button title='Продолжить' onPress={reset} />}
+          <View style={s.buttons}>
+            {state === 'PRE-UPLOAD' && <Button title='Отменить' onPress={reset} />}
+            {state !== 'UPLOAD' && <Button title='Продолжить' onPress={state === 'PRE-UPLOAD' ? startUpload : reset} />}
+          </View>
         </View>
       )}
     </UploadContext.Provider>
@@ -149,6 +171,7 @@ const FileLine = memo(({ title, progress, error }) => {
 const s = StyleSheet.create({
   visible: {
     flex: 1,
+    paddingBottom: 30,
   },
   hidden: {
     height: 0,
@@ -157,6 +180,13 @@ const s = StyleSheet.create({
     fontSize: 18,
     marginTop: 20,
     textAlign: 'center',
+  },
+  files: {
+    flex: 1,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   progress: {
     position: 'relative',
