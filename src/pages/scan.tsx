@@ -29,8 +29,8 @@ function useScan(navigation, initialScan) {
 }
 
 export function ScanScreen({ navigation, route: { params } }) {
-  const { address, scan, openScan, onScan } = useScan(navigation, params.scan);
-  const onContinue = useCallback(() => (params.scan ? navigation.goBack() : navigation.push('home')), []);
+  const { address, scan, openScan, onScan } = useScan(navigation, params?.scan);
+  const onContinue = useCallback(() => (params?.scan ? navigation.goBack() : navigation.push('home')), []);
 
   if (scan) {
     return (
