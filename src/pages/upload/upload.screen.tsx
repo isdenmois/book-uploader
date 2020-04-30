@@ -1,10 +1,10 @@
 import React, { createContext, useState, useCallback, memo, useEffect } from 'react';
-import { Alert, Text, View, StyleSheet, Button } from 'react-native';
+import { Alert, Text, View, StyleSheet, Button, ActivityIndicator } from 'react-native';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
 import AsyncStorage from '@react-native-community/async-storage';
-import { RemoveIcon } from 'components/icons';
+import { ParseIcon, RemoveIcon } from 'components/icons';
 
 export const UploadContext = createContext(null);
 
@@ -86,6 +86,8 @@ class FileData {
   progress: number = IDLE;
   error: string;
 
+  parsed: any;
+
   private update: () => void;
   private remove: () => void;
   private path: string;
@@ -104,19 +106,15 @@ class FileData {
 
   async upload() {
     try {
-      this.setProgress(PARSE);
+      await this.parse();
 
-      const { title, author, file, cover, destroy } = await parseBook(this.path, this.title);
-
-      this.set('title', title);
-
-      this.setProgress(50);
+      const { title, author, file, cover } = this.parsed;
 
       await createBook({ file, author, title, cover }, ev =>
         this.setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100),
       );
 
-      await destroy();
+      await this.parsed.destroy();
 
       this.setProgress(DONE);
     } catch (e) {
@@ -124,6 +122,17 @@ class FileData {
       console.error(e);
     }
   }
+
+  parse = async () => {
+    if (this.parsed) return;
+    this.setProgress(PARSE);
+
+    const data = await parseBook(this.path, this.title);
+    this.parsed = data;
+
+    this.set('title', data.title);
+    this.setProgress(IDLE);
+  };
 
   private set<T extends 'title' | 'error' | 'progress'>(key: T, value: this[T]) {
     if (this[key] !== value) {
@@ -140,7 +149,11 @@ class FileData {
   }
 
   private destroy() {
-    RNFS.unlink(this.path);
+    if (this.parsed) {
+      this.parsed.destroy();
+    } else {
+      RNFS.unlink(this.path);
+    }
   }
 }
 
@@ -160,7 +173,15 @@ export function UploadScreen({ children }) {
 
           <View style={s.files}>
             {files.map(f => (
-              <FileLine key={f.id} title={f.title} progress={f.progress} error={f.error} remove={f.remove} />
+              <FileLine
+                key={f.id}
+                state={state}
+                file={f}
+                title={f.title}
+                progress={f.progress}
+                error={f.error}
+                isParsed={Boolean(f.parsed)}
+              />
             ))}
           </View>
 
@@ -176,7 +197,7 @@ export function UploadScreen({ children }) {
   );
 }
 
-const FileLine = memo(({ title, progress, error, remove }) => {
+const FileLine = memo(({ state, file, title, progress, error, isParsed }) => {
   return (
     <View style={{ marginBottom: 20, flexDirection: 'row' }}>
       <View style={{ flex: 1 }}>
@@ -195,7 +216,17 @@ const FileLine = memo(({ title, progress, error, remove }) => {
         {Boolean(error) && <Text>{error}</Text>}
       </View>
 
-      <RemoveIcon style={{ paddingHorizontal: 10 }} size={25} onPress={remove} />
+      {state === 'PRE-UPLOAD' && (
+        <>
+          {!isParsed && progress !== PARSE && (
+            <ParseIcon style={{ paddingHorizontal: 10 }} size={25} onPress={file.parse} />
+          )}
+
+          {!isParsed && progress === PARSE && <ActivityIndicator style={{ paddingHorizontal: 10 }} size={25} />}
+
+          {progress !== PARSE && <RemoveIcon style={{ paddingHorizontal: 10 }} size={25} onPress={file.remove} />}
+        </>
+      )}
     </View>
   );
 });

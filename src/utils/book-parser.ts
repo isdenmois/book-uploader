@@ -1,5 +1,3 @@
-// import { ParsedFB2 } from 'models/parser'
-// import base64 from 'utils/base64'
 import RnBgTask from 'react-native-bg-thread';
 import { BookParser } from './parsers/base';
 import { FB2Parser } from './parsers/fb2';
@@ -45,19 +43,3 @@ export async function parseBook(file: string, fileName: string) {
 
   return result;
 }
-
-// addEventListener('message', async (event: any) => {
-//   const { file, type } = event.data
-//   if (type !== 'PARSE_FILE') {
-//     return
-//   }
-
-//   try {
-//     const result = await parseBook(file)
-
-//     postMessage(result)
-//     close()
-//   } catch (error) {
-//     postMessage({ error: error.stack ? `${error.message}\n${error.stack}` : error.toString() })
-//   }
-// })
