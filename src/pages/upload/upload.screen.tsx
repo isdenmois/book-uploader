@@ -39,7 +39,7 @@ function useUploader(books: ReadDirItem[], navigation) {
   useEffect(() => {
     const update = () => setFiles([...filesRef.current.files]);
     const remove = id => {
-      filesRef.current = filesRef.current.files.filter(f => f.id !== id);
+      filesRef.current.files = filesRef.current.files.filter(f => f.id !== id);
       update();
     };
     filesRef.current = { files, update, remove };
