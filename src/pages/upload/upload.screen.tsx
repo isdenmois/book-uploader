@@ -5,7 +5,6 @@ import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
 import { ParseIcon, RemoveIcon, QrIcon } from 'components/icons';
 import { AddressContext } from 'utils/address';
-import { useNavigation } from '@react-navigation/native';
 
 export const UploadContext = createContext(null);
 
