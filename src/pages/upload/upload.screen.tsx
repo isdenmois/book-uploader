@@ -5,6 +5,8 @@ import { createBook } from 'services/book';
 import { parseBook } from 'utils/book-parser';
 import { ParseIcon, RemoveIcon, QrIcon } from 'components/icons';
 import { AddressContext } from 'utils/address';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as colors from 'theme/colors';
 
 export const UploadContext = createContext(null);
 
@@ -162,6 +164,8 @@ export function UploadScreen({ route, navigation }) {
   const title = useTitle(state, address);
   const openQrScanner = useCallback(() => navigation.push('scan', { scan: true }), []);
 
+  const isContinueButtonVisible = state !== 'UPLOAD' && files?.length > 0;
+
   return (
     <View style={s.visible}>
       <View style={{ flexDirection: 'row', marginTop: 20 }}>
@@ -184,12 +188,11 @@ export function UploadScreen({ route, navigation }) {
         ))}
       </View>
 
-      <View style={s.buttons}>
-        {state === 'PRE-UPLOAD' && <Button title='Отменить' onPress={reset} />}
-        {state !== 'UPLOAD' && files?.length > 0 && (
-          <Button title='Продолжить' onPress={state === 'PRE-UPLOAD' ? startUpload : reset} />
-        )}
-      </View>
+      {isContinueButtonVisible && (
+        <TouchableOpacity style={s.button} onPress={state === 'PRE-UPLOAD' ? startUpload : reset}>
+          <Text style={s.buttonText}>Продолжить</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -210,18 +213,18 @@ const FileLine = memo(({ state, file, title, progress, error, isParsed }) => {
 
         {!error && progress === PARSE && <Text>Парсинг</Text>}
 
-        {Boolean(error) && <Text>{error}</Text>}
+        {Boolean(error) && <Text style={s.errorText}>{error}</Text>}
       </View>
 
       {state === 'PRE-UPLOAD' && (
         <>
-          {!isParsed && progress !== PARSE && (
-            <ParseIcon style={{ paddingHorizontal: 10 }} size={25} onPress={file.parse} />
+          {!isParsed && progress !== PARSE && <ParseIcon style={{ paddingLeft: 10 }} size={25} onPress={file.parse} />}
+
+          {!isParsed && progress === PARSE && (
+            <ActivityIndicator style={{ paddingLeft: 10 }} color={colors.green} size={25} />
           )}
 
-          {!isParsed && progress === PARSE && <ActivityIndicator style={{ paddingHorizontal: 10 }} size={25} />}
-
-          {progress !== PARSE && <RemoveIcon style={{ paddingHorizontal: 10 }} size={25} onPress={file.remove} />}
+          {progress !== PARSE && <RemoveIcon style={{ paddingLeft: 10 }} size={25} onPress={file.remove} />}
         </>
       )}
     </View>
@@ -231,7 +234,6 @@ const FileLine = memo(({ state, file, title, progress, error, isParsed }) => {
 const s = StyleSheet.create({
   visible: {
     flex: 1,
-    paddingBottom: 30,
   },
   hidden: {
     height: 0,
@@ -244,27 +246,37 @@ const s = StyleSheet.create({
   files: {
     flex: 1,
     marginTop: 15,
+    paddingHorizontal: 10,
   },
-  buttons: {
+  button: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    backgroundColor: colors.blue,
+    paddingVertical: 12,
+  },
+  buttonText: {
+    color: colors.invert,
+    fontSize: 16,
   },
   progress: {
     position: 'relative',
     borderRadius: 10,
     marginTop: 5,
     height: 3,
-    backgroundColor: '#eee',
+    backgroundColor: colors.secondary,
   },
   progressLine: {
     position: 'absolute',
-    backgroundColor: '#00f',
+    backgroundColor: colors.blue,
     left: 0,
     top: 0,
     bottom: 0,
   },
   progressDone: {
     width: '100%',
-    backgroundColor: '#0f0',
+    backgroundColor: colors.green,
+  },
+  errorText: {
+    color: colors.red,
   },
 });
