@@ -1,0 +1,7 @@
+{
+  "private": "true",
+  "dependencies": {
+    "follow-redirects": "^1.12.1",
+    "http-proxy-agent": "^4.0.1"
+  }
+}

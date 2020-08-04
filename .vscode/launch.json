@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/backend/index.js",
+      "request": "launch",
+      "type": "pwa-node"
+    },
+    {
       "name": "Debug Android",
       "cwd": "${workspaceFolder}",
       "type": "reactnative",

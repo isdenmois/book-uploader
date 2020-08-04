@@ -7,6 +7,7 @@ import { ParseIcon, RemoveIcon, QrIcon } from 'components/icons';
 import { AddressContext } from 'utils/address';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as colors from 'theme/colors';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const UploadContext = createContext(null);
 
@@ -32,9 +33,11 @@ function confirm({ title, message }, onSuccess) {
   ]);
 }
 
-function useUploader(books: ReadDirItem[], navigation) {
+const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/;
+
+function useUploader(navigation) {
   const filesRef = useRef<any>(null);
-  const [files, setFiles] = useState<FileData[]>(books.map(f => FileData.create(f, filesRef)));
+  const [files, setFiles] = useState<FileData[]>([]);
   const [state, setState] = useState('PRE-UPLOAD');
 
   useEffect(() => {
@@ -58,10 +61,24 @@ function useUploader(books: ReadDirItem[], navigation) {
     setState(type);
   }, [files]);
   const reset = useCallback(() => {
-    setState(null);
+    setState('PRE-UPLOAD');
     setFiles([]);
     navigation.goBack();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setState('SCAN');
+
+      RNFS.readDir(RNFS.DocumentDirectoryPath).then(result => {
+        const books = result.filter(f => f.name.match(FILE_NAME));
+        filesRef.current.files = books.map(f => FileData.create(f, filesRef));
+
+        setFiles(filesRef.current.files);
+        setState('PRE-UPLOAD');
+      });
+    }, []),
+  );
 
   return { files, state, startUpload, reset };
 }
@@ -158,8 +175,8 @@ class FileData {
   }
 }
 
-export function UploadScreen({ route, navigation }) {
-  const { files, state, startUpload, reset } = useUploader(route.params.books, navigation);
+export function UploadScreen({ navigation }) {
+  const { files, state, startUpload, reset } = useUploader(navigation);
   const address = useAddress();
   const title = useTitle(state, address);
   const openQrScanner = useCallback(() => navigation.push('scan', { scan: true }), []);
@@ -173,6 +190,8 @@ export function UploadScreen({ route, navigation }) {
 
         {state === 'PRE-UPLOAD' && <QrIcon style={{ paddingHorizontal: 10 }} size={25} onPress={openQrScanner} />}
       </View>
+
+      {state === 'SCAN' && <ActivityIndicator style={{ marginTop: 10 }} size='large' color='red' />}
 
       <View style={s.files}>
         {files.map(f => (

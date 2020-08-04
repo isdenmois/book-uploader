@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
-index 5324a36..ab3ccd1 100644
+index 5324a36..b72921d 100644
 --- a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
 +++ b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
 @@ -51,8 +51,10 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
@@ -41,7 +41,7 @@ index 5324a36..ab3ccd1 100644
                  }
                  fileCount++;
              }
-@@ -119,7 +122,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+@@ -119,23 +122,20 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
              }
              if (!binaryStreamOnly) {
                  long requestLength = totalFileLength;
@@ -50,16 +50,15 @@ index 5324a36..ab3ccd1 100644
                  connection.setRequestProperty("Content-length", "" +(int) requestLength);
                  connection.setFixedLengthStreamingMode((int)requestLength);
              }
-@@ -127,7 +130,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+             connection.connect();
  
              request = new DataOutputStream(connection.getOutputStream());
-             if (!binaryStreamOnly) {
+-            if (!binaryStreamOnly) {
 -                request.writeBytes(metaData);
-+                request.write(metaDataBytes);
-             }
+-            }
  
              byteSentTotal = 0;
-@@ -135,7 +138,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+             Runtime run = Runtime.getRuntime();
  
              for (ReadableMap map : params.files) {
                  if (!binaryStreamOnly) {
@@ -68,3 +67,13 @@ index 5324a36..ab3ccd1 100644
                  }
                  File file = new File(map.getString("filepath"));
                  int fileLength = (int) file.length();
+@@ -159,6 +159,9 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+                 fileCount++;
+                 bufInput.close();
+             }
++            if (!binaryStreamOnly) {
++                request.write(metaDataBytes);
++            }
+             if (!binaryStreamOnly) {
+                 request.writeBytes(tail);
+             }

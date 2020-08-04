@@ -1,0 +1,162 @@
+import React, { useEffect, useState } from 'react';
+import { transliterate as tr, slugify } from 'transliteration';
+import RNFS from 'react-native-fs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Alert, Text, View, Button, ActivityIndicator, FlatList, CheckBox, Switch, ToastAndroid } from 'react-native';
+import { searchHandler } from 'api';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { fileUrl } from 'api';
+const Tab = createBottomTabNavigator();
+
+const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/;
+
+function useImportedFiles(navigation) {
+  useEffect(() => {
+    RNFS.readDir(RNFS.DocumentDirectoryPath).then(result => {
+      const books = result.filter(f => f.name.match(FILE_NAME));
+
+      if (books.length) {
+        navigation.push('upload', { books });
+      }
+    });
+
+    RNFS.readDir(RNFS.TemporaryDirectoryPath).then(result => console.log(result));
+  }, []);
+}
+
+export function SearchScreen({ navigation }) {
+  // useImportedFiles(navigation);
+
+  const [type, setType] = useState('zlib');
+  const [files, setFiles] = useState(null);
+  const [l, setL] = useState(false);
+  const toSearch = async query => {
+    setL(true);
+    try {
+      const { data } = await searchHandler(type, query);
+
+      setFiles(data);
+    } catch (e) {
+      console.error(e?.message || e);
+    }
+
+    setL(false);
+  };
+  const toggleType = () => {
+    setType(type === 'zlib' ? 'flibusta' : 'zlib');
+    setFiles(null);
+  };
+  const toggler = (
+    <View style={{ position: 'absolute', bottom: 10, alignItems: 'center', left: 0, right: 0, zIndex: 2 }}>
+      <TouchableOpacity
+        style={{
+          elevation: 2,
+          backgroundColor: 'white',
+          borderRadius: 20,
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+        }}
+        onPress={!l && toggleType}
+      >
+        <Text style={{ flex: 1, fontSize: 16 }}>{type === 'zlib' ? 'Z-Library' : 'Flibusta'}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  if (l) {
+    return (
+      <View style={{ flex: 1 }}>
+        {toggler}
+        <Header search={toSearch} disabled />
+
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size='large' color='red' />
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ flex: 1, position: 'relative' }}>
+      {toggler}
+
+      <Header search={toSearch} />
+
+      {!files && <Text>Начните поиск</Text>}
+      {!!files && !files.length && <Text>Ничего не найдено</Text>}
+      <FlatList
+        data={files}
+        keyExtractor={item => item.link}
+        renderItem={({ item }) => <BookItem item={item} type={type} />}
+        contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 60 }}
+      />
+    </View>
+  );
+}
+
+function Header({ search, disabled }) {
+  const [query, setQuery] = useState('');
+  const toSearch = () => search(query);
+
+  return (
+    <View style={{ flexDirection: 'row', borderBottomColor: '#000', borderBottomWidth: 1 }}>
+      <TextInput
+        style={{ flex: 1, fontSize: 14, color: '#000' }}
+        editable={!disabled}
+        value={query}
+        onChangeText={setQuery}
+        onSubmitEditing={toSearch}
+        returnKeyType='search'
+        placeholder='Search books'
+        autoFocus
+      />
+    </View>
+  );
+}
+
+function BookItem({ item, type }) {
+  const onPress = async () => {
+    const URL = await fileUrl(type, item.link);
+    const title = slugify(item.title).slice(0, 100);
+    const fileName = `${title}.${item.ext}`;
+
+    confirm(fileName, 'Скачать файл?', async () => {
+      ToastAndroid.show('Загружаю', ToastAndroid.SHORT);
+      console.warn(URL);
+
+      try {
+        await RNFS.downloadFile({
+          fromUrl: URL,
+          toFile: `${RNFS.DocumentDirectoryPath}/${fileName}`,
+          headers: {
+            'user-agent':
+              'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36',
+          },
+        }).promise;
+        ToastAndroid.show('Файл загружен!', ToastAndroid.SHORT);
+      } catch (e) {
+        console.error(e?.message || e);
+        ToastAndroid.show('Не удалось загрузить файл', ToastAndroid.SHORT);
+      }
+    });
+  };
+
+  return (
+    <TouchableOpacity style={{ marginBottom: 10 }} onPress={onPress}>
+      <Text>{item.title}</Text>
+      <Text>{item.authors}</Text>
+      {!!item.lang && <Text>Lang: {item.lang}</Text>}
+      {!!item.translation && <Text>Translator: {item.translation}</Text>}
+    </TouchableOpacity>
+  );
+}
+
+function confirm(title, message, onSuccess) {
+  Alert.alert(title, message, [
+    {
+      text: 'Cancel',
+      style: 'cancel',
+    },
+    { text: 'OK', onPress: onSuccess, style: 'destructive' },
+  ]);
+}

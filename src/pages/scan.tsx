@@ -22,7 +22,7 @@ function useScan(navigation, initialScan) {
     if (!data) return;
 
     setScan(false);
-    setAddress(data.replace('http://', '').replace(':8080', ''));
+    setAddress(data.replace('http://', '').replace(/:\d+$/, ''));
   }, []);
 
   return { address, scan, openScan, onScan };

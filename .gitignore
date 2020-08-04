@@ -60,3 +60,6 @@ buck-out/
 
 yarn.lock
 android/app/release/
+
+.vercel
+.env

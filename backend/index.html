@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form onsubmit="submitSearch(event)">
+      <input type="radio" id="zlib" name="searchType" value="zlib" checked />
+      <label for="zlib">Z-Lib</label><br />
+      <input type="radio" id="flibusta" name="searchType" value="flibusta" />
+      <label for="flibusta">Flibusta</label><br />
+
+      <input id="searchInput" />
+      <button>Search</button>
+    </form>
+
+    <pre id="result"></pre>
+
+    <script>
+      async function submitSearch(e) {
+        e.preventDefault();
+        if (!searchInput.value?.trim()) return;
+
+        const type = zlib.checked ? 'zlib' : 'flibusta';
+        const url = `/api/search?type=${type}&name=${encodeURIComponent(searchInput.value)}`;
+
+        result.innerText = 'loading...';
+
+        const data = await fetch(url).then(r => r.json());
+
+        result.innerText = JSON.stringify(data, null, 2);
+      }
+    </script>
+  </body>
+</html>
