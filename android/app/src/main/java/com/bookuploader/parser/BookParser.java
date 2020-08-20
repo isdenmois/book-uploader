@@ -17,6 +17,8 @@ abstract class BookParser {
         File from = new File(this.path);
         File to = new File(from.getParent(), this.transliterate(destName) + format);
 
+        if (from.getName().equals(to.getName())) return;
+
         if (from.renameTo(to)) {
             path = to.getAbsolutePath();
         }

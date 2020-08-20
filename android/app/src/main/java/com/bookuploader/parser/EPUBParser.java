@@ -12,9 +12,9 @@ class EPUBParser extends BookParser {
     private final int MAX_EPUBINFO_SIZE = 8192;
     private final int MAX_XMLINFO_SIZE = 80;
 
-    private Pattern rDescription = Pattern.compile("(?s)<dc:description>(.*?)</dc:description>");
+    private Pattern rDescription = Pattern.compile("(?s)<dc:description.*?>(.*?)</dc:description>");
     private Pattern rXmlEncoding = Pattern.compile("(?i).*encoding=[\"'](.*?)[\"'].*");
-    private Pattern rTitle = Pattern.compile("(?s)<dc:title>(.*?)</dc:title>");
+    private Pattern rTitle = Pattern.compile("(?s)<dc:title.*?>(.*?)</dc:title>");
     private Pattern rAuthor = Pattern.compile("(?s)<dc:creator.*?>(.*?)</dc:creator>");
 
     EPUBParser(String path) {
@@ -92,9 +92,8 @@ class EPUBParser extends BookParser {
         String xmlHeader = new String(input, 0, MAX_XMLINFO_SIZE, "ISO-8859-1");
         Matcher matcher = rXmlEncoding.matcher(xmlHeader.toString());
         if (matcher.find())
-            encoding = matcher.group(1);
-        else
-            throw new IOException("Unknown encoding");
-        return encoding;
+            return matcher.group(1);
+
+        return "UTF-8";
     }
 }

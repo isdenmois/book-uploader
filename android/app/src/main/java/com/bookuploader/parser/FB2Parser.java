@@ -15,11 +15,11 @@ class FB2Parser extends BookParser {
     private final int MAX_XMLINFO_SIZE = 80;
 
     private Pattern xmlEncoding = Pattern.compile("(?i).*encoding=[\"'](.*?)[\"'].*");
-    private Pattern rAnnotation = Pattern.compile("(?s)<annotation>(.*?)</annotation>");
-    private Pattern rFirstName = Pattern.compile("(?s)<first-name>(.*)</first-name>");
-    private Pattern rLastName = Pattern.compile("(?s)<last-name>(.*)</last-name>");
-    private Pattern rAuthor = Pattern.compile("(?s)<author>(.*?)</author>");
-    private Pattern rTitle = Pattern.compile("(?s)<book-title>(.*?)</book-title>");
+    private Pattern rAnnotation = Pattern.compile("(?s)<annotation.*?>(.*?)</annotation>");
+    private Pattern rFirstName = Pattern.compile("(?s)<first-name.*?>(.*)</first-name>");
+    private Pattern rLastName = Pattern.compile("(?s)<last-name.*?>(.*)</last-name>");
+    private Pattern rAuthor = Pattern.compile("(?s)<author.*?>(.*?)</author>");
+    private Pattern rTitle = Pattern.compile("(?s)<book-title.*?>(.*?)</book-title>");
 
     FB2Parser(String path) {
         this.path = path;
