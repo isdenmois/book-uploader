@@ -77,7 +77,10 @@ export function SearchScreen({ route }) {
 
 function Header({ search, disabled, initQuery }) {
   const [query, setQuery] = useState(initQuery || '');
-  const toSearch = () => search(query);
+  const toSearch = () => {
+    setQuery(query.trim());
+    search(query.trim());
+  };
   const inputRef = useRef<any>();
 
   useEffect(() => {
@@ -112,7 +115,6 @@ function BookItem({ item, type }) {
 
     confirm(fileName, 'Скачать файл?', async () => {
       ToastAndroid.show('Загружаю', ToastAndroid.SHORT);
-      console.warn(URL);
 
       try {
         setProgress(0.01);
@@ -141,6 +143,7 @@ function BookItem({ item, type }) {
       <Text>{item.authors}</Text>
       {!!item.lang && <Text>Lang: {item.lang}</Text>}
       {!!item.translation && <Text>Translator: {item.translation}</Text>}
+      {!!item.size && <Text>Size: {item.size}</Text>}
       {progress > 0 && (
         <View
           style={{

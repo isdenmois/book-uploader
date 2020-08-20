@@ -25,6 +25,10 @@ const flibusta = {
       selector: 'content',
       regexp: 'Язык:\\s?(.+?)\\s?[&<]',
     },
+    size: {
+      selector: 'content',
+      regexp: 'Размер:\\s?(.+?)\\s?[&<]',
+    },
     ext: 'fb2.zip',
   },
 };
@@ -44,6 +48,10 @@ const zlib = {
     lang: {
       selector: '.property_language',
       replace: 'Language:',
+    },
+    size: {
+      selector: '.property__file .property_value',
+      replace: 'EPUB, ',
     },
     ext: 'epub',
   },
@@ -124,6 +132,14 @@ function parseSearch(body, selectors) {
       data.lang = lang.text().replace(selectors.lang.replace, '').trim();
     }
 
+    const size = entry.find(selectors.size.selector);
+
+    if (selectors.size.regexp) {
+      data.size = size.text()?.match(selectors.size.regexp)?.[1];
+    } else {
+      data.size = size.text().replace(selectors.size.replace, '').trim();
+    }
+
     return data;
   });
 
@@ -153,7 +169,6 @@ export async function searchHandler(type, name) {
 
   try {
     const response = await fetch(url, { headers, params, proxy: process.env.HTTPS_PROXY });
-    console.warn(response.status);
     const body = await response.text();
 
     return { data: parseSearch(body, config.selectors, config.fileUrl) };
