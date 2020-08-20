@@ -15,9 +15,9 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ImportActivity"
+            android:excludeFromRecents="true"
             android:label="@string/import_dialog_title"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            android:excludeFromRecents="true">
+            android:theme="@style/Theme.AppCompat.Dialog">
             <intent-filter
                 android:icon="@mipmap/ic_launcher"
                 android:label="Import book to upload">
@@ -70,8 +70,18 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter
+                android:icon="@mipmap/ic_launcher"
+                android:label="Search file">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="booksearch"
+                      android:host="*"/>
             </intent-filter>
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />

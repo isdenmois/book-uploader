@@ -1,5 +1,5 @@
 import React, { createContext, useState, useCallback, memo, useContext, useEffect, useRef } from 'react';
-import { Alert, Text, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Alert, Text, View, StyleSheet, ActivityIndicator, Linking } from 'react-native';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { EbookParser, EbookMetadata } from 'services/book-parser';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { slugify } from 'transliteration';
 import RNFS from 'react-native-fs';
 import { Alert, Text, View, ActivityIndicator, FlatList, ToastAndroid } from 'react-native';
@@ -6,10 +6,11 @@ import { searchHandler } from 'api';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { fileUrl } from 'api';
 
-export function SearchScreen() {
+export function SearchScreen({ route }) {
   const [type, setType] = useState('zlib');
   const [files, setFiles] = useState(null);
   const [l, setL] = useState(false);
+
   const toSearch = async query => {
     setL(true);
     try {
@@ -47,7 +48,7 @@ export function SearchScreen() {
     return (
       <View style={{ flex: 1 }}>
         {toggler}
-        <Header search={toSearch} disabled />
+        <Header search={toSearch} disabled initQuery={route.params?.initQuery} />
 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size='large' color='red' />
@@ -60,7 +61,7 @@ export function SearchScreen() {
     <View style={{ flex: 1, position: 'relative' }}>
       {toggler}
 
-      <Header search={toSearch} />
+      <Header search={toSearch} initQuery={route.params?.initQuery} />
 
       {!files && <Text>Начните поиск</Text>}
       {!!files && !files.length && <Text>Ничего не найдено</Text>}
@@ -74,9 +75,15 @@ export function SearchScreen() {
   );
 }
 
-function Header({ search, disabled }) {
-  const [query, setQuery] = useState('');
+function Header({ search, disabled, initQuery }) {
+  const [query, setQuery] = useState(initQuery || '');
   const toSearch = () => search(query);
+  const inputRef = useRef<any>();
+
+  useEffect(() => {
+    setQuery(initQuery || '');
+    setTimeout(() => inputRef.current.focus(), 100);
+  }, [initQuery]);
 
   return (
     <View style={{ flexDirection: 'row', borderBottomColor: '#000', borderBottomWidth: 1 }}>
@@ -88,6 +95,7 @@ function Header({ search, disabled }) {
         onSubmitEditing={toSearch}
         returnKeyType='search'
         placeholder='Search books'
+        ref={inputRef}
         autoFocus
       />
     </View>
