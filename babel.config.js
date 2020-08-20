@@ -9,6 +9,7 @@ const config = {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.android.js', '.android.tsx'],
       },
     ],
+    ['module:react-native-dotenv'],
   ],
 };
 

@@ -1,7 +1,10 @@
 {
   "private": "true",
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "follow-redirects": "^1.12.1",
-    "http-proxy-agent": "^4.0.1"
+    "http-proxy-agent": "^4.0.1",
+    "socks-proxy-agent": "^5.0.0"
   }
 }

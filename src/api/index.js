@@ -1,10 +1,5 @@
 import cheerio from 'react-native-cheerio';
-
-const FLIBUSTA_HOST = 'https://book-uploader.vercel.app/';
-const ZLIB_HOST = 'https://b-ok.cc';
-
-const USER_AGENT =
-  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36';
+import { FLIBUSTA_HOST, ZLIB_HOST, USER_AGENT } from '@env';
 
 const flibusta = {
   host: FLIBUSTA_HOST,

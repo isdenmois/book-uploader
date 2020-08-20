@@ -1,21 +1,31 @@
 const http = require('follow-redirects/http');
 const querystring = require('querystring');
-const httpProxyAgent = require('http-proxy-agent');
+
+const isSocks = process.env.PROXY === 'socks';
+const proxyAgent = isSocks ? require('socks-proxy-agent') : require('http-proxy-agent');
 
 module.exports = async (oreq, ores) => {
   const passHeaders = ['cookie', 'accept', 'content-type', 'connection'];
   const { path, proxy, ...params } = oreq.query;
 
-  const agent = new httpProxyAgent({
-    protocol: 'https',
-    host: proxy || 'fl-234-156-1.fri-gate0.biz',
-    prot: 443,
-    rejectUnauthorized: false,
-  });
+  const agent = new proxyAgent(
+    isSocks
+      ? {
+          ipaddress: '127.0.0.1',
+          port: 9050,
+          type: 5,
+        }
+      : {
+          protocol: 'https',
+          host: proxy || process.env.HTTP_PROXY,
+          prot: 443,
+          rejectUnauthorized: false,
+        },
+  );
 
   const options = {
     agent,
-    host: 'flibustahezeous3.onion',
+    host: process.env.FLIBUSTA_HOST,
     path: Object.keys(params).length > 0 ? `${path}?${querystring.stringify(params)}` : path,
     headers: {
       'user-agent':
