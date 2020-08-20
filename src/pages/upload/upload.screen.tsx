@@ -1,8 +1,8 @@
 import React, { createContext, useState, useCallback, memo, useContext, useEffect, useRef } from 'react';
-import { Alert, Text, View, StyleSheet, Button, ActivityIndicator } from 'react-native';
+import { Alert, Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
-import { parseBook } from 'utils/book-parser';
+import { EbookParser, EbookMetadata } from 'services/book-parser';
 import { ParseIcon, RemoveIcon, QrIcon } from 'components/icons';
 import { AddressContext } from 'utils/address';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -97,7 +97,7 @@ class FileData {
   progress: number = IDLE;
   error: string;
 
-  parsed: any;
+  parsed: EbookMetadata;
   remove: () => void;
 
   private update: () => void;
@@ -127,13 +127,11 @@ class FileData {
     try {
       await this.parse();
 
-      const { title, author, file, cover } = this.parsed;
+      const { file } = this.parsed;
 
-      await createBook({ file, author, title, cover }, ev =>
-        this.setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100),
-      );
+      await createBook({ file }, ev => this.setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100));
 
-      await this.parsed.destroy();
+      await this.destroy();
 
       this.setProgress(DONE);
     } catch (e) {
@@ -146,10 +144,16 @@ class FileData {
     if (this.parsed) return;
     this.setProgress(PARSE);
 
-    const data = await parseBook(this.path, this.title);
-    this.parsed = data;
+    try {
+      this.parsed = await EbookParser.getMetadata(this.path);
+      this.path = this.parsed.file.filepath;
+    } catch (e) {
+      this.error = e?.responseText || e?.toString() || 'Parse error';
+      this.setProgress(IDLE);
+      throw e;
+    }
 
-    this.set('title', data.title);
+    this.title = this.parsed.title;
     this.setProgress(IDLE);
   };
 
@@ -168,10 +172,10 @@ class FileData {
 
   private destroy() {
     if (this.parsed) {
-      this.parsed.destroy();
-    } else {
-      RNFS.unlink(this.path);
+      return RNFS.unlink(this.parsed.file.filepath);
     }
+
+    return RNFS.unlink(this.path);
   }
 }
 
@@ -216,7 +220,7 @@ export function UploadScreen({ navigation }) {
   );
 }
 
-const FileLine = memo(({ state, file, title, progress, error, isParsed }) => {
+const FileLine = memo(({ state, file, title, progress, error, isParsed }: any) => {
   return (
     <View style={{ marginBottom: 20, flexDirection: 'row' }}>
       <View style={{ flex: 1 }}>

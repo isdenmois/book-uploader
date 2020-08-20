@@ -1,32 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { transliterate as tr, slugify } from 'transliteration';
+import React, { useState } from 'react';
+import { slugify } from 'transliteration';
 import RNFS from 'react-native-fs';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Alert, Text, View, Button, ActivityIndicator, FlatList, CheckBox, Switch, ToastAndroid } from 'react-native';
+import { Alert, Text, View, ActivityIndicator, FlatList, ToastAndroid } from 'react-native';
 import { searchHandler } from 'api';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { fileUrl } from 'api';
-const Tab = createBottomTabNavigator();
 
-const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/;
-
-function useImportedFiles(navigation) {
-  useEffect(() => {
-    RNFS.readDir(RNFS.DocumentDirectoryPath).then(result => {
-      const books = result.filter(f => f.name.match(FILE_NAME));
-
-      if (books.length) {
-        navigation.push('upload', { books });
-      }
-    });
-
-    RNFS.readDir(RNFS.TemporaryDirectoryPath).then(result => console.log(result));
-  }, []);
-}
-
-export function SearchScreen({ navigation }) {
-  // useImportedFiles(navigation);
-
+export function SearchScreen() {
   const [type, setType] = useState('zlib');
   const [files, setFiles] = useState(null);
   const [l, setL] = useState(false);

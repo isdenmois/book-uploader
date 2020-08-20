@@ -5,9 +5,6 @@ const BOOKS_ENDPOINT = '/upload';
 
 interface CreateParams {
   file: any;
-  author: string;
-  title: string;
-  cover?: any;
 }
 
 type ProgressCallback = (ev: UploadProgressCallbackResult) => void;
