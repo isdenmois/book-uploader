@@ -1,13 +1,14 @@
 import React, { createContext, useState, useCallback, memo, useContext, useEffect, useRef } from 'react';
-import { Alert, Text, View, StyleSheet, ActivityIndicator, Linking } from 'react-native';
+import { Alert, Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { EbookParser, EbookMetadata } from 'services/book-parser';
-import { ParseIcon, RemoveIcon, QrIcon } from 'components/icons';
+import { ParseIcon, RemoveIcon, QrIcon, ShareIcon } from 'components/icons';
 import { AddressContext } from 'utils/address';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as colors from 'theme/colors';
 import { useFocusEffect } from '@react-navigation/native';
+import FileOpener from 'react-native-file-opener';
 
 export const UploadContext = createContext(null);
 
@@ -157,6 +158,12 @@ class FileData {
     this.setProgress(IDLE);
   };
 
+  share = async () => {
+    const mime = this.path.endsWith('epub') ? 'application/epub' : 'application/fb2';
+
+    FileOpener.open(this.path, mime);
+  };
+
   private set<T extends 'title' | 'error' | 'progress'>(key: T, value: this[T]) {
     if (this[key] !== value) {
       this[key] = value;
@@ -241,6 +248,7 @@ const FileLine = memo(({ state, file, title, progress, error, isParsed }: any) =
 
       {state === 'PRE-UPLOAD' && (
         <>
+          <ShareIcon style={{ paddingLeft: 10 }} size={25} onPress={file.share} />
           {!isParsed && progress !== PARSE && <ParseIcon style={{ paddingLeft: 10 }} size={25} onPress={file.parse} />}
 
           {!isParsed && progress === PARSE && (
