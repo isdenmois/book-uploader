@@ -95,6 +95,8 @@ function Header({ search, disabled }) {
 }
 
 function BookItem({ item, type }) {
+  const [progress, setProgress] = useState(0);
+
   const onPress = async () => {
     const URL = await fileUrl(type, item.link);
     const title = slugify(item.title).slice(0, 100);
@@ -105,6 +107,7 @@ function BookItem({ item, type }) {
       console.warn(URL);
 
       try {
+        setProgress(0.01);
         await RNFS.downloadFile({
           fromUrl: URL,
           toFile: `${RNFS.DocumentDirectoryPath}/${fileName}`,
@@ -112,7 +115,10 @@ function BookItem({ item, type }) {
             'user-agent':
               'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36',
           },
+          progress: ({ contentLength, bytesWritten }) => setProgress(Math.round((bytesWritten / contentLength) * 100)),
         }).promise;
+
+        setProgress(0);
         ToastAndroid.show('Файл загружен!', ToastAndroid.SHORT);
       } catch (e) {
         console.error(e?.message || e);
@@ -127,6 +133,22 @@ function BookItem({ item, type }) {
       <Text>{item.authors}</Text>
       {!!item.lang && <Text>Lang: {item.lang}</Text>}
       {!!item.translation && <Text>Translator: {item.translation}</Text>}
+      {progress > 0 && (
+        <View
+          style={{
+            height: 5,
+            position: 'relative',
+            backgroundColor: '#ddd',
+            borderRadius: 2,
+            marginTop: 4,
+            overflow: 'hidden',
+          }}
+        >
+          <View
+            style={{ width: `${progress}%`, backgroundColor: '#f00', position: 'absolute', left: 0, top: 0, bottom: 0 }}
+          />
+        </View>
+      )}
     </TouchableOpacity>
   );
 }
