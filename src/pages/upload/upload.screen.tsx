@@ -36,7 +36,7 @@ function confirm({ title, message }, onSuccess) {
 
 const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/;
 
-function useUploader(navigation) {
+function useUploader() {
   const filesRef = useRef<any>(null);
   const [files, setFiles] = useState<FileData[]>([]);
   const [state, setState] = useState('PRE-UPLOAD');
@@ -64,7 +64,6 @@ function useUploader(navigation) {
   const reset = useCallback(() => {
     setState('PRE-UPLOAD');
     setFiles([]);
-    navigation.goBack();
   }, []);
 
   useFocusEffect(
@@ -187,7 +186,7 @@ class FileData {
 }
 
 export function UploadScreen({ navigation }) {
-  const { files, state, startUpload, reset } = useUploader(navigation);
+  const { files, state, startUpload, reset } = useUploader();
   const address = useAddress();
   const title = useTitle(state, address);
   const openQrScanner = useCallback(() => navigation.push('scan', { scan: true }), []);
