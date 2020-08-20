@@ -1,7 +1,7 @@
 const http = require('follow-redirects/http');
 const querystring = require('querystring');
 
-const isSocks = process.env.PROXY === 'socks';
+const isSocks = process.env.PROXY && process.env.PROXY.slice(0, 5) === 'socks';
 const proxyAgent = isSocks ? require('socks-proxy-agent') : require('http-proxy-agent');
 
 module.exports = async (oreq, ores) => {
@@ -10,11 +10,7 @@ module.exports = async (oreq, ores) => {
 
   const agent = new proxyAgent(
     isSocks
-      ? {
-          ipaddress: '127.0.0.1',
-          port: 9050,
-          type: 5,
-        }
+      ? process.env.PROXY
       : {
           protocol: 'https',
           host: proxy || process.env.HTTP_PROXY,
