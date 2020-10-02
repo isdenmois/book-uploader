@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  export let disabled;
 
   const dispatch = createEventDispatcher();
 
@@ -16,4 +17,6 @@
   }
 </style>
 
-<form on:submit|preventDefault={handleSubmit}><input name="query" autofocus placeholder="Search books" /></form>
+<form on:submit|preventDefault={handleSubmit}>
+  <input name="query" autofocus placeholder="Search books" {disabled} />
+</form>

@@ -55,42 +55,44 @@ function parseSearch(body, selectors) {
   const $ = s => Array.prototype.slice.apply(doc.querySelectorAll(s));
   const translation = selectors.translation && new RegExp(selectors.translation.regexp, 'i');
 
-  const books = $(selectors.entry).map(entry => {
-    if (!entry.querySelector(selectors.link)) return;
+  const books = $(selectors.entry)
+    .map(entry => {
+      if (!entry.querySelector(selectors.link)) return;
 
-    const data = {
-      title: entry.querySelector(selectors.title).innerText,
-      link: entry.querySelector(selectors.link).attributes.href.value,
-      ext: selectors.ext,
-    };
+      const data = {
+        title: entry.querySelector(selectors.title).innerText,
+        link: entry.querySelector(selectors.link).attributes.href.value,
+        ext: selectors.ext,
+      };
 
-    const authors = entry.querySelectorAll(selectors.author);
+      const authors = entry.querySelectorAll(selectors.author);
 
-    if (authors.length > 1) {
-      data.authors = Array.prototype.map.apply(authors, a => a.innerText).join('; ');
-    } else if (authors.length === 1) {
-      data.authors = authors[0].innerText;
-    } else {
-      data.authors = [];
-    }
+      if (authors.length > 1) {
+        data.authors = Array.prototype.map.call(authors, a => a.innerText).join('; ');
+      } else if (authors.length === 1) {
+        data.authors = authors[0].innerText;
+      } else {
+        data.authors = [];
+      }
 
-    if (translation) {
-      data.translation = entry.querySelector(selectors.translation.selector).innerText?.match(translation)?.[1];
-    }
-    const lang = entry.querySelector(selectors.lang.selector);
+      if (translation && entry.querySelector(selectors.translation.selector).innerText) {
+        data.translation = entry.querySelector(selectors.translation.selector).innerText.match(translation)?.[1];
+      }
+      const lang = entry.querySelector(selectors.lang.selector);
 
-    if (lang.innerText) {
-      data.lang = lang.innerText.match(selectors.lang.regexp)?.[1];
-    }
+      if (lang.innerText) {
+        data.lang = lang.innerText.match(selectors.lang.regexp)?.[1];
+      }
 
-    const size = entry.querySelector(selectors.size.selector);
+      const size = entry.querySelector(selectors.size.selector);
 
-    if (size.innerText) {
-      data.size = size.innerText.match(selectors.size.regexp)?.[1];
-    }
+      if (size.innerText) {
+        data.size = size.innerText.match(selectors.size.regexp)?.[1];
+      }
 
-    return data;
-  });
+      return data;
+    })
+    .filter(i => i);
 
   return books;
 }
