@@ -9,6 +9,7 @@ const port = 3000;
 app.use(cors());
 
 app.get('/api/rewrite', require('./api/rewrite'));
+app.post('/api/rewrite', require('./api/rewrite'));
 app.use(serveStatic('../web/public', { index: ['index.html'] }));
 
 app.listen(port, () => {

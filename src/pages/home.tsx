@@ -4,6 +4,7 @@ import { ActivityIndicator, Linking } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SearchScreen } from './search';
 import { UploadScreen } from './upload/upload.screen';
+import { LoginScreen } from './login';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,7 @@ export function HomeScreen({ navigation }) {
     <Tab.Navigator initialRouteName={screen}>
       <Tab.Screen name='search' component={SearchScreen} initialParams={{ initQuery }} />
       <Tab.Screen name='upload' component={UploadScreen} options={{ header: () => null }} />
+      <Tab.Screen name='profile' component={LoginScreen} />
     </Tab.Navigator>
   );
 }

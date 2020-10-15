@@ -109,7 +109,7 @@ function BookItem({ item, type }) {
   const [progress, setProgress] = useState(0);
 
   const onPress = async () => {
-    const URL = await fileUrl(type, item.link);
+    const { url, headers } = await fileUrl(type, item.link);
     const title = slugify(item.title).slice(0, 100);
     const fileName = `${title}.${item.ext}`;
 
@@ -119,9 +119,10 @@ function BookItem({ item, type }) {
       try {
         setProgress(0.01);
         await RNFS.downloadFile({
-          fromUrl: URL,
+          fromUrl: url,
           toFile: `${RNFS.DocumentDirectoryPath}/${fileName}`,
           headers: {
+            ...headers,
             'user-agent':
               'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36',
           },

@@ -1,5 +1,6 @@
 import cheerio from 'react-native-cheerio';
 import { FLIBUSTA_HOST, ZLIB_HOST, USER_AGENT } from '@env';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const flibusta = {
   host: FLIBUSTA_HOST,
@@ -34,12 +35,13 @@ const flibusta = {
 };
 
 const zlib = {
-  host: ZLIB_HOST,
+  host: FLIBUSTA_HOST,
   search: {
-    path: '/s/{{name}}/',
-    params: { e: 1, language: '', extension: 'epub' },
+    path: '/api/rewrite',
+    params: { host: ZLIB_HOST, path: '/s/{{name}}/', e: 1, language: '', extension: 'epub' },
     query: {},
   },
+  includeCookies: 'zlibauth',
   selectors: {
     entry: '#searchResultBox .resItemBox',
     link: 'h3[itemprop="name"] a',
@@ -58,14 +60,28 @@ const zlib = {
 };
 
 function flibustaFileUrl(link) {
-  return `${FLIBUSTA_HOST}/api/rewrite?path=${encodeURIComponent(link)}`;
+  return { url: `${FLIBUSTA_HOST}/api/rewrite?path=${encodeURIComponent(link)}`, headers: {} };
 }
 
 async function zlibFileUrl(link) {
-  const body = await fetch(`${ZLIB_HOST}${link}`, { headers }).then(r => r.text());
+  console.log('link', link);
+  const h = { ...headers };
+  h.Cookie = await AsyncStorage.getItem(zlib.includeCookies);
+
+  const body = await fetch(`${FLIBUSTA_HOST}/api/rewrite?host=${ZLIB_HOST}&path=${link}`, { headers: h }).then(r =>
+    r.text(),
+  );
+  console.log('body', body);
   const $ = cheerio.load(body);
 
-  return ZLIB_HOST + $(`a.addDownloadedBook`).attr('href');
+  const url = `${FLIBUSTA_HOST}/api/rewrite?host=${ZLIB_HOST}&path=${$(`a.addDownloadedBook`).attr(
+    'href',
+  )}&nofollow=true`;
+  h.referer = `http://${ZLIB_HOST}${link}`;
+  h.origin = `http://${ZLIB_HOST}${link}`;
+
+  console.log('url', url);
+  return { url, headers: h };
 }
 
 export function fileUrl(type, link) {
@@ -96,6 +112,19 @@ function querystring(query = {}) {
     .join('&');
 
   return qs && '?' + qs;
+}
+
+function toUrlForm(data) {
+  const formBody = [];
+
+  for (let property in data) {
+    const encodedKey = encodeURIComponent(property);
+    const encodedValue = encodeURIComponent(data[property]);
+
+    formBody.push(encodedKey + '=' + encodedValue);
+  }
+
+  return formBody.join('&');
 }
 
 function parseSearch(body, selectors) {
@@ -162,9 +191,14 @@ export async function searchHandler(type, name) {
   if (search.query.type === 'query') {
     params[search.query.name] = name;
   } else {
-    url = url.replace('{{name}}', name);
+    params.path = params.path.replace('{{name}}', name);
   }
 
+  if (config.includeCookies) {
+    headers.Cookie = await AsyncStorage.getItem(config.includeCookies);
+  }
+
+  console.log(headers);
   url = url + querystring(params);
 
   try {
@@ -175,4 +209,28 @@ export async function searchHandler(type, name) {
   } catch (e) {
     return { error: (e && e.message) || e };
   }
+}
+
+export function sendLogin(email, password) {
+  const data = { email, password, action: 'login' };
+  const body = toUrlForm(data);
+
+  const params = { host: ZLIB_HOST, path: '/rpc.php' };
+  const url = FLIBUSTA_HOST + '/api/rewrite' + querystring(params);
+  console.log('url', url);
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body,
+  })
+    .then(response => response.text())
+    .then(t => t.match(/onion\/\?(.*?)"/)?.[1] || '')
+    .then(cookie => cookie.replace('&', '; '))
+    .catch(err => {
+      console.log(err);
+    });
 }
