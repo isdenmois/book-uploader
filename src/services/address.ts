@@ -10,14 +10,14 @@ export function useCreateAddressContext() {
     setAddress(a || '');
 
     AsyncStorage.setItem('address', a);
-    BASE.URL = `http://${a}:8083`;
+    BASE.URL = a ? `http://${a}:8083` : null;
   }, []);
   const context = useMemo(() => ({ address, setAddress: changeAddress }), [address]);
 
   useEffect(() => {
     AsyncStorage.getItem('address').then(a => {
       setAddress(a || '');
-      BASE.URL = `http://${a}:8083`;
+      BASE.URL = a ? `http://${a}:8083` : null;
     });
   }, []);
 

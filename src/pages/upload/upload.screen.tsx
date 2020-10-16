@@ -4,7 +4,7 @@ import RNFS, { ReadDirItem } from 'react-native-fs';
 import { createBook } from 'services/book';
 import { EbookParser, EbookMetadata } from 'services/book-parser';
 import { ParseIcon, RemoveIcon, QrIcon, ShareIcon } from 'components/icons';
-import { AddressContext } from 'utils/address';
+import { AddressContext } from 'services/address';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as colors from 'theme/colors';
 import { useFocusEffect } from '@react-navigation/native';

@@ -26,7 +26,7 @@ jest.mock('@react-navigation/native', () => ({
 jest.mock('@react-native-community/async-storage', () => ({}));
 jest.mock('react-native-fs', () => ({}));
 
-import * as addressContext from 'utils/address';
+import * as addressContext from 'services/address';
 import App from './app';
 
 describe('App', () => {

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { View, Button, StyleSheet, ViewStyle } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { AddressContext } from 'utils/address';
+import { AddressContext } from 'services/address';
 
 function useAddress(navigation) {
   const { address, setAddress } = useContext(AddressContext);

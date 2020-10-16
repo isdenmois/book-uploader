@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ScanScreen } from 'pages/scan';
 import { HomeScreen } from 'pages/home';
-import { AddressContext, useCreateAddressContext } from 'utils/address';
+import { AddressContext, useCreateAddressContext } from 'services/address';
 
 const Stack = createStackNavigator();
 

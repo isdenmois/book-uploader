@@ -18,7 +18,7 @@ const defaults = <RequestParams>{
   },
 };
 
-export const BASE = { URL: '' };
+export const BASE: { URL: string } = { URL: null };
 
 export function request(url: string, params?: RequestParams, onprogress?: (ev: ProgressEvent) => any) {
   url = `${BASE.URL}${url}`;
