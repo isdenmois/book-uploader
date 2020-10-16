@@ -1,0 +1,1 @@
+exports.useNavigation = jest.fn();
