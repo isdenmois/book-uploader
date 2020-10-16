@@ -1,8 +1,14 @@
-import * as React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React from 'react';
+import { TouchableOpacity, ViewStyle } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-function SvgComponent({ style, size, onPress }) {
+type Props = {
+  size: number;
+  style?: ViewStyle;
+  onPress?: () => void;
+};
+
+function SvgComponent({ style, size, onPress }: Props) {
   return (
     <TouchableOpacity style={style} onPress={onPress}>
       <Svg viewBox='0 0 448 512' width={size} height={size}>
