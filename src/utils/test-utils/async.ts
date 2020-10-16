@@ -52,10 +52,10 @@ export async function renderHookAsync<P, R>(
   return result;
 }
 
-export function mock<T extends {}, M extends FunctionPropertyNames<Required<T>>>(object: T, method: M) {
+export function mock<T extends {}, M extends keyof T>(object: T, method: M) {
   if (method in object) {
-    return jest.spyOn(object, method);
+    return jest.spyOn(object, method as any);
   }
 
-  return ((object[method] as any) = () => jest.fn());
+  return ((object[method] as any) = jest.fn());
 }

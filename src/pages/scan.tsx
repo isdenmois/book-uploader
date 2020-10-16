@@ -1,57 +1,35 @@
-import React, { useState, useCallback, useContext, useEffect } from 'react';
-import { View, Button, StyleSheet, ViewStyle } from 'react-native';
+import React, { useCallback, useContext } from 'react';
+import { ParamListBase } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { AddressContext } from 'services/address';
 
-function useAddress(navigation) {
-  const { address, setAddress } = useContext(AddressContext);
+type Props = {
+  navigation: StackNavigationProp<ParamListBase>;
+};
 
-  useEffect(() => {
-    navigation.setOptions({ title: address });
-  }, [address]);
+export function ScanScreen({ navigation }: Props) {
+  const { setAddress } = useContext(AddressContext);
 
-  return { address, setAddress };
-}
-
-function useScan(navigation, initialScan) {
-  const { address, setAddress } = useAddress(navigation);
-  const [scan, setScan] = useState(initialScan);
-
-  const openScan = useCallback(() => setScan(true), []);
   const onScan = useCallback(({ data }) => {
     if (!data) return;
 
-    setScan(false);
     setAddress(data.replace('http://', '').replace(/:\d+$/, ''));
+    navigation.goBack();
   }, []);
 
-  return { address, scan, openScan, onScan };
-}
-
-export function ScanScreen({ navigation, route: { params } }) {
-  const { address, scan, openScan, onScan } = useScan(navigation, params?.scan);
-  const onContinue = useCallback(() => (params?.scan ? navigation.goBack() : navigation.push('home')), []);
-
-  if (scan) {
-    return (
-      <View style={s.cameraRow}>
-        <RNCamera
-          style={s.camera}
-          type={RNCamera.Constants.Type.back}
-          captureAudio={false}
-          onBarCodeRead={onScan}
-          onFacesDetected={null}
-          onTextRecognized={null}
-        />
-      </View>
-    );
-  }
-
   return (
-    <View style={s.container}>
-      <Button title='Сканировать' onPress={openScan} />
-      <View style={s.spacer} />
-      {!!address && <Button title='Продолжить' onPress={onContinue} />}
+    <View style={s.cameraRow}>
+      <RNCamera
+        style={s.camera}
+        type={RNCamera.Constants.Type.back}
+        captureAudio={false}
+        onBarCodeRead={onScan}
+        onFacesDetected={null}
+        onTextRecognized={null}
+        testID='scan-camera'
+      />
     </View>
   );
 }

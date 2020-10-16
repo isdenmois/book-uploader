@@ -18,9 +18,9 @@ const App = () => {
   return (
     <AddressContext.Provider value={context}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={context.address ? 'home' : 'scan'}>
-          <Stack.Screen name='scan' component={ScanScreen} options={{ title: '' }} />
+        <Stack.Navigator initialRouteName='home'>
           <Stack.Screen name='home' component={HomeScreen} options={{ header: () => null }} />
+          <Stack.Screen name='scan' component={ScanScreen} options={{ title: '' }} />
         </Stack.Navigator>
       </NavigationContainer>
     </AddressContext.Provider>
