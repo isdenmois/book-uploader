@@ -1,10 +1,6 @@
-const React = require('react');
+const { mockComponent } = require('utils/test-utils/component');
 
 exports.createBottomTabNavigator = () => ({
-  Screen(props) {
-    return React.createElement('Screen', props);
-  },
-  Navigator({ children, ...props }) {
-    return React.createElement('Navigator', props, children);
-  },
+  Screen: mockComponent('Screen'),
+  Navigator: mockComponent('Navigator'),
 });
