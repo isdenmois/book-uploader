@@ -1,5 +1,5 @@
 import RNFS, { UploadProgressCallbackResult } from 'react-native-fs';
-import { BASE, request } from 'utils/request';
+import { BASE } from 'utils/request';
 
 const BOOKS_ENDPOINT = '/upload';
 
@@ -30,10 +30,4 @@ export async function createBook({ file }: CreateParams, progress?: ProgressCall
   };
 
   return RNFS.uploadFiles({ toUrl, method: 'POST', files, fields, headers, progress }).promise;
-}
-
-export async function deleteBook(id: string) {
-  const requestURL = `${BOOKS_ENDPOINT}/${id}`;
-  const options = { method: 'DELETE' };
-  await request(requestURL, options);
 }

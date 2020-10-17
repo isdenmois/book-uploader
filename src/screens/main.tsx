@@ -10,7 +10,7 @@ import { LoginScreen } from './login';
 
 const Tab = createBottomTabNavigator();
 
-export function HomeScreen() {
+export function MainScreen() {
   const screen = useInitialScreen();
   const initQuery = useInitialQuery();
 

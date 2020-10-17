@@ -13,13 +13,13 @@ import RNFS from 'react-native-fs';
 import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { HomeScreen, useInitialQuery, useInitialScreen } from '../home';
+import { MainScreen, useInitialQuery, useInitialScreen } from '../main';
 
 describe('Home screen', () => {
   it('should render spinner while loading deep link and files', async () => {
     const [resolveReadDir] = mockPromise(RNFS, 'readDir');
     const [resolveInitialLinking] = mockPromise(Linking, 'getInitialURL');
-    const { toJSON } = render(<HomeScreen />);
+    const { toJSON } = render(<MainScreen />);
 
     expect(toJSON().type).toBe('ActivityIndicator');
 
@@ -40,7 +40,7 @@ describe('Home screen', () => {
     mockPromiseValue(RNFS, 'readDir', []);
     mockPromiseValue(Linking, 'getInitialURL', null);
 
-    const { toJSON } = await createAsync(<HomeScreen />);
+    const { toJSON } = await createAsync(<MainScreen />);
 
     const data: any = toJSON();
 
@@ -52,7 +52,7 @@ describe('Home screen', () => {
     mockPromiseValue(RNFS, 'readDir', [{ name: 'test.epub' }]);
     mockPromiseValue(Linking, 'getInitialURL', null);
 
-    const { toJSON } = await createAsync(<HomeScreen />);
+    const { toJSON } = await createAsync(<MainScreen />);
 
     const data: any = toJSON();
 
@@ -64,7 +64,7 @@ describe('Home screen', () => {
     mockPromiseValue(RNFS, 'readDir', [{ name: 'test.epub' }]);
     mockPromiseValue(Linking, 'getInitialURL', 'booksearch://lord of the rings');
 
-    const { toJSON } = await createAsync(<HomeScreen />);
+    const { toJSON } = await createAsync(<MainScreen />);
 
     const data: any = toJSON();
 
