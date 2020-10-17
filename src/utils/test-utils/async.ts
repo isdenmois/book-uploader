@@ -9,16 +9,17 @@ type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends (...args: any[]) 
 export const mockPromise = <T extends {}, M extends FunctionPropertyNames<Required<T>>>(object: T, method: M) => {
   let resolvePromise;
   const promise: any = new Promise(resolve => (resolvePromise = resolve));
+  let spy;
 
   if (method in object) {
-    jest.spyOn(object, method).mockReturnValue(promise);
+    spy = jest.spyOn(object, method).mockReturnValue(promise);
   } else {
-    (object[method] as any) = () => promise;
+    spy = (object[method] as any) = jest.fn().mockReturnValue(promise);
   }
 
   const resolve = value => act(async () => resolvePromise(value));
 
-  return [resolve] as const;
+  return [resolve, , spy] as const;
 };
 
 export const mockPromiseValue = (obj, prop, value) => {

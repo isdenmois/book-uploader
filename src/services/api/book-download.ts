@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 import { FLIBUSTA_HOST, ZLIB_HOST, USER_AGENT } from '@env';
 import AsyncStorage from '@react-native-community/async-storage';
 import { querystring } from './utils';
-import { torRequest } from './tor-request';
+import * as tor from './tor-request';
 import { ZLIB_COOKIE } from './login';
 
 export async function downloadFile(file, fileName, setProgress) {
@@ -34,7 +34,7 @@ function flibustaFileUrl(link) {
 
 async function zlibFileUrl(link) {
   const headers = { Cookie: await AsyncStorage.getItem(ZLIB_COOKIE) };
-  const $ = cheerio.load(await torRequest(ZLIB_HOST, link, { headers }));
+  const $ = cheerio.load(await tor.request(ZLIB_HOST, link, { headers }));
   const path = $('a.addDownloadedBook').attr('href');
   const query = { nofollow: true };
 

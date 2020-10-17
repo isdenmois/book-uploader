@@ -15,6 +15,7 @@ export function Header({ initQuery, onSearch, disabled }: Props) {
   return (
     <View style={s.container}>
       <TextInput
+        testID='search-header-input'
         style={s.input}
         editable={!disabled}
         value={query}

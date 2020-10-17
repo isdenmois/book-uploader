@@ -5,7 +5,7 @@ export function useAutofocus(deps: any[]) {
   const inputRef = useRef<TextInput>();
 
   useEffect(() => {
-    setTimeout(() => inputRef.current.focus(), 100);
+    setTimeout(() => inputRef.current?.focus(), 100);
   }, deps);
 
   return inputRef;

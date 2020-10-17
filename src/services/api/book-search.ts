@@ -1,7 +1,7 @@
 import cheerio from 'react-native-cheerio';
 import { FLIBUSTA_HOST, ZLIB_HOST } from '@env';
 import AsyncStorage from '@react-native-community/async-storage';
-import { torRequest } from './tor-request';
+import * as tor from './tor-request';
 import { ZLIB_COOKIE } from './login';
 
 interface SearchConfig {
@@ -72,7 +72,7 @@ export async function bookSearch(type: PROVIDER_TYPE, name: string) {
   }
 
   try {
-    const body = await torRequest<string>(config.host, path, { query, headers });
+    const body = await tor.request<string>(config.host, path, { query, headers });
 
     return { data: parseSearch(body, type, config.selectors) };
   } catch (e) {

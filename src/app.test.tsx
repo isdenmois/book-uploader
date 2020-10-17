@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import React from 'react';
 
-import 'screens/__tests__/node_modules/react-native-gesture-handler/jestSetup';
+import 'react-native-gesture-handler/jestSetup';
 jest.mock('@react-navigation/stack', () => ({
   createStackNavigator: () => ({
     Navigator({ children, ...props }) {

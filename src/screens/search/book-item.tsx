@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { slugify } from 'transliteration';
-import { Alert, Text, View, ToastAndroid, StyleSheet, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { downloadFile } from 'services/api/book-download';
+import { Alert, Text, View, TouchableOpacity, ToastAndroid, StyleSheet, ViewStyle } from 'react-native';
+import * as api from 'services/api/book-download';
 
 export function BookItem({ item }) {
   const [progress, onPress] = useDownload(item);
 
   return (
-    <TouchableOpacity style={s.container} onPress={onPress}>
+    <TouchableOpacity style={s.container} onPress={onPress} testID='book-item'>
       <Text>{item.title}</Text>
       <Text>{item.authors}</Text>
       {!!item.lang && <Text>Lang: {item.lang}</Text>}
@@ -43,13 +42,15 @@ export function useDownload(file) {
     ToastAndroid.show('Start downloading', ToastAndroid.SHORT);
 
     try {
-      await downloadFile(file, fileName, setProgress);
+      await api.downloadFile(file, fileName, setProgress);
 
       ToastAndroid.show(`File ${fileName} has downloaded!`, ToastAndroid.SHORT);
     } catch (e) {
       console.error(e?.message || e);
       ToastAndroid.show(`Error: ${e?.message || e}`, ToastAndroid.SHORT);
     }
+
+    setProgress(0);
   });
 
   return [progress, onPress] as const;

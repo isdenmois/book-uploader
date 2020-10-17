@@ -10,7 +10,7 @@ interface RequestParams {
   headers?: Record<string, string>;
 }
 
-export function torRequest<T>(host: string, path: string, params: RequestParams = {}): Promise<T> {
+export function request<T>(host: string, path: string, params: RequestParams = {}): Promise<T> {
   params.headers = Object.assign({}, params.headers, {
     'User-Agent': USER_AGENT,
   });

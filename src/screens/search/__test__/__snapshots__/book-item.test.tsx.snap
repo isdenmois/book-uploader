@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BookItem 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "marginBottom": 10,
+      "opacity": 1,
+    }
+  }
+  testID="book-item"
+>
+  <Text>
+    super title
+  </Text>
+  <Text />
+  <Text>
+    Lang: 
+    ru
+  </Text>
+  <Text>
+    Translator: 
+    someone
+  </Text>
+  <Text>
+    Size: 
+    100500
+  </Text>
+</View>
+`;
+
+exports[`BookItem 2`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "marginBottom": 10,
+      "opacity": 1,
+    }
+  }
+  testID="book-item"
+>
+  <Text>
+    super title
+  </Text>
+  <Text />
+  <Text>
+    Lang: 
+    ru
+  </Text>
+  <Text>
+    Translator: 
+    someone
+  </Text>
+  <Text>
+    Size: 
+    100500
+  </Text>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#ddd",
+        "borderRadius": 2,
+        "height": 5,
+        "marginTop": 4,
+        "overflow": "hidden",
+        "position": "relative",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "#f00",
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "top": 0,
+          "width": "50%",
+        }
+      }
+    />
+  </View>
+</View>
+`;

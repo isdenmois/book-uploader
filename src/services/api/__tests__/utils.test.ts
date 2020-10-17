@@ -1,4 +1,4 @@
-import { querystring, queryParams } from '../utils';
+import { querystring } from '../utils';
 
 test('querystring', () => {
   expect(querystring()).toBe('');
