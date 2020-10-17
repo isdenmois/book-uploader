@@ -1,3 +1,9 @@
+export function querystring(query: Record<string, any> = {}): string {
+  const qs = queryParams(query);
+
+  return qs && '?' + qs;
+}
+
 export function queryParams(data: Record<string, any> = {}) {
   return Object.keys(data)
     .map(key => {

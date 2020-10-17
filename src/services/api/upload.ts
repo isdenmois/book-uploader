@@ -9,7 +9,7 @@ interface CreateParams {
 
 type ProgressCallback = (ev: UploadProgressCallbackResult) => void;
 
-export async function createBook({ file }: CreateParams, progress?: ProgressCallback) {
+export async function uploadBook({ file }: CreateParams, progress?: ProgressCallback) {
   const files = [{ name: 'file', ...file }];
   const toUrl = `${BASE.URL}${BOOKS_ENDPOINT}`;
   const md5 = await RNFS.hash(file.filepath, 'md5');

@@ -1,5 +1,4 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import { sendLogin } from 'api';
+import { sendLogin, setCookie } from 'services/api';
 import React, { useState } from 'react';
 import { Alert, Button, TextInput, ToastAndroid, View } from 'react-native';
 
@@ -14,9 +13,8 @@ export function LoginScreen() {
       const cookie = await sendLogin(email, password);
 
       if (!cookie) throw 'Unable to login with that data';
-      await AsyncStorage.setItem('zlibauth', cookie);
 
-      console.log(cookie);
+      await setCookie(cookie);
 
       setEmail('');
       setPassword('');

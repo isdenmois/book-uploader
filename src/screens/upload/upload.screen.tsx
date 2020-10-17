@@ -1,7 +1,7 @@
 import React, { createContext, useState, useCallback, memo, useContext, useEffect, useRef } from 'react';
 import { Alert, Text, View, StyleSheet, ActivityIndicator } from 'react-native';
 import RNFS, { ReadDirItem } from 'react-native-fs';
-import { createBook } from 'services/book';
+import { uploadBook } from 'services/api/upload';
 import { EbookParser, EbookMetadata } from 'services/book-parser';
 import { ParseIcon, RemoveIcon, QrIcon, ShareIcon } from 'components/icons';
 import { AddressContext } from 'services/address';
@@ -129,7 +129,7 @@ class FileData {
 
       const { file } = this.parsed;
 
-      await createBook({ file }, ev => this.setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100));
+      await uploadBook({ file }, ev => this.setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100));
 
       await this.destroy();
 
