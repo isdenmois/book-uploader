@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextStyle, ViewStyle, StyleSheet, TextInput } from 'react-native';
-import { useAutofocus } from 'utils/autofocus';
+import { TextStyle, ViewStyle, StyleSheet } from 'react-native';
+import * as colors from 'theme/colors';
+import { Input } from 'components/input';
+import { SearchIcon } from 'components/icons';
 
 type Props = {
   initQuery?: string;
@@ -10,23 +12,17 @@ type Props = {
 
 export function Header({ initQuery, onSearch, disabled }: Props) {
   const [query, setQuery, toSearch] = useSearch(onSearch, initQuery);
-  const inputRef = useAutofocus([initQuery]);
 
   return (
-    <View style={s.container}>
-      <TextInput
-        testID='search-header-input'
-        style={s.input}
-        editable={!disabled}
-        value={query}
-        onChangeText={setQuery}
-        onSubmitEditing={toSearch}
-        returnKeyType='search'
-        placeholder='Search books'
-        ref={inputRef}
-        autoFocus
-      />
-    </View>
+    <Input
+      value={query}
+      onChange={setQuery}
+      onSubmit={toSearch}
+      disabled={disabled}
+      initValue={initQuery}
+      icon={<SearchIcon size={24} color={colors.Search} />}
+      autoFocus
+    />
   );
 }
 
@@ -48,12 +44,16 @@ export function useSearch(onSearch, initQuery) {
 const s = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderBottomColor: '#000',
-    borderBottomWidth: 1,
+    margin: 15,
+    marginHorizontal: 15,
+    backgroundColor: colors.Input,
+    borderRadius: 10,
+    elevation: 4,
   } as ViewStyle,
   input: {
     flex: 1,
     fontSize: 14,
-    color: '#000',
+    paddingVertical: 6,
+    color: colors.SearchText,
   } as TextStyle,
 });

@@ -1,13 +1,14 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-import { Header, useSearch } from '../header';
 import { act, renderHook } from '@testing-library/react-hooks';
+import 'react-native-gesture-handler/jestSetup';
+import { Header, useSearch } from '../header';
 
 test('Search header ', () => {
   const onSearch = jest.fn();
   const { getByTestId } = render(<Header initQuery='  test ' onSearch={onSearch} />);
 
-  fireEvent(getByTestId('search-header-input'), 'onSubmitEditing');
+  fireEvent(getByTestId('input'), 'onSubmitEditing');
 
   expect(onSearch).toHaveBeenCalledWith('test');
 });

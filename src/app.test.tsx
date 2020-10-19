@@ -38,12 +38,12 @@ describe('App', () => {
     expect(toJSON().type).toBe('ActivityIndicator');
   });
 
-  it('should render home screen when address is not defined', () => {
+  it('should render main screen when address is not defined', () => {
     jest.spyOn(addressContext, 'useCreateAddressContext').mockReturnValue({ address: '' } as any);
 
     const data: any = render(<App />).toJSON();
 
     expect(data.type).toBe('NavigationContainer');
-    expect(data.children[0].props.initialRouteName).toBe('home');
+    expect(data.children[0].props.initialRouteName).toBe('main');
   });
 });

@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, StyleSheet, ViewStyle, TextStyle, ActivityIndicator } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  TouchableOpacity,
+  Text,
+  View,
+  FlatList,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  ActivityIndicator,
+} from 'react-native';
+import * as colors from 'theme/colors';
 import { bookSearch, PROVIDER_TYPE } from 'services/api/book-search';
 import { Header } from './header';
 import { BookItem } from './book-item';
@@ -82,6 +91,7 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
+    backgroundColor: colors.Background,
   } as ViewStyle,
   listContent: {
     paddingHorizontal: 10,
