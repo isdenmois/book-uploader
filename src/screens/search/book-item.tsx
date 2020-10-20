@@ -1,34 +1,50 @@
 import React, { useState } from 'react';
 import { slugify } from 'transliteration';
 import { Alert, Text, View, TouchableOpacity, ToastAndroid, StyleSheet, ViewStyle } from 'react-native';
+import * as colors from 'theme/colors';
 import * as api from 'services/api/book-download';
+import { FileIcon } from 'components/icons';
 
 export function BookItem({ item }) {
   const [progress, onPress] = useDownload(item);
+  const other = [item.size, item.lang, item.translation].filter(p => p).join(', ');
 
   return (
     <TouchableOpacity style={s.container} onPress={onPress} testID='book-item'>
-      <Text>{item.title}</Text>
-      <Text>{item.authors}</Text>
-      {!!item.lang && <Text>Lang: {item.lang}</Text>}
-      {!!item.translation && <Text>Translator: {item.translation}</Text>}
-      {!!item.size && <Text>Size: {item.size}</Text>}
+      <View style={{ flexDirection: 'row' }}>
+        <FileIcon size={35} color={colors.SearchSelected} text={item.ext} />
+
+        <View style={{ marginLeft: 15 }}>
+          <Text style={{ fontSize: 12, color: colors.Secondary }}>{item.authors}</Text>
+          <Text style={{ fontSize: 16, color: colors.SearchText }}>{item.title}</Text>
+          {!!other && <Text style={{ fontSize: 12, color: colors.Secondary }}>{other}</Text>}
+        </View>
+      </View>
+
       {progress > 0 && (
         <View
           style={{
             height: 5,
             position: 'relative',
-            backgroundColor: '#ddd',
+            backgroundColor: colors.ProgressBackground,
             borderRadius: 2,
-            marginTop: 4,
+            marginTop: 5,
             overflow: 'hidden',
           }}
         >
           <View
-            style={{ width: `${progress}%`, backgroundColor: '#f00', position: 'absolute', left: 0, top: 0, bottom: 0 }}
+            style={{
+              width: `${progress}%`,
+              backgroundColor: colors.SearchSelected,
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+            }}
           />
         </View>
       )}
+      {!progress && <View style={{ height: 10 }} />}
     </TouchableOpacity>
   );
 }
@@ -74,6 +90,6 @@ function confirm(title: string, message: string, onSuccess) {
 
 const s = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    marginBottom: 20,
   } as ViewStyle,
 });

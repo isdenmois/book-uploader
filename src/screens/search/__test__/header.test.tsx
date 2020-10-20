@@ -1,41 +1,26 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 import { fireEvent, render } from '@testing-library/react-native';
-import { act, renderHook } from '@testing-library/react-hooks';
 import 'react-native-gesture-handler/jestSetup';
-import { Header, useSearch } from '../header';
+jest.mock('@react-native-community/async-storage', () => ({}));
+import { Header } from '../header';
 
 test('Search header ', () => {
   const onSearch = jest.fn();
-  const { getByTestId } = render(<Header initQuery='  test ' onSearch={onSearch} />);
+  const { getByTestId } = render(
+    <RecoilRoot>
+      <Header initQuery='  test ' onSearch={onSearch} />
+    </RecoilRoot>,
+  );
+  const isSelected = testID => getByTestId(testID).props.children[0].props.testID === 'selected';
 
-  fireEvent(getByTestId('input'), 'onSubmitEditing');
+  expect(getByTestId('input').props.value).toBe('  test ');
 
-  expect(onSearch).toHaveBeenCalledWith('test');
-});
+  fireEvent.press(getByTestId('Flibusta'));
+  expect(isSelected('Z-Library')).toBeFalsy();
+  expect(isSelected('Flibusta')).toBeTruthy();
 
-test('useSearch', () => {
-  const onSearch = jest.fn();
-  let initQuery = null;
-  const { result, rerender } = renderHook(() => useSearch(onSearch, initQuery));
-  let [query, setQuery, toSearch] = result.current;
-
-  expect(query).toBe('');
-
-  act(() => setQuery('query '));
-  [query, , toSearch] = result.current;
-
-  expect(query).toBe('query ');
-  expect(onSearch).not.toHaveBeenCalled();
-
-  act(() => toSearch());
-  [query] = result.current;
-
-  expect(query).toBe('query');
-  expect(onSearch).toHaveBeenCalledWith('query');
-
-  initQuery = 'planetfall';
-  rerender();
-  [query] = result.current;
-
-  expect(query).toBe('planetfall');
+  fireEvent.press(getByTestId('Z-Library'));
+  expect(isSelected('Z-Library')).toBeTruthy();
+  expect(isSelected('Flibusta')).toBeFalsy();
 });

@@ -19,7 +19,7 @@ index 0429381..8d56d96 100644
  /**
   * Copyright (c) Facebook, Inc. and its affiliates.
 diff --git a/node_modules/recoil/native/recoil.js b/node_modules/recoil/native/recoil.js
-index 61fb1de..112fce7 100644
+index 61fb1de..8699509 100644
 --- a/node_modules/recoil/native/recoil.js
 +++ b/node_modules/recoil/native/recoil.js
 @@ -1,4 +1,3 @@
@@ -35,3 +35,12 @@ index 61fb1de..112fce7 100644
  
  /**
   * Copyright (c) Facebook, Inc. and its affiliates.
+@@ -3094,7 +3094,7 @@ function shouldNotBeFrozen(value) {
+   } // Some environments, just as Jest, don't work with the instanceof check
+ 
+ 
+-  if (!isSSR && (value === window || value instanceof Window)) {
++  if (!isSSR && (value === window)) {
+     return true;
+   }
+ 

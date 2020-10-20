@@ -9,25 +9,27 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { RecoilState, useRecoilState } from 'recoil';
 import { useAutofocus } from 'utils/autofocus';
 import * as colors from 'theme/colors';
 import { ClearIcon } from './icons';
 
 type Props = {
-  value: string;
-  onChange: (value: string) => void;
+  state: RecoilState<string>;
   icon: React.ReactNode;
   onSubmit?: () => void;
   disabled?: boolean;
   autoFocus?: boolean;
   initValue?: string;
   textColor?: string;
+  placeholder?: string;
 };
 
 const hitSlop: Insets = { top: 10, right: 20, bottom: 10, left: 20 };
 
-export function Input({ value, icon, onChange, onSubmit, disabled, initValue, autoFocus, textColor }: Props) {
+export function Input({ state, icon, onSubmit, disabled, initValue, autoFocus, textColor, placeholder }: Props) {
   const inputRef = useAutofocus([initValue]);
+  const [value, onChange] = useRecoilState(state);
 
   return (
     <TouchableWithoutFeedback testID='container' onPress={() => inputRef.current?.focus()}>
@@ -42,7 +44,7 @@ export function Input({ value, icon, onChange, onSubmit, disabled, initValue, au
           onChangeText={onChange}
           onSubmitEditing={onSubmit}
           returnKeyType='search'
-          placeholder='Search books'
+          placeholder={placeholder}
           placeholderTextColor={colors.Search}
           ref={autoFocus && inputRef}
           autoFocus={autoFocus}

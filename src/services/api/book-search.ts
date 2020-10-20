@@ -71,13 +71,9 @@ export async function bookSearch(type: PROVIDER_TYPE, name: string) {
     headers.Cookie = await AsyncStorage.getItem(config.includeCookie);
   }
 
-  try {
-    const body = await tor.request<string>(config.host, path, { query, headers });
+  const body = await tor.request<string>(config.host, path, { query, headers });
 
-    return { data: parseSearch(body, type, config.selectors) };
-  } catch (e) {
-    return { error: (e && e.message) || e };
-  }
+  return { data: parseSearch(body, type, config.selectors) };
 }
 
 function parseSearch(body: string, type: PROVIDER_TYPE, selectors) {

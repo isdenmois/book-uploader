@@ -13,28 +13,151 @@ exports[`BookItem 1`] = `
   onStartShouldSetResponder={[Function]}
   style={
     Object {
-      "marginBottom": 10,
+      "marginBottom": 20,
       "opacity": 1,
     }
   }
   testID="book-item"
 >
-  <Text>
-    super title
-  </Text>
-  <Text />
-  <Text>
-    Lang: 
-    ru
-  </Text>
-  <Text>
-    Translator: 
-    someone
-  </Text>
-  <Text>
-    Size: 
-    100500
-  </Text>
+  <View
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  >
+    <RNSVGSvgView
+      align="xMidYMid"
+      bbHeight={35}
+      bbWidth={35}
+      focusable={false}
+      height={35}
+      meetOrSlice={0}
+      minX={0}
+      minY={0}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
+          },
+          Object {
+            "flex": 0,
+            "height": 35,
+            "width": 35,
+          },
+        ]
+      }
+      vbHeight={512}
+      vbWidth={384}
+      width={35}
+    >
+      <RNSVGGroup>
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M256 0H24A23.94 23.94 0 000 23.88V488a23.94 23.94 0 0023.88 24H360a23.94 23.94 0 0024-23.88V128H272a16 16 0 01-16-16z"
+            fill={4283668206}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+          <RNSVGPath
+            d="M384 121.9v6.1H272a16 16 0 01-16-16V0h6.1a24 24 0 0117 7l97.9 98a23.9 23.9 0 017 16.9z"
+            fill={4283668206}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+        <RNSVGText
+          content={null}
+          dx={Array []}
+          dy={Array []}
+          fill={4294967295}
+          font={
+            Object {
+              "fontSize": "120",
+              "fontWeight": "bold",
+              "textAnchor": "middle",
+            }
+          }
+          propList={
+            Array [
+              "fill",
+            ]
+          }
+          rotate={Array []}
+          x={
+            Array [
+              "192",
+            ]
+          }
+          y={
+            Array [
+              "440",
+            ]
+          }
+        >
+          <RNSVGTSpan
+            content="EPUB"
+            dx={Array []}
+            dy={Array []}
+            font={Object {}}
+            rotate={Array []}
+            x={Array []}
+            y={Array []}
+          />
+        </RNSVGText>
+      </RNSVGGroup>
+    </RNSVGSvgView>
+    <View
+      style={
+        Object {
+          "marginLeft": 15,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#787D87",
+            "fontSize": 12,
+          }
+        }
+      />
+      <Text
+        style={
+          Object {
+            "color": "#092D5D",
+            "fontSize": 16,
+          }
+        }
+      >
+        super title
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#787D87",
+            "fontSize": 12,
+          }
+        }
+      >
+        100500, ru, someone
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "height": 10,
+      }
+    }
+  />
 </View>
 `;
 
@@ -51,35 +174,151 @@ exports[`BookItem 2`] = `
   onStartShouldSetResponder={[Function]}
   style={
     Object {
-      "marginBottom": 10,
+      "marginBottom": 20,
       "opacity": 1,
     }
   }
   testID="book-item"
 >
-  <Text>
-    super title
-  </Text>
-  <Text />
-  <Text>
-    Lang: 
-    ru
-  </Text>
-  <Text>
-    Translator: 
-    someone
-  </Text>
-  <Text>
-    Size: 
-    100500
-  </Text>
   <View
     style={
       Object {
-        "backgroundColor": "#ddd",
+        "flexDirection": "row",
+      }
+    }
+  >
+    <RNSVGSvgView
+      align="xMidYMid"
+      bbHeight={35}
+      bbWidth={35}
+      focusable={false}
+      height={35}
+      meetOrSlice={0}
+      minX={0}
+      minY={0}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
+          },
+          Object {
+            "flex": 0,
+            "height": 35,
+            "width": 35,
+          },
+        ]
+      }
+      vbHeight={512}
+      vbWidth={384}
+      width={35}
+    >
+      <RNSVGGroup>
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M256 0H24A23.94 23.94 0 000 23.88V488a23.94 23.94 0 0023.88 24H360a23.94 23.94 0 0024-23.88V128H272a16 16 0 01-16-16z"
+            fill={4283668206}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+          <RNSVGPath
+            d="M384 121.9v6.1H272a16 16 0 01-16-16V0h6.1a24 24 0 0117 7l97.9 98a23.9 23.9 0 017 16.9z"
+            fill={4283668206}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+        <RNSVGText
+          content={null}
+          dx={Array []}
+          dy={Array []}
+          fill={4294967295}
+          font={
+            Object {
+              "fontSize": "120",
+              "fontWeight": "bold",
+              "textAnchor": "middle",
+            }
+          }
+          propList={
+            Array [
+              "fill",
+            ]
+          }
+          rotate={Array []}
+          x={
+            Array [
+              "192",
+            ]
+          }
+          y={
+            Array [
+              "440",
+            ]
+          }
+        >
+          <RNSVGTSpan
+            content="EPUB"
+            dx={Array []}
+            dy={Array []}
+            font={Object {}}
+            rotate={Array []}
+            x={Array []}
+            y={Array []}
+          />
+        </RNSVGText>
+      </RNSVGGroup>
+    </RNSVGSvgView>
+    <View
+      style={
+        Object {
+          "marginLeft": 15,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#787D87",
+            "fontSize": 12,
+          }
+        }
+      />
+      <Text
+        style={
+          Object {
+            "color": "#092D5D",
+            "fontSize": 16,
+          }
+        }
+      >
+        super title
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#787D87",
+            "fontSize": 12,
+          }
+        }
+      >
+        100500, ru, someone
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "backgroundColor": "#DEE2ED",
         "borderRadius": 2,
         "height": 5,
-        "marginTop": 4,
+        "marginTop": 5,
         "overflow": "hidden",
         "position": "relative",
       }
@@ -88,7 +327,7 @@ exports[`BookItem 2`] = `
     <View
       style={
         Object {
-          "backgroundColor": "#f00",
+          "backgroundColor": "#5396EE",
           "bottom": 0,
           "left": 0,
           "position": "absolute",
