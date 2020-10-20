@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App 1`] = `
+<NavigationContainer>
+  <Navigator
+    screenOptions={
+      Object {
+        "cardStyle": Object {
+          "backgroundColor": "#F9FAFE",
+        },
+      }
+    }
+  >
+    <Screen
+      component={[Function]}
+      name="main"
+      options={
+        Object {
+          "header": [Function],
+        }
+      }
+    />
+    <Screen
+      component={[Function]}
+      name="scan"
+      options={
+        Object {
+          "title": "",
+        }
+      }
+    />
+  </Navigator>
+</NavigationContainer>
+`;

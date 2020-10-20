@@ -4,11 +4,12 @@ import RNFS, { ReadDirItem } from 'react-native-fs';
 import { uploadBook } from 'services/api/upload';
 import { EbookParser, EbookMetadata } from 'services/book-parser';
 import { ParseIcon, RemoveIcon, QrIcon, ShareIcon } from 'components/icons';
-import { AddressContext } from 'services/address';
+import { addressState } from 'services/address';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as colors from 'theme/colors';
 import { useFocusEffect } from '@react-navigation/native';
 import FileOpener from 'react-native-file-opener';
+import { useRecoilValue } from 'recoil';
 
 export const UploadContext = createContext(null);
 
@@ -81,10 +82,6 @@ function useUploader() {
   );
 
   return { files, state, startUpload, reset };
-}
-
-function useAddress() {
-  return useContext(AddressContext).address;
 }
 
 function useTitle(state, address) {
@@ -187,7 +184,7 @@ class FileData {
 
 export function UploadScreen({ navigation }) {
   const { files, state, startUpload, reset } = useUploader();
-  const address = useAddress();
+  const address = useRecoilValue(addressState);
   const title = useTitle(state, address);
   const openQrScanner = useCallback(() => navigation.push('scan', { scan: true }), []);
 

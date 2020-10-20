@@ -1,28 +1,29 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { useRecoilState } from 'recoil';
+import { act, renderRecoilHook } from 'react-recoil-hooks-testing-library';
 import { BASE } from 'utils/request';
-import { mock, mockPromise } from 'utils/test-utils/async';
+import { mock } from 'utils/test-utils/async';
 
-jest.mock('@react-native-community/async-storage', () => ({}));
+jest.mock('@react-native-community/async-storage', () => ({ getItem: () => null }));
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { useCreateAddressContext } from '../address';
+import { addressState } from '../address';
 
 test('useCreateAddressContext', async () => {
-  mock(AsyncStorage, 'setItem');
-  const [resolve] = mockPromise(AsyncStorage, 'getItem');
-  const { result } = renderHook(() => useCreateAddressContext());
+  const setItem = mock(AsyncStorage, 'setItem');
+  const { result } = renderRecoilHook(() => useRecoilState(addressState), {
+    states: [{ recoilState: addressState, initialValue: '192.168.1.1' }],
+  });
+  let [address, setAddress] = result.current;
 
-  expect(result.current.address).toBeNull();
-  expect(BASE.URL).toBeNull();
-
-  await resolve(null);
-
-  expect(result.current.address).toBe('');
-  expect(BASE.URL).toBeNull();
+  expect(address).toBe('192.168.1.1');
+  expect(BASE.URL).toBe('http://192.168.1.1:8083');
 
   act(() => {
-    result.current.setAddress('192.168.1.1');
+    setAddress('192.168.1.77');
   });
+  [address, setAddress] = result.current;
 
-  expect(result.current.address).toBe('192.168.1.1');
+  expect(address).toBe('192.168.1.77');
+  expect(setItem).toHaveBeenCalledWith('address', '192.168.1.77');
+  expect(BASE.URL).toBe('http://192.168.1.77:8083');
 });

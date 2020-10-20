@@ -1,23 +1,25 @@
-import React, { useCallback, useContext } from 'react';
+import React from 'react';
+import { useRecoilCallback } from 'recoil';
 import { ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { AddressContext } from 'services/address';
+import { addressState } from 'services/address';
 
 type Props = {
   navigation: StackNavigationProp<ParamListBase>;
 };
 
 export function ScanScreen({ navigation }: Props) {
-  const { setAddress } = useContext(AddressContext);
+  const onScan = useRecoilCallback(
+    ({ set }) => ({ data }) => {
+      if (!data) return;
 
-  const onScan = useCallback(({ data }) => {
-    if (!data) return;
-
-    setAddress(data.replace('http://', '').replace(/:\d+$/, ''));
-    navigation.goBack();
-  }, []);
+      set(addressState, data.replace('http://', '').replace(/:\d+$/, ''));
+      navigation.goBack();
+    },
+    [],
+  );
 
   return (
     <View style={s.cameraRow}>

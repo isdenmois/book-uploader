@@ -1,18 +1,20 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 import { fireEvent, render } from '@testing-library/react-native';
-jest.mock('@react-native-community/async-storage', () => ({}));
+import { mock } from 'utils/test-utils/async';
+jest.mock('@react-native-community/async-storage', () => ({ getItem: () => null }));
 jest.mock('react-native-camera');
-import { AddressContext } from 'services/address';
+import AsyncStorage from '@react-native-community/async-storage';
 import { ScanScreen } from '../scan';
 
 test('ScanScreen', () => {
+  const setAddress = mock(AsyncStorage, 'setItem');
   const navigation: any = { goBack: jest.fn() };
-  const setAddress = jest.fn();
 
   const RNCamera = render(
-    <AddressContext.Provider value={{ setAddress }}>
+    <RecoilRoot>
       <ScanScreen navigation={navigation} />
-    </AddressContext.Provider>,
+    </RecoilRoot>,
   ).getByTestId('scan-camera');
 
   fireEvent(RNCamera, 'onBarCodeRead', { data: null });
@@ -22,6 +24,6 @@ test('ScanScreen', () => {
 
   fireEvent(RNCamera, 'onBarCodeRead', { data: 'http://192.168.1.200:8083' });
 
-  expect(setAddress).toHaveBeenCalledWith('192.168.1.200');
+  expect(setAddress).toHaveBeenCalledWith('address', '192.168.1.200');
   expect(navigation.goBack).toHaveBeenCalled();
 });

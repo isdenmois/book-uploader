@@ -1,25 +1,23 @@
-import { createContext, useEffect, useCallback, useState, useMemo } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { BASE } from 'utils/request';
+import { atom, selector } from 'recoil';
+import { setBaseUrl } from 'utils/request';
 
-export const AddressContext = createContext(null);
+const ADDRESS_KEY = 'address';
 
-export function useCreateAddressContext() {
-  const [address, setAddress] = useState(null);
-  const changeAddress = useCallback(a => {
-    setAddress(a || '');
+const addressRawState = atom({ key: 'addressRaw', default: AsyncStorage.getItem(ADDRESS_KEY) });
 
-    AsyncStorage.setItem('address', a);
-    BASE.URL = a ? `http://${a}:8083` : null;
-  }, []);
-  const context = useMemo(() => ({ address, setAddress: changeAddress }), [address]);
+export const addressState = selector<string>({
+  key: 'address',
+  get({ get }) {
+    const address = get(addressRawState);
 
-  useEffect(() => {
-    AsyncStorage.getItem('address').then(a => {
-      setAddress(a || '');
-      BASE.URL = a ? `http://${a}:8083` : null;
-    });
-  }, []);
+    setBaseUrl(address);
 
-  return context;
-}
+    return address;
+  },
+  set({ set }, address: string) {
+    setBaseUrl(address);
+    set(addressRawState, address);
+    AsyncStorage.setItem(ADDRESS_KEY, address);
+  },
+});

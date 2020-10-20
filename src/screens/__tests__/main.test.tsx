@@ -7,7 +7,7 @@ import 'react-native-gesture-handler/jestSetup';
 jest.mock('@react-navigation/native');
 jest.mock('@react-navigation/bottom-tabs');
 jest.mock('react-native-fs', () => ({}));
-jest.mock('@react-native-community/async-storage', () => ({}));
+jest.mock('@react-native-community/async-storage', () => ({ getItem: () => null }));
 
 import RNFS from 'react-native-fs';
 import { Linking } from 'react-native';
