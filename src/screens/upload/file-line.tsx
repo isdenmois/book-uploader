@@ -1,22 +1,18 @@
-import React, { createContext, useState, useCallback, memo, useContext, useEffect, useRef } from 'react';
-import { Alert, Text, View, StyleSheet, ActivityIndicator } from 'react-native';
-import RNFS, { ReadDirItem } from 'react-native-fs';
-import { uploadBook } from 'services/api/upload';
-import { EbookParser, EbookMetadata } from 'services/book-parser';
-import { ParseIcon, RemoveIcon, QrIcon, ShareIcon, FileIcon } from 'components/icons';
-import { addressState } from 'services/address';
+import React, { useCallback, memo } from 'react';
+import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { EbookParser } from 'services/book-parser';
+import { FileIcon } from 'components/icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as colors from 'theme/colors';
-import { useFocusEffect } from '@react-navigation/native';
 import FileOpener from 'react-native-file-opener';
 import { useRecoilValue } from 'recoil';
 import { useSnapshotCallback } from 'utils/recoil';
-import { FileData, fileFamily } from './upload.state';
+import { fileFamily, UPLOAD_STATE } from './upload.state';
 import { ProgressBar } from 'components/progress-bar';
 
 type Props = {
   id: string;
-  state: any;
+  state: UPLOAD_STATE;
 };
 
 export const FileLine = memo(({ id, state }: Props) => {
@@ -29,18 +25,18 @@ export const FileLine = memo(({ id, state }: Props) => {
 
   return (
     <TouchableOpacity
-      style={{ marginBottom: 15 }}
+      style={s.container}
       onPress={shareFile}
       onLongPress={parseDisabled ? null : parseFile}
       disabled={touchDisabled}
     >
-      <View style={{ flexDirection: 'row' }}>
+      <View style={s.row}>
         <FileIcon size={34} color={colors.UploadSelected} text={data.ext} />
 
-        <View style={{ justifyContent: 'center' }}>
-          {!error && !!author && <Text style={{ color: colors.Secondary, fontSize: 12 }}>{author}</Text>}
-          <Text style={{ color: colors.UploadText, fontSize: 16 }}>{data.title}</Text>
-          {!!error && <Text style={{ color: colors.Error, fontSize: 12 }}>{error}</Text>}
+        <View style={s.content}>
+          {!error && !!author && <Text style={s.secondary}>{author}</Text>}
+          <Text style={s.title}>{data.title}</Text>
+          {!!error && <Text style={s.error}>{error}</Text>}
         </View>
       </View>
 
@@ -74,51 +70,26 @@ export function useShare(path: string) {
 }
 
 const s = StyleSheet.create({
-  visible: {
-    flex: 1,
-  },
-  hidden: {
-    height: 0,
-  },
-  title: {
-    flex: 1,
-    fontSize: 18,
-    textAlign: 'center',
-  },
-  files: {
-    flex: 1,
-    marginTop: 15,
-    paddingHorizontal: 10,
-  },
-  button: {
+  container: {
+    marginBottom: 15,
+  } as ViewStyle,
+  row: {
     flexDirection: 'row',
+  } as ViewStyle,
+  content: {
     justifyContent: 'center',
-    backgroundColor: colors.blue,
-    paddingVertical: 12,
-  },
-  buttonText: {
-    color: colors.invert,
+    paddingLeft: 10,
+  } as ViewStyle,
+  title: {
+    color: colors.UploadText,
     fontSize: 16,
-  },
-  progress: {
-    position: 'relative',
-    borderRadius: 10,
-    marginTop: 5,
-    height: 3,
-    backgroundColor: colors.secondary,
-  },
-  progressLine: {
-    position: 'absolute',
-    backgroundColor: colors.blue,
-    left: 0,
-    top: 0,
-    bottom: 0,
-  },
-  progressDone: {
-    width: '100%',
-    backgroundColor: colors.green,
-  },
-  errorText: {
-    color: colors.red,
-  },
+  } as TextStyle,
+  secondary: {
+    color: colors.Secondary,
+    fontSize: 12,
+  } as TextStyle,
+  error: {
+    color: colors.Error,
+    fontSize: 12,
+  } as TextStyle,
 });

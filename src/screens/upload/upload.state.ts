@@ -1,7 +1,5 @@
-import { atom, atomFamily, selector, selectorFamily } from 'recoil';
-import RNFS, { ReadDirItem } from 'react-native-fs';
-import { EbookParser } from 'services/book-parser';
-import { useSnapshotCallback } from 'utils/recoil';
+import { atom, atomFamily } from 'recoil';
+import RNFS from 'react-native-fs';
 
 export interface FileData {
   id: string;

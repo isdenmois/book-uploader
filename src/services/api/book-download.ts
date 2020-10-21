@@ -5,8 +5,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { querystring } from './utils';
 import * as tor from './tor-request';
 import { ZLIB_COOKIE } from './login';
+import { BookItem, ProviderType } from './types';
 
-export async function downloadFile(file, fileName, setProgress) {
+type SetProgressFn = (progress: number) => void;
+export async function downloadFile(file: BookItem, fileName: string, setProgress: SetProgressFn): Promise<void> {
   setProgress(0.01);
   const { host, path, query, headers } = await getUrl(file.type, file.link);
 
@@ -20,7 +22,7 @@ export async function downloadFile(file, fileName, setProgress) {
   setProgress(0);
 }
 
-export function getUrl(type, link): any {
+export function getUrl(type: ProviderType, link: string): any {
   if (type === 'zlib') {
     return zlibFileUrl(link);
   }
@@ -28,11 +30,11 @@ export function getUrl(type, link): any {
   return flibustaFileUrl(link);
 }
 
-function flibustaFileUrl(link) {
+function flibustaFileUrl(link: string) {
   return { host: FLIBUSTA_HOST, path: link };
 }
 
-async function zlibFileUrl(link) {
+async function zlibFileUrl(link: string) {
   const headers = { Cookie: await AsyncStorage.getItem(ZLIB_COOKIE) };
   const $ = cheerio.load(await tor.request(ZLIB_HOST, link, { headers }));
   const path = $('a.addDownloadedBook').attr('href');

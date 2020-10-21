@@ -1,11 +1,12 @@
 import { atom, selector } from 'recoil';
-import { bookSearch, PROVIDER_TYPE } from 'services/api/book-search';
+import { bookSearch } from 'services/api/book-search';
+import { ProviderType } from 'services/api/types';
 import { catchError } from 'utils/withSuspense';
 
-export const typeState = atom<PROVIDER_TYPE>({ key: 'type', default: 'zlib' });
+export const typeState = atom<ProviderType>({ key: 'type', default: 'zlib' });
 export const queryState = atom({ key: 'query', default: '' });
 
-type BookParams = { type: PROVIDER_TYPE; query: string };
+type BookParams = { type: ProviderType; query: string };
 export const booksParams = atom<BookParams>({ key: 'booksParams', default: null });
 
 export const booksSelector = selector({
@@ -16,8 +17,6 @@ export const booksSelector = selector({
     if (!params) return null;
     const { type, query } = params;
 
-    return bookSearch(type, query)
-      .then(r => r.data)
-      .catch(catchError());
+    return bookSearch(type, query).catch(catchError());
   },
 });

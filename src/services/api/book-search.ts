@@ -3,20 +3,7 @@ import { FLIBUSTA_HOST, ZLIB_HOST } from '@env';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as tor from './tor-request';
 import { ZLIB_COOKIE } from './login';
-
-interface SearchConfig {
-  host: string;
-  path: string;
-  query: Record<string, any>;
-  searchParam?: string;
-  includeCookie?: string;
-  selectors: {
-    entry: string;
-    link: string;
-    author: string;
-    ext: string;
-  } & Record<string, string | Function>;
-}
+import { BookItem, ProviderType, SearchConfig, SearchSelectors } from './types';
 
 const flibusta: SearchConfig = {
   host: FLIBUSTA_HOST,
@@ -53,9 +40,7 @@ const zlib: SearchConfig = {
 
 const providers = <const>{ flibusta, zlib };
 
-export type PROVIDER_TYPE = keyof typeof providers;
-
-export async function bookSearch(type: PROVIDER_TYPE, name: string) {
+export async function bookSearch(type: ProviderType, name: string): Promise<BookItem[]> {
   const config = providers[type] || flibusta;
   const query: Record<string, string> = { ...config.query };
   const headers: Record<string, string> = {};
@@ -73,16 +58,16 @@ export async function bookSearch(type: PROVIDER_TYPE, name: string) {
 
   const body = await tor.request<string>(config.host, path, { query, headers });
 
-  return { data: parseSearch(body, type, config.selectors) };
+  return parseSearch(body, type, config.selectors);
 }
 
-function parseSearch(body: string, type: PROVIDER_TYPE, selectors) {
+function parseSearch(body: string, type: ProviderType, selectors: SearchSelectors): BookItem[] {
   const $ = cheerio.load(body);
   const { entry: entrySelector, ext, link: linkSelector, author: authorSelector, ...others } = selectors;
 
   const books = $(entrySelector).map((ekey, entry) => {
     entry = $(entry);
-    const data: Record<string, string> = {
+    const data: BookItem = {
       link: entry.find(linkSelector).attr('href'),
       ext,
       type,

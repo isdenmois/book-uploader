@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { TextInput } from 'react-native';
 
-export function useAutofocus(deps: any[]) {
+export function useAutofocus(deps: ReadonlyArray<any>) {
   const inputRef = useRef<TextInput>();
 
   useEffect(() => {

@@ -1,8 +1,10 @@
 import RNFS from 'react-native-fs';
+import { EbookFileParsed } from 'services/book-parser';
 
 type ProgressCallback = (progress: number) => void;
 
-export async function uploadFile(address: string, file: any, setProgress?: ProgressCallback) {
+export async function uploadFile(address: string, file: EbookFileParsed, setProgress: ProgressCallback) {
+  const progress = ev => setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100);
   const files = [{ name: 'file', ...file }];
   const md5 = await RNFS.hash(file.filepath, 'md5');
   const stat = await RNFS.stat(file.filepath);
@@ -21,14 +23,7 @@ export async function uploadFile(address: string, file: any, setProgress?: Progr
     size,
   };
 
-  return RNFS.uploadFiles({
-    toUrl: getUrl(address),
-    method: 'POST',
-    files,
-    fields,
-    headers,
-    progress: ev => setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100),
-  }).promise;
+  return RNFS.uploadFiles({ toUrl: getUrl(address), method: 'POST', files, fields, headers, progress }).promise;
 }
 
 function getUrl(address: string) {
