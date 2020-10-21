@@ -110,6 +110,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     overflow: 'hidden',
+    flex: 1,
   } as ViewStyle,
   title: {
     color: colors.UploadText,

@@ -66,6 +66,7 @@ const s = StyleSheet.create({
   } as ViewStyle,
   common: {
     marginLeft: 15,
+    flex: 1,
   } as ViewStyle,
   title: {
     fontSize: 16,
