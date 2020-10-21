@@ -1,6 +1,6 @@
 import cheerio from 'react-native-cheerio';
 import RNFS from 'react-native-fs';
-import { FLIBUSTA_HOST, ZLIB_HOST, USER_AGENT } from '@env';
+import { TOR_HOST, FLIBUSTA_HOST, ZLIB_HOST, USER_AGENT } from '@env';
 import AsyncStorage from '@react-native-community/async-storage';
 import { querystring } from './utils';
 import * as tor from './tor-request';
@@ -12,8 +12,9 @@ export async function downloadFile(file: BookItem, fileName: string, setProgress
   setProgress(0.01);
   const { host, path, query, headers } = await getUrl(file.type, file.link);
 
+  // TODO: move to tor-request
   await RNFS.downloadFile({
-    fromUrl: FLIBUSTA_HOST + '/api/rewrite' + querystring(Object.assign({}, query, { host, path })),
+    fromUrl: TOR_HOST + '/api/rewrite' + querystring(Object.assign({}, query, { host, path })),
     toFile: `${RNFS.DocumentDirectoryPath}/${fileName}`,
     headers: Object.assign({}, headers, { 'user-agent': USER_AGENT }),
     progress: ({ contentLength, bytesWritten }) => setProgress(Math.round((bytesWritten / contentLength) * 100)),
