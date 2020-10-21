@@ -1,5 +1,6 @@
-import { sendLogin } from 'services/api';
 import React, { useState } from 'react';
+import { sendLogin } from 'services/api';
+import { INITIAL_EMAIL, INITIAL_PASSWORD } from '@env';
 import { Alert, StyleSheet, Text, TextStyle, ToastAndroid, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { atom, selector, useRecoilValue } from 'recoil';
 import { useSnapshotCallback } from 'utils/recoil';
@@ -8,8 +9,8 @@ import { Input, useNextInput } from 'components/input';
 import { profileState } from './profile.state';
 import { EmailIcon, KeyIcon } from 'components/icons';
 
-const emailState = atom({ key: 'email', default: '' });
-const passwordState = atom({ key: 'password', default: '' });
+const emailState = atom({ key: 'email', default: INITIAL_EMAIL });
+const passwordState = atom({ key: 'password', default: INITIAL_PASSWORD });
 const allowLoginSelector = selector({
   key: 'allowLogin',
   get({ get }) {
