@@ -3,7 +3,7 @@ import Svg, { G, Path, Text } from 'react-native-svg';
 
 function SvgComponent({ size, color, text }) {
   return (
-    <Svg viewBox='0 0 384 512' width={size} height={size}>
+    <Svg viewBox='0 0 384 512' width={size} height={size} style={{ marginLeft: -4 }}>
       <G>
         <Path
           fill={color}

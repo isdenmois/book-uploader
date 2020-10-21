@@ -25,6 +25,7 @@ export const SearchSelected = '#5396EE';
 export const UploadSelected = '#6851F0';
 export const ProfileSelected = '#FF6842';
 
+export const InvertedText = 'white';
 export const Secondary = '#787D87';
 export const Search = '#8C93A3';
 export const Input = 'white';

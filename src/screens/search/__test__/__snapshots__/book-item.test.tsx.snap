@@ -42,6 +42,9 @@ exports[`BookItem 1`] = `
             "borderWidth": 0,
           },
           Object {
+            "marginLeft": -4,
+          },
+          Object {
             "flex": 0,
             "height": 35,
             "width": 35,
@@ -154,7 +157,7 @@ exports[`BookItem 1`] = `
   <View
     style={
       Object {
-        "height": 10,
+        "height": 12,
       }
     }
   />
@@ -203,6 +206,9 @@ exports[`BookItem 2`] = `
             "borderWidth": 0,
           },
           Object {
+            "marginLeft": -4,
+          },
+          Object {
             "flex": 0,
             "height": 35,
             "width": 35,
@@ -315,27 +321,56 @@ exports[`BookItem 2`] = `
   <View
     style={
       Object {
-        "backgroundColor": "#DEE2ED",
-        "borderRadius": 2,
-        "height": 5,
-        "marginTop": 5,
-        "overflow": "hidden",
-        "position": "relative",
+        "alignItems": "center",
+        "flexDirection": "row",
+        "height": 10,
+        "marginTop": 2,
       }
     }
   >
     <View
       style={
         Object {
-          "backgroundColor": "#5396EE",
-          "bottom": 0,
-          "left": 0,
-          "position": "absolute",
-          "top": 0,
-          "width": "50%",
+          "backgroundColor": "#DEE2ED",
+          "borderRadius": 2,
+          "flex": 1,
+          "height": 5,
+          "marginTop": 1,
+          "overflow": "hidden",
+          "position": "relative",
         }
       }
-    />
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "top": 0,
+            },
+            Object {
+              "backgroundColor": "#5396EE",
+              "width": "50%",
+            },
+          ]
+        }
+      />
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#787D87",
+          "fontSize": 12,
+          "textAlign": "right",
+          "width": 34,
+        }
+      }
+    >
+      50
+      %
+    </Text>
   </View>
 </View>
 `;

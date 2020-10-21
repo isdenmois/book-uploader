@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { slugify } from 'transliteration';
-import { Alert, Text, View, TouchableOpacity, ToastAndroid, StyleSheet, ViewStyle } from 'react-native';
+import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet, ViewStyle } from 'react-native';
 import * as colors from 'theme/colors';
 import * as api from 'services/api/book-download';
 import { FileIcon } from 'components/icons';
+import { useConfirm } from 'utils/confirm';
+import { ProgressBar } from 'components/progress-bar';
 
 export function BookItem({ item }) {
   const [progress, onPress] = useDownload(item);
@@ -21,30 +23,7 @@ export function BookItem({ item }) {
         </View>
       </View>
 
-      {progress > 0 && (
-        <View
-          style={{
-            height: 5,
-            position: 'relative',
-            backgroundColor: colors.ProgressBackground,
-            borderRadius: 2,
-            marginTop: 5,
-            overflow: 'hidden',
-          }}
-        >
-          <View
-            style={{
-              width: `${progress}%`,
-              backgroundColor: colors.SearchSelected,
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
-            }}
-          />
-        </View>
-      )}
-      {!progress && <View style={{ height: 10 }} />}
+      <ProgressBar progress={progress} color={colors.SearchSelected} />
     </TouchableOpacity>
   );
 }
@@ -70,22 +49,6 @@ export function useDownload(file) {
   });
 
   return [progress, onPress] as const;
-}
-
-export function useConfirm(title, message, onSuccess) {
-  return () => {
-    confirm(title, message, onSuccess);
-  };
-}
-
-function confirm(title: string, message: string, onSuccess) {
-  Alert.alert(title, message, [
-    {
-      text: 'Cancel',
-      style: 'cancel',
-    },
-    { text: 'OK', onPress: onSuccess, style: 'destructive' },
-  ]);
 }
 
 const s = StyleSheet.create({

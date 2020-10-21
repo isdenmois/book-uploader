@@ -1,17 +1,9 @@
-import RNFS, { UploadProgressCallbackResult } from 'react-native-fs';
-import { BASE } from 'utils/request';
+import RNFS from 'react-native-fs';
 
-const BOOKS_ENDPOINT = '/upload';
+type ProgressCallback = (progress: number) => void;
 
-interface CreateParams {
-  file: any;
-}
-
-type ProgressCallback = (ev: UploadProgressCallbackResult) => void;
-
-export async function uploadBook({ file }: CreateParams, progress?: ProgressCallback) {
+export async function uploadFile(address: string, file: any, setProgress?: ProgressCallback) {
   const files = [{ name: 'file', ...file }];
-  const toUrl = `${BASE.URL}${BOOKS_ENDPOINT}`;
   const md5 = await RNFS.hash(file.filepath, 'md5');
   const stat = await RNFS.stat(file.filepath);
   const size = stat.size?.toString() || '0';
@@ -29,5 +21,16 @@ export async function uploadBook({ file }: CreateParams, progress?: ProgressCall
     size,
   };
 
-  return RNFS.uploadFiles({ toUrl, method: 'POST', files, fields, headers, progress }).promise;
+  return RNFS.uploadFiles({
+    toUrl: getUrl(address),
+    method: 'POST',
+    files,
+    fields,
+    headers,
+    progress: ev => setProgress((ev.totalBytesSent / ev.totalBytesExpectedToSend) * 100),
+  }).promise;
+}
+
+function getUrl(address: string) {
+  return `http://${address}:8080/upload`;
 }
