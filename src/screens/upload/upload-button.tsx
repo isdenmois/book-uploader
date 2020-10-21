@@ -52,6 +52,9 @@ export function useUpload() {
       try {
         const parsed = await EbookParser.getMetadata(file.path);
 
+        // Update book data
+        merge(fileId, { title: parsed.title, author: parsed.author, isParsed: true });
+
         await uploadFile(address, parsed.file, setProgress);
 
         // Remove file
