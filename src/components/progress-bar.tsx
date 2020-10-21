@@ -5,10 +5,12 @@ import * as colors from 'theme/colors';
 type Props = {
   color: string;
   progress?: number;
+  showAlways?: boolean;
+  text?: string;
 };
 
-export function ProgressBar({ color, progress }: Props) {
-  if (!progress || progress <= 0) return <View style={s.empty} />;
+export function ProgressBar({ color, progress, showAlways, text }: Props) {
+  if (!showAlways && (!progress || progress <= 0)) return <View style={s.empty} />;
   const progressStyle = progress < 100 ? { width: `${progress}%`, backgroundColor: color } : s.done;
 
   return (
@@ -17,7 +19,7 @@ export function ProgressBar({ color, progress }: Props) {
         <View style={[s.progress, progressStyle]} />
       </View>
 
-      <Text style={s.text}>{Math.round(progress)}%</Text>
+      <Text style={s.text}>{text || Math.round(progress) + '%'}</Text>
     </View>
   );
 }
@@ -52,7 +54,8 @@ const s = StyleSheet.create({
   text: {
     color: colors.Secondary,
     fontSize: 12,
-    width: 34,
+    minWidth: 34,
+    paddingLeft: 5,
     textAlign: 'right',
   } as TextStyle,
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 import {
   View,
   TextStyle,
@@ -8,7 +8,9 @@ import {
   Insets,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  TextInputProps,
 } from 'react-native';
+import mergeRefs from 'react-merge-refs';
 import { RecoilState, useRecoilState } from 'recoil';
 import { useAutofocus } from 'utils/autofocus';
 import * as colors from 'theme/colors';
@@ -19,15 +21,15 @@ type Props = {
   icon: React.ReactNode;
   onSubmit?: () => void;
   disabled?: boolean;
-  autoFocus?: boolean;
   initValue?: string;
   textColor?: string;
-  placeholder?: string;
-};
+  textInputRef?: MutableRefObject<TextInput>;
+} & TextInputProps;
 
 const hitSlop: Insets = { top: 10, right: 20, bottom: 10, left: 20 };
 
-export function Input({ state, icon, onSubmit, disabled, initValue, autoFocus, textColor, placeholder }: Props) {
+export function Input(props: Props) {
+  const { state, icon, onSubmit, disabled, initValue, autoFocus, textColor, textInputRef, ...textInput } = props;
   const inputRef = useAutofocus([initValue]);
   const [value, onChange] = useRecoilState(state);
 
@@ -44,13 +46,13 @@ export function Input({ state, icon, onSubmit, disabled, initValue, autoFocus, t
           onChangeText={onChange}
           onSubmitEditing={onSubmit}
           returnKeyType='search'
-          placeholder={placeholder}
           placeholderTextColor={colors.Search}
-          ref={autoFocus && inputRef}
+          ref={mergeRefs([autoFocus && inputRef, textInputRef])}
           autoFocus={autoFocus}
+          {...textInput}
         />
 
-        {!!value && (
+        {!!value && !disabled && (
           <TouchableOpacity testID='clear' style={s.clear} onPress={() => onChange('')} hitSlop={hitSlop}>
             <ClearIcon />
           </TouchableOpacity>
@@ -58,6 +60,13 @@ export function Input({ state, icon, onSubmit, disabled, initValue, autoFocus, t
       </View>
     </TouchableWithoutFeedback>
   );
+}
+
+export function useNextInput() {
+  const next = useRef<TextInput>();
+  const onSubmitEditing = () => next.current?.focus();
+
+  return [next, onSubmitEditing] as const;
 }
 
 const s = StyleSheet.create({

@@ -6,3 +6,5 @@ export { default as SearchIcon } from './search';
 export { default as ClearIcon } from './clear';
 export { default as FileIcon } from './file';
 export { default as SuccessIcon } from './success';
+export { default as EmailIcon } from './email';
+export { default as KeyIcon } from './key';

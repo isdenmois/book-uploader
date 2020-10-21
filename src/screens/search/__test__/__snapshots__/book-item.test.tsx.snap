@@ -363,13 +363,13 @@ exports[`BookItem 2`] = `
         Object {
           "color": "#787D87",
           "fontSize": 12,
+          "minWidth": 34,
+          "paddingLeft": 5,
           "textAlign": "right",
-          "width": 34,
         }
       }
     >
-      50
-      %
+      50%
     </Text>
   </View>
 </View>

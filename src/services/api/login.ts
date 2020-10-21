@@ -21,5 +21,5 @@ export async function sendLogin(email: string, password: string): Promise<string
 }
 
 export function setCookie(cookie: string) {
-  return AsyncStorage.setItem(ZLIB_COOKIE, cookie);
+  return cookie ? AsyncStorage.setItem(ZLIB_COOKIE, cookie) : AsyncStorage.removeItem(ZLIB_COOKIE);
 }

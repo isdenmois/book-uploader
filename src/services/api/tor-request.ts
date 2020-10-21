@@ -18,7 +18,7 @@ export function request<T>(host: string, path: string, params: RequestParams = {
   const url = TOR_HOST + '/api/rewrite' + querystring(queryParams);
 
   return fetch(url, params).then(response => {
-    if (response.headers.get('Content-Type') === JSON_TYPE) {
+    if (response.headers.get('Content-Type').startsWith(JSON_TYPE)) {
       return response.json();
     }
 

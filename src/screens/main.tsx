@@ -6,7 +6,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useDeepLink } from 'utils/deep-link';
 import { SearchScreen } from './search/search.screen';
 import { UploadScreen } from './upload/upload.screen';
-import { LoginScreen } from './login';
+import { ProfileScreen } from './profile/profile.screen';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +22,7 @@ export function MainScreen() {
     <Tab.Navigator initialRouteName={screen}>
       <Tab.Screen name='search' component={SearchScreen} initialParams={{ initQuery }} />
       <Tab.Screen name='upload' component={UploadScreen} />
-      <Tab.Screen name='profile' component={LoginScreen} />
+      <Tab.Screen name='profile' component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
