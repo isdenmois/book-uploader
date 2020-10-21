@@ -1,1 +1,4 @@
 *.pbxproj -text
+dev-tools/* linguist-vendored
+android/* linguist-vendored
+* text=auto
