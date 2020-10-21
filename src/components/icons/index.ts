@@ -8,3 +8,4 @@ export { default as FileIcon } from './file';
 export { default as SuccessIcon } from './success';
 export { default as EmailIcon } from './email';
 export { default as KeyIcon } from './key';
+export { default as TimesIcon } from './times';
