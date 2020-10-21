@@ -37,7 +37,7 @@ export const BookList = withSuspense(() => {
 const s = StyleSheet.create({
   empty: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 30,
   } as ViewStyle,
   image: {
     width: '100%',
