@@ -19,7 +19,7 @@ export function BookItem({ item }: Props) {
   return (
     <TouchableOpacity style={s.container} onPress={onPress} testID='book-item'>
       <View style={s.row}>
-        <FileIcon size={35} color={colors.SearchSelected} text={item.ext} />
+        <FileIcon size={35} color={colors.SearchSelected} text={item.ext.replace('.zip', '')} />
 
         <View style={s.common}>
           <Text style={s.secondary}>{item.authors}</Text>
