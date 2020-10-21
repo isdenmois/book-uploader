@@ -4,6 +4,7 @@ import { ActivityIndicator, Linking } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useDeepLink } from 'utils/deep-link';
+import { TabBar } from 'components/tab-bar';
 import { SearchScreen } from './search/search.screen';
 import { UploadScreen } from './upload/upload.screen';
 import { ProfileScreen } from './profile/profile.screen';
@@ -19,7 +20,7 @@ export function MainScreen() {
   }
 
   return (
-    <Tab.Navigator initialRouteName={screen}>
+    <Tab.Navigator initialRouteName={screen} tabBar={TabBar}>
       <Tab.Screen name='search' component={SearchScreen} initialParams={{ initQuery }} />
       <Tab.Screen name='upload' component={UploadScreen} />
       <Tab.Screen name='profile' component={ProfileScreen} />
