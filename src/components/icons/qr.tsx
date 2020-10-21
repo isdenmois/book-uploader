@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, ViewStyle } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export default function SvgComponent({ size, color, onPress }: Props) {
   return (
-    <TouchableOpacity style={{ paddingHorizontal: 10 }} onPress={onPress}>
+    <TouchableOpacity style={{ paddingLeft: 10 }} onPress={onPress}>
       <Svg viewBox='0 0 512 512' width={size} height={size}>
         <Path
           fill={color}

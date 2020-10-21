@@ -27,5 +27,5 @@ export async function uploadFile(address: string, file: EbookFileParsed, setProg
 }
 
 function getUrl(address: string) {
-  return `http://${address}:8080/upload`;
+  return `http://${address}:8083/upload`;
 }

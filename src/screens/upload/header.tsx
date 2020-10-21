@@ -37,7 +37,8 @@ const s = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingTop: 20,
-    paddingHorizontal: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
     alignItems: 'center',
   } as ViewStyle,
   titleRow: {

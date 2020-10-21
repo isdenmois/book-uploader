@@ -24,7 +24,7 @@ export function ScanScreen({ navigation }: Props) {
       set(addressState, data.replace('http://', '').replace(/:\d+$/, ''));
       setSuccess(true);
 
-      setTimeout(() => navigation.goBack(), 500);
+      setTimeout(() => navigation.goBack(), 2000);
     },
     [],
   );
