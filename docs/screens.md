@@ -34,6 +34,6 @@ If the address is correct, you can start the upload process:
 
 ## Profile screen
 
-That screen is used to auth in litres service:
+That screen is used for auth in litres service:
 
 ![Profile login](./profile.png)
