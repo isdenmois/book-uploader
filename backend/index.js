@@ -13,5 +13,5 @@ app.post('/api/rewrite', require('./api/rewrite'));
 app.use(serveStatic('../web/public', { index: ['index.html'] }));
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://0.0.0.0:${port}`);
+  console.log(`Book search app listening at http://localhost:${port}`);
 });
