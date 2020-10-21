@@ -25,6 +25,12 @@ exports[`App 1`] = `
       name="scan"
       options={
         Object {
+          "animationEnabled": false,
+          "cardOverlayEnabled": false,
+          "cardStyle": Object {
+            "backgroundColor": "transparent",
+          },
+          "header": [Function],
           "title": "",
         }
       }

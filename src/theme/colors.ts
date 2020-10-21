@@ -15,6 +15,7 @@ export const ProfileBackground = '#FFAD99';
 export const TabsBackground = 'white';
 export const SecondaryBackground = '#E0E0E0';
 export const ProgressBackground = '#DEE2ED';
+export const ModalBackground = 'white';
 
 export const SearchText = '#092D5D';
 export const UploadText = '#15085E';

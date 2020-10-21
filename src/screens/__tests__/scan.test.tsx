@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { ScanScreen } from '../scan';
 
 test('ScanScreen', () => {
+  jest.useFakeTimers();
   const setAddress = mock(AsyncStorage, 'setItem');
   const navigation: any = { goBack: jest.fn() };
 
@@ -23,6 +24,7 @@ test('ScanScreen', () => {
   expect(navigation.goBack).not.toHaveBeenCalled();
 
   fireEvent(RNCamera, 'onBarCodeRead', { data: 'http://192.168.1.200:8083' });
+  jest.runAllTimers();
 
   expect(setAddress).toHaveBeenCalledWith('address', '192.168.1.200');
   expect(navigation.goBack).toHaveBeenCalled();
