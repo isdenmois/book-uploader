@@ -59,6 +59,7 @@ export function useDownload(file: IBookItem) {
 const s = StyleSheet.create({
   container: {
     marginBottom: 20,
+    overflow: 'hidden',
   } as ViewStyle,
   row: {
     flexDirection: 'row',
