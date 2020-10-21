@@ -19,7 +19,7 @@ export function BookItem({ item }: Props) {
   return (
     <TouchableOpacity style={s.container} onPress={onPress} testID='book-item'>
       <View style={s.row}>
-        <FileIcon size={35} color={colors.SearchSelected} text={item.ext.replace('.zip', '')} />
+        <FileIcon size={40} color={colors.SearchSelected} text={item.ext.replace('.zip', '')} />
 
         <View style={s.common}>
           <Text style={s.secondary}>{item.authors}</Text>
@@ -65,7 +65,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
   } as ViewStyle,
   common: {
-    marginLeft: 15,
+    marginLeft: 10,
     flex: 1,
   } as ViewStyle,
   title: {

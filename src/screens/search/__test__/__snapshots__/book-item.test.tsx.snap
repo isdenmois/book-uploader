@@ -29,10 +29,10 @@ exports[`BookItem 1`] = `
   >
     <RNSVGSvgView
       align="xMidYMid"
-      bbHeight={35}
-      bbWidth={35}
+      bbHeight={40}
+      bbWidth={40}
       focusable={false}
-      height={35}
+      height={40}
       meetOrSlice={0}
       minX={0}
       minY={0}
@@ -47,14 +47,14 @@ exports[`BookItem 1`] = `
           },
           Object {
             "flex": 0,
-            "height": 35,
-            "width": 35,
+            "height": 40,
+            "width": 40,
           },
         ]
       }
       vbHeight={512}
       vbWidth={384}
-      width={35}
+      width={40}
     >
       <RNSVGGroup>
         <RNSVGGroup>
@@ -122,7 +122,7 @@ exports[`BookItem 1`] = `
       style={
         Object {
           "flex": 1,
-          "marginLeft": 15,
+          "marginLeft": 10,
         }
       }
     >
@@ -195,10 +195,10 @@ exports[`BookItem 2`] = `
   >
     <RNSVGSvgView
       align="xMidYMid"
-      bbHeight={35}
-      bbWidth={35}
+      bbHeight={40}
+      bbWidth={40}
       focusable={false}
-      height={35}
+      height={40}
       meetOrSlice={0}
       minX={0}
       minY={0}
@@ -213,14 +213,14 @@ exports[`BookItem 2`] = `
           },
           Object {
             "flex": 0,
-            "height": 35,
-            "width": 35,
+            "height": 40,
+            "width": 40,
           },
         ]
       }
       vbHeight={512}
       vbWidth={384}
-      width={35}
+      width={40}
     >
       <RNSVGGroup>
         <RNSVGGroup>
@@ -288,7 +288,7 @@ exports[`BookItem 2`] = `
       style={
         Object {
           "flex": 1,
-          "marginLeft": 15,
+          "marginLeft": 10,
         }
       }
     >
