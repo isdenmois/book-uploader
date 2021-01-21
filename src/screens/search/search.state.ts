@@ -5,8 +5,9 @@ import { catchError } from 'utils/withSuspense';
 
 export const typeState = atom<ProviderType>({ key: 'type', default: 'zlib' });
 export const queryState = atom({ key: 'query', default: '' });
+export const extensionState = atom({ key: 'extension', default: 'epub' });
 
-type BookParams = { type: ProviderType; query: string };
+type BookParams = { type: ProviderType; extension: string; query: string };
 export const booksParams = atom<BookParams>({ key: 'booksParams', default: null });
 
 export const booksSelector = selector({
@@ -15,8 +16,8 @@ export const booksSelector = selector({
     const params = get(booksParams);
 
     if (!params) return null;
-    const { type, query } = params;
+    const { type, extension, query } = params;
 
-    return bookSearch(type, query).catch(catchError());
+    return bookSearch(type, query, extension).catch(catchError());
   },
 });

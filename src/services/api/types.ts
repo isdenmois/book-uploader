@@ -4,7 +4,7 @@ export interface SearchSelectors extends Record<string, string | Function> {
   entry: string;
   link: string;
   author: string;
-  ext: string;
+  ext: string | ((entry: any) => string);
 }
 
 export interface SearchConfig {

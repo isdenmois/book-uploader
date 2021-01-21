@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { TextInput, StyleSheet, View, ViewStyle } from 'react-native';
+import { TextInput, StyleSheet, View, ViewStyle, ScrollView } from 'react-native';
 import { useColor } from 'theme/colors';
 import { Input } from 'components/input';
 import { SearchIcon } from 'components/icons';
 import { Chip } from 'components/chip';
-import { booksParams, queryState, typeState } from './search.state';
+import { booksParams, extensionState, queryState, typeState } from './search.state';
 
 type Props = {
   initQuery?: string;
@@ -16,12 +16,15 @@ type Props = {
 export function Header({ initQuery, onSearch, disabled }: Props) {
   const inputRef = useRef<TextInput>();
   const [type, setZLib, setFlibusta] = useType();
+  const [extension, setEPUB, setFB2] = useExtension();
   const color = useColor();
   useInitQuery(initQuery);
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [type]);
+  }, [type, extension]);
+
+  const isZLib = type === 'zlib';
 
   return (
     <>
@@ -36,9 +39,16 @@ export function Header({ initQuery, onSearch, disabled }: Props) {
         autoFocus
       />
 
-      <View style={s.row}>
-        <Chip title='Z-Library' selected={type === 'zlib'} onPress={setZLib} disabled={disabled} />
-        <Chip title='Flibusta' selected={type === 'flibusta'} onPress={setFlibusta} disabled={disabled} />
+      <View>
+        <ScrollView horizontal keyboardShouldPersistTaps='always'>
+          <Chip title='Z-Library' selected={type === 'zlib'} onPress={setZLib} disabled={disabled} />
+          <Chip title='Flibusta' selected={type === 'flibusta'} onPress={setFlibusta} disabled={disabled} />
+
+          <View style={s.placeholder} />
+
+          {isZLib && <Chip title='EPUB' selected={extension === 'epub'} onPress={setEPUB} disabled={disabled} />}
+          {isZLib && <Chip title='FB2' selected={extension === 'fb2'} onPress={setFB2} disabled={disabled} />}
+        </ScrollView>
       </View>
     </>
   );
@@ -62,6 +72,16 @@ export function useType() {
   return [type, setZLib, setFlibusta] as const;
 }
 
+function useExtension() {
+  const setParams = useSetRecoilState(booksParams);
+  const [extension, setExtension] = useRecoilState(extensionState);
+
+  const setEPUB = () => (setExtension('epub'), setParams(null));
+  const setFB2 = () => (setExtension('fb2'), setParams(null));
+
+  return [extension, setEPUB, setFB2] as const;
+}
+
 const s = StyleSheet.create({
-  row: { flexDirection: 'row' } as ViewStyle,
+  placeholder: { width: 20 } as ViewStyle,
 });

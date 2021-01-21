@@ -25,24 +25,24 @@ const flibusta: SearchConfig = {
 const zlib: SearchConfig = {
   host: ZLIB_HOST,
   path: '/s/',
-  query: { e: 1, language: '', extension: 'epub' },
+  query: { e: 1, extension: 'epub' },
   includeCookie: ZLIB_COOKIE,
   selectors: {
     entry: '#searchResultBox .resItemBox',
     author: '.authors a',
-    ext: 'epub',
+    ext: zExtension,
     link: 'h3[itemprop="name"] a',
     title: 'h3[itemprop="name"] a',
     lang: replaceSelector('.property_language', 'Language:'),
-    size: replaceSelector('.property__file .property_value', 'EPUB, '),
+    size: zSize,
   },
 };
 
 const providers = <const>{ flibusta, zlib };
 
-export async function bookSearch(type: ProviderType, name: string): Promise<BookItem[]> {
+export async function bookSearch(type: ProviderType, name: string, extension: string): Promise<BookItem[]> {
   const config = providers[type] || flibusta;
-  const query: Record<string, string> = { ...config.query };
+  const query: Record<string, string> = { ...config.query, extension };
   const headers: Record<string, string> = {};
   let path = config.path;
 
@@ -69,7 +69,7 @@ function parseSearch(body: string, type: ProviderType, selectors: SearchSelector
     entry = $(entry);
     const data: BookItem = {
       link: entry.find(linkSelector).attr('href'),
-      ext,
+      ext: typeof ext === 'function' ? ext(entry) : ext,
       type,
     };
     if (!data.link) return null;
@@ -117,4 +117,18 @@ function replaceSelector(selector: string, toReplace: string) {
 
 function find(entry, selector: string): string {
   return entry.find(selector).text().trim();
+}
+
+const FILE_SELECTOR = '.property__file .property_value';
+
+function zExtension(entry): string {
+  const node = entry.find(FILE_SELECTOR);
+
+  return node?.text().replace(/,.*/, '').trim().toLowerCase();
+}
+
+function zSize(entry): string {
+  const node = entry.find(FILE_SELECTOR);
+
+  return node?.text().replace(/.*,/, '').trim();
 }

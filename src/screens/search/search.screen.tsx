@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValueLoadable } from 'recoil';
 import { Header } from './header';
 import { BookList } from './book-list';
-import { booksParams, booksSelector, queryState, typeState } from './search.state';
+import { booksParams, booksSelector, extensionState, queryState, typeState } from './search.state';
 import { useSnapshotCallback } from 'utils/recoil';
 import { useDeepLink } from 'utils/deep-link';
 import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
@@ -17,8 +17,9 @@ export function SearchScreen() {
   const onSearch = useSnapshotCallback(({ get, set }) => {
     const type = get(typeState);
     const query = get(queryState);
+    const extension = get(extensionState);
 
-    set(booksParams, { type, query });
+    set(booksParams, { type, query, extension });
   });
 
   return (
