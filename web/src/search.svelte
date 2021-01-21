@@ -7,16 +7,26 @@
 
   onMount(() => {
     const params = new URLSearchParams(location.search);
-    queryInput.value = params.get('q') || '';
+
+    if (params.get('q')) {
+      queryInput.value = params.get('q') || '';
+      handleSubmit();
+    }
   });
 
   function handleSubmit() {
     dispatch('search', { query: queryInput.value });
+
+    if (history.replaceState) {
+      const url = `${location.protocol}//${location.host}${location.pathname}?q=${queryInput.value}`;
+
+      history.replaceState({ path: url }, '', url);
+    }
   }
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-  <input bind:this={queryInput} name="query" autofocus placeholder="Search books" {disabled} />
+  <input bind:this={queryInput} placeholder="Search books" {disabled} autofocus />
 </form>
 
 <style>
