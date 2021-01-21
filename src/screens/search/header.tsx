@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { TextInput, StyleSheet, View, ViewStyle } from 'react-native';
 import { useColor } from 'theme/colors';
 import { Input } from 'components/input';
 import { SearchIcon } from 'components/icons';
@@ -14,9 +14,14 @@ type Props = {
 };
 
 export function Header({ initQuery, onSearch, disabled }: Props) {
+  const inputRef = useRef<TextInput>();
   const [type, setZLib, setFlibusta] = useType();
   const color = useColor();
   useInitQuery(initQuery);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [type]);
 
   return (
     <>
@@ -27,6 +32,7 @@ export function Header({ initQuery, onSearch, disabled }: Props) {
         initValue={initQuery}
         placeholder='Search books by title '
         icon={<SearchIcon size={24} color={color.search} />}
+        textInputRef={inputRef}
         autoFocus
       />
 

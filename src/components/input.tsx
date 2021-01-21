@@ -1,15 +1,5 @@
 import React, { MutableRefObject, useRef } from 'react';
-import {
-  View,
-  TextStyle,
-  ViewStyle,
-  StyleSheet,
-  TextInput,
-  Insets,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  TextInputProps,
-} from 'react-native';
+import { View, TextInput, Insets, TouchableOpacity, TouchableWithoutFeedback, TextInputProps } from 'react-native';
 import mergeRefs from 'react-merge-refs';
 import { RecoilState, useRecoilState } from 'recoil';
 import { useAutofocus } from 'utils/autofocus';
@@ -31,9 +21,13 @@ const hitSlop: Insets = { top: 10, right: 20, bottom: 10, left: 20 };
 
 export function Input(props: Props) {
   const { state, icon, onSubmit, disabled, initValue, autoFocus, textColor, textInputRef, ...textInput } = props;
-  const inputRef = useAutofocus([initValue]);
+  const inputRef = useAutofocus([initValue], autoFocus);
   const [value, onChange] = useRecoilState(state);
   const { s, color } = useSColor(ds);
+  const clear = () => {
+    onChange('');
+    inputRef.current?.focus();
+  };
 
   return (
     <TouchableWithoutFeedback testID='container' onPress={() => inputRef.current?.focus()}>
@@ -49,13 +43,13 @@ export function Input(props: Props) {
           onSubmitEditing={onSubmit}
           returnKeyType='search'
           placeholderTextColor={color.search}
-          ref={mergeRefs([autoFocus && inputRef, textInputRef])}
+          ref={mergeRefs([inputRef, textInputRef])}
           autoFocus={autoFocus}
           {...textInput}
         />
 
         {!!value && !disabled && (
-          <TouchableOpacity testID='clear' style={s.clear} onPress={() => onChange('')} hitSlop={hitSlop}>
+          <TouchableOpacity testID='clear' style={s.clear} onPress={clear} hitSlop={hitSlop}>
             <ClearIcon />
           </TouchableOpacity>
         )}
