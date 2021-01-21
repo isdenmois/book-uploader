@@ -1,22 +1,26 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   export let disabled;
+  let queryInput;
 
   const dispatch = createEventDispatcher();
 
-  function handleSubmit(event) {
-    const formData = new FormData(event.target);
+  onMount(() => {
+    const params = new URLSearchParams(location.search);
+    queryInput.value = params.get('q') || '';
+  });
 
-    dispatch('search', { query: formData.get('query') });
+  function handleSubmit() {
+    dispatch('search', { query: queryInput.value });
   }
 </script>
+
+<form on:submit|preventDefault={handleSubmit}>
+  <input bind:this={queryInput} name="query" autofocus placeholder="Search books" {disabled} />
+</form>
 
 <style>
   input {
     width: 100%;
   }
 </style>
-
-<form on:submit|preventDefault={handleSubmit}>
-  <input name="query" autofocus placeholder="Search books" {disabled} />
-</form>
