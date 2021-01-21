@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import RNFS from 'react-native-fs';
-import { ActivityIndicator, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { useDeepLink } from 'utils/deep-link';
+import { useNavigation } from '@react-navigation/native';
 import { TabBar } from 'components/tab-bar';
 import { SearchScreen } from './search/search.screen';
 import { UploadScreen } from './upload/upload.screen';
@@ -12,60 +11,29 @@ import { ProfileScreen } from './profile/profile.screen';
 const Tab = createBottomTabNavigator();
 
 export function MainScreen() {
-  const screen = useInitialScreen();
-  const initQuery = useInitialQuery();
-
-  if (screen === null || initQuery === null) {
-    return <ActivityIndicator size='large' color='red' />;
-  }
+  useInitialScreen();
 
   return (
-    <Tab.Navigator initialRouteName={screen} tabBar={TabBar}>
-      <Tab.Screen name='search' component={SearchScreen} initialParams={{ initQuery }} />
+    <Tab.Navigator tabBar={TabBar}>
+      <Tab.Screen name='search' component={SearchScreen} />
       <Tab.Screen name='upload' component={UploadScreen} />
       <Tab.Screen name='profile' component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
 
-export function useInitialQuery(): string {
-  const [initQuery, setQuery] = useState<string>(null);
-  const navigation = useNavigation();
-  const onLink = useCallback(link => {
-    if (link) {
-      link = link.replace('booksearch://', '');
-
-      if (isTabsInitialized(navigation, 'home')) {
-        navigation.navigate('search', { initQuery: link });
-      }
-    }
-
-    setQuery(link || '');
-  }, []);
-
-  useDeepLink(onLink);
-
-  return initQuery;
-}
-
 const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/;
 
 export function useInitialScreen() {
-  const [screen, setScreen] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     Promise.all([RNFS.readDir(RNFS.DocumentDirectoryPath), Linking.getInitialURL()]).then(([books, initialUrl]) => {
       books = books.filter(f => f.name.match(FILE_NAME));
-      setScreen(books.length && !initialUrl ? 'upload' : 'search');
+
+      if (books.length && !initialUrl) {
+        navigation.navigate('upload');
+      }
     });
   }, []);
-
-  return screen;
-}
-
-function isTabsInitialized(navigation: NavigationProp<any>, screenName: string): boolean {
-  const state = navigation.dangerouslyGetState();
-  const screen = state?.routes?.find(s => s.name === screenName);
-
-  return Boolean(screen && screen.state);
 }
