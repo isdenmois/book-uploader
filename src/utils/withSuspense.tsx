@@ -1,17 +1,20 @@
 import React, { Suspense } from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
-import * as colors from 'theme/colors';
-
-const loader = <ActivityIndicator size='large' color={colors.SearchSelected} style={{ marginTop: 15, flex: 1 }} />;
+import { useColor } from 'theme/colors';
 
 export function withSuspense<T>(Component: T): T {
   const CMP: any = Component;
 
-  return (props => (
-    <Suspense fallback={loader}>
-      <CMP {...props} />
-    </Suspense>
-  )) as any;
+  return (props => {
+    const color = useColor();
+    const loader = <ActivityIndicator size='large' color={color.searchSelected} style={{ marginTop: 15, flex: 1 }} />;
+
+    return (
+      <Suspense fallback={loader}>
+        <CMP {...props} />
+      </Suspense>
+    );
+  }) as any;
 }
 
 export function catchPromise<T>(promise: Promise<T>, errorValue: T = null) {

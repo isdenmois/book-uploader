@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import * as colors from 'theme/colors';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { DynamicStyleSheet, useDarkModeContext } from 'react-native-dynamic';
+import { getColor, dynamicColor } from 'theme/colors';
 import { AccountIcon, SearchIcon, UploadIcon } from './icons';
 
 const COLORS = {
-  search: [colors.SearchBackground, colors.SearchText],
-  upload: [colors.UploadBackground, colors.UploadText],
-  profile: [colors.ProfileBackground, colors.ProfileText],
+  search: [dynamicColor.searchBackground, dynamicColor.searchText],
+  upload: [dynamicColor.uploadBackground, dynamicColor.uploadText],
+  profile: [dynamicColor.profileBackground, dynamicColor.profileText],
 };
 const ICONS = {
   search: SearchIcon,
@@ -14,7 +15,13 @@ const ICONS = {
   profile: AccountIcon,
 };
 
+export const tabBar = props => <TabBar {...props} />;
+
 export function TabBar({ state, descriptors, navigation }) {
+  const mode = useDarkModeContext();
+  const s = ds[mode];
+  const color = getColor(mode);
+
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
   if (focusedOptions.tabBarVisible === false) {
@@ -39,13 +46,13 @@ export function TabBar({ state, descriptors, navigation }) {
           }
         };
 
-        const [backgroundColor, textColor] = COLORS[routeName];
+        const [backgroundColor, textColor] = COLORS[routeName].map(c => c[mode]);
         const Icon = ICONS[routeName];
 
         return (
           <TouchableOpacity key={route.name} onPress={onPress} style={s.tab}>
             <View style={[s.tabRound, { backgroundColor: isFocused ? backgroundColor : null }]}>
-              <Icon size={25} color={isFocused ? textColor : colors.TabText} fill={isFocused} />
+              <Icon size={25} color={isFocused ? textColor : color.tabText} fill={isFocused} />
               {isFocused && <Text style={[s.text, { color: textColor }]}>{capitalize(route.name)}</Text>}
             </View>
           </TouchableOpacity>
@@ -59,23 +66,23 @@ function capitalize(str: string) {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
-    backgroundColor: colors.TabsBackground,
+    backgroundColor: dynamicColor.tabsBackground,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(0, 0, 0, .16)',
     elevation: 8,
-  } as ViewStyle,
-  tab: { flex: 1, paddingVertical: 10, alignItems: 'center' } as ViewStyle,
+  },
+  tab: { flex: 1, paddingVertical: 10, alignItems: 'center' },
   tabRound: {
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingVertical: 7,
     borderRadius: 32,
     alignItems: 'center',
-  } as ViewStyle,
+  },
   text: {
     marginLeft: 6,
-  } as TextStyle,
+  },
 });

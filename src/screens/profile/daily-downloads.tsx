@@ -1,13 +1,15 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { ProgressBar } from 'components/progress-bar';
 import React, { useCallback, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 import { useRecoilValue } from 'recoil';
 import { getDailyDownloads } from 'services/api/daily-downloads';
-import * as colors from 'theme/colors';
+import { dynamicColor, useSColor } from 'theme/colors';
 import { profileState } from './profile.state';
 
 export function DailyDownloads() {
+  const { s, color } = useSColor(ds);
   const { loading, count, max, resetTime } = useDownloadCount();
   const progress = max > 0 ? Math.round((count / max) * 100) : 0;
 
@@ -15,10 +17,10 @@ export function DailyDownloads() {
     <View>
       <Text style={s.downloads}>Daily downloads {resetTime ? `(${resetTime})` : ''}</Text>
 
-      {loading && <ActivityIndicator size='large' color={colors.ProfileSelected} />}
+      {loading && <ActivityIndicator size='large' color={color.profileSelected} />}
 
       {!loading && (
-        <ProgressBar progress={progress} color={colors.ProfileSelected} text={`${count} / ${max}`} showAlways />
+        <ProgressBar progress={progress} color={color.profileSelected} text={`${count} / ${max}`} showAlways />
       )}
     </View>
   );
@@ -51,12 +53,12 @@ function useDownloadCount() {
   return { loading, count, max, resetTime };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   downloads: {
-    color: colors.ProfileText,
+    color: dynamicColor.profileText,
     fontSize: 16,
     marginTop: 30,
     marginBottom: 5,
     textAlign: 'center',
-  } as TextStyle,
+  },
 });

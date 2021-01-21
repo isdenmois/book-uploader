@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { QrIcon } from 'components/icons';
 import { addressState } from 'services/address';
-import * as colors from 'theme/colors';
+import { dynamicColor, useSColor } from 'theme/colors';
 import { uploadState, UPLOAD_STATE } from './upload.state';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 const titles: Record<UPLOAD_STATE, string> = {
   SCAN: 'Upload',
@@ -20,6 +21,7 @@ export function UploadHeader() {
   const address = useRecoilValue(addressState);
   const navigation = useNavigation();
   const openQrScanner = useCallback(() => navigation.navigate('scan', { scan: true }), []);
+  const { s, color } = useSColor(ds);
 
   return (
     <View style={s.container}>
@@ -28,28 +30,28 @@ export function UploadHeader() {
         <Text style={s.address}>{address}</Text>
       </View>
 
-      {state === 'IDLE' && <QrIcon size={25} color={colors.UploadText} onPress={openQrScanner} />}
+      {state === 'IDLE' && <QrIcon size={25} color={color.uploadText} onPress={openQrScanner} />}
     </View>
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
     paddingTop: 20,
     paddingLeft: 15,
     paddingRight: 15,
     alignItems: 'center',
-  } as ViewStyle,
+  },
   titleRow: {
     flex: 1,
-  } as ViewStyle,
+  },
   title: {
     fontSize: 24,
-    color: colors.UploadText,
-  } as TextStyle,
+    color: dynamicColor.uploadText,
+  },
   address: {
-    color: colors.Secondary,
+    color: dynamicColor.secondary,
     fontSize: 12,
-  } as TextStyle,
+  },
 });

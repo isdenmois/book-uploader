@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { slugify } from 'transliteration';
-import { Text, View, TouchableOpacity, ToastAndroid, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import * as colors from 'theme/colors';
+import { Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
+import { dynamicColor, useSColor } from 'theme/colors';
 import * as api from 'services/api/book-download';
 import { FileIcon } from 'components/icons';
 import { useConfirm } from 'utils/confirm';
 import { ProgressBar } from 'components/progress-bar';
 import { BookItem as IBookItem } from 'services/api/types';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 type Props = {
   item: IBookItem;
@@ -14,12 +15,13 @@ type Props = {
 
 export function BookItem({ item }: Props) {
   const [progress, onPress] = useDownload(item);
+  const { s, color } = useSColor(ds);
   const other = [item.size, item.lang, item.translation].filter(p => p).join(', ');
 
   return (
     <TouchableOpacity style={s.container} onPress={onPress} testID='book-item'>
       <View style={s.row}>
-        <FileIcon size={40} color={colors.SearchSelected} text={item.ext.replace('.zip', '')} />
+        <FileIcon size={40} color={color.searchSelected} text={item.ext.replace('.zip', '')} />
 
         <View style={s.common}>
           <Text style={s.secondary}>{item.authors}</Text>
@@ -28,7 +30,7 @@ export function BookItem({ item }: Props) {
         </View>
       </View>
 
-      <ProgressBar progress={progress} color={colors.SearchSelected} />
+      <ProgressBar progress={progress} color={color.searchSelected} />
     </TouchableOpacity>
   );
 }
@@ -56,24 +58,24 @@ export function useDownload(file: IBookItem) {
   return [progress, onPress] as const;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     marginBottom: 20,
     overflow: 'hidden',
-  } as ViewStyle,
+  },
   row: {
     flexDirection: 'row',
-  } as ViewStyle,
+  },
   common: {
     marginLeft: 10,
     flex: 1,
-  } as ViewStyle,
+  },
   title: {
     fontSize: 16,
-    color: colors.SearchText,
-  } as TextStyle,
+    color: dynamicColor.searchText,
+  },
   secondary: {
     fontSize: 12,
-    color: colors.Secondary,
-  } as TextStyle,
+    color: dynamicColor.secondary,
+  },
 });

@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 import { Linking } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { TabBar } from 'components/tab-bar';
+import { tabBar } from 'components/tab-bar';
 import { SearchScreen } from './search/search.screen';
 import { UploadScreen } from './upload/upload.screen';
 import { ProfileScreen } from './profile/profile.screen';
@@ -14,7 +14,7 @@ export function MainScreen() {
   useInitialScreen();
 
   return (
-    <Tab.Navigator tabBar={TabBar}>
+    <Tab.Navigator tabBar={tabBar}>
       <Tab.Screen name='search' component={SearchScreen} />
       <Tab.Screen name='upload' component={UploadScreen} />
       <Tab.Screen name='profile' component={ProfileScreen} />

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 import { ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Text, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import * as colors from 'theme/colors';
+import { dynamicColor, useSColor } from 'theme/colors';
 import { Dialog } from 'components/dialog';
 import { addressState } from 'services/address';
 import { SuccessIcon } from 'components/icons';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 type Props = {
   navigation: StackNavigationProp<ParamListBase>;
@@ -16,6 +17,7 @@ type Props = {
 export function ScanScreen({ navigation }: Props) {
   const [success, setSuccess] = useState(false);
   const address = useRecoilValue(addressState);
+  const { s, color } = useSColor(ds);
 
   const onScan = useRecoilCallback(
     ({ set }) => ({ data }) => {
@@ -33,7 +35,7 @@ export function ScanScreen({ navigation }: Props) {
     <Dialog>
       {success && (
         <View style={[s.camera, s.success]}>
-          <SuccessIcon size={100} />
+          <SuccessIcon size={100} color={color.success} />
           <Text style={s.address}>{address}</Text>
         </View>
       )}
@@ -52,19 +54,19 @@ export function ScanScreen({ navigation }: Props) {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   camera: {
     width: 250,
     height: 250,
-  } as ViewStyle,
+  },
   success: {
     paddingTop: 50,
     paddingBottom: 30,
     alignItems: 'center',
     justifyContent: 'space-between',
-  } as ViewStyle,
+  },
   address: {
-    color: colors.TabText,
+    color: dynamicColor.uploadText,
     fontSize: 20,
-  } as TextStyle,
+  },
 });

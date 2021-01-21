@@ -1,5 +1,6 @@
 package com.bookuploader;
 
+import android.content.res.Configuration;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -11,5 +12,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "BookUploader";
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+      super.onConfigurationChanged(newConfig);
+      getReactInstanceManager().onConfigurationChanged(this, newConfig);
   }
 }

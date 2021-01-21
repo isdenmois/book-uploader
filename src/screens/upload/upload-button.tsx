@@ -1,18 +1,20 @@
 import React from 'react';
-import { Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text } from 'react-native';
 import RNFS from 'react-native-fs';
 import { uploadFile } from 'services/api/upload';
 import { EbookParser } from 'services/book-parser';
 import { addressState } from 'services/address';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import * as colors from 'theme/colors';
+import { dynamicColor } from 'theme/colors';
 import { useRecoilValue } from 'recoil';
 import { fileFamily, filesState, uploadState } from './upload.state';
 import { useSnapshotCallback } from 'utils/recoil';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 
 export function UploadButton() {
   const isButtonVisible = useUploadVisible();
   const startUpload = useUpload();
+  const s = useDynamicStyleSheet(ds);
 
   if (!isButtonVisible) return null;
 
@@ -73,18 +75,18 @@ export function useUpload() {
   }, []);
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   button: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: colors.UploadSelected,
+    backgroundColor: dynamicColor.uploadSelected,
     paddingVertical: 10,
     marginHorizontal: 20,
     marginBottom: 15,
     borderRadius: 35,
-  } as ViewStyle,
+  },
   buttonText: {
-    color: colors.InvertedText,
+    color: dynamicColor.invertedText,
     fontSize: 16,
-  } as TextStyle,
+  },
 });

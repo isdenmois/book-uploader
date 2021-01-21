@@ -1,9 +1,9 @@
 import React, { useCallback, memo } from 'react';
-import { Text, View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Text, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { EbookParser } from 'services/book-parser';
 import { FileIcon, TimesIcon } from 'components/icons';
-import * as colors from 'theme/colors';
+import { dynamicColor, useSColor } from 'theme/colors';
 import FileOpener from 'react-native-file-opener';
 import { useRecoilValue } from 'recoil';
 import { useSnapshotCallback } from 'utils/recoil';
@@ -11,6 +11,7 @@ import { fileFamily, filesState, UPLOAD_STATE } from './upload.state';
 import { ProgressBar } from 'components/progress-bar';
 import { useConfirm } from 'utils/confirm';
 import { TouchableOpacity } from 'react-native';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 type Props = {
   id: string;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export const FileLine = memo(({ id, state }: Props) => {
+  const { s, color } = useSColor(ds);
   const data = useRecoilValue(fileFamily(id));
   const parseFile = useParse(id);
   const shareFile = useShare(data.path);
@@ -36,7 +38,7 @@ export const FileLine = memo(({ id, state }: Props) => {
           onLongPress={parseDisabled ? null : parseFile}
           disabled={touchDisabled}
         >
-          <FileIcon size={34} color={colors.UploadSelected} text={data.ext} />
+          <FileIcon size={34} color={color.uploadSelected} text={data.ext} />
 
           <View style={s.content}>
             {!error && !!author && <Text style={s.secondary}>{author}</Text>}
@@ -52,7 +54,7 @@ export const FileLine = memo(({ id, state }: Props) => {
         )}
       </View>
 
-      <ProgressBar progress={error ? 0 : progress} color={colors.UploadSelected} />
+      <ProgressBar progress={error ? 0 : progress} color={color.uploadSelected} />
     </View>
   );
 });
@@ -94,34 +96,34 @@ export function useRemove(id: string) {
   return useConfirm('Remove file?', data.title || data.id, removeFile);
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     marginBottom: 15,
-  } as ViewStyle,
+  },
   line: {
     flexDirection: 'row',
-  } as ViewStyle,
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-  } as ViewStyle,
+  },
   content: {
     justifyContent: 'center',
     paddingLeft: 10,
     overflow: 'hidden',
     flex: 1,
-  } as ViewStyle,
+  },
   title: {
-    color: colors.UploadText,
+    color: dynamicColor.uploadText,
     fontSize: 16,
-  } as TextStyle,
+  },
   secondary: {
-    color: colors.Secondary,
+    color: dynamicColor.secondary,
     fontSize: 12,
-  } as TextStyle,
+  },
   error: {
-    color: colors.Error,
+    color: dynamicColor.error,
     fontSize: 12,
-  } as TextStyle,
+  },
 });

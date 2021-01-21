@@ -1,12 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 import { useSetRecoilState } from 'recoil';
-import * as colors from 'theme/colors';
+import { dynamicColor } from 'theme/colors';
 import { DailyDownloads } from './daily-downloads';
 import { profileState } from './profile.state';
 
 export function ProfileData() {
   const setProfile = useSetRecoilState(profileState);
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <View style={s.container}>
@@ -23,23 +25,23 @@ export function ProfileData() {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
     paddingTop: 20,
     paddingHorizontal: 15,
     justifyContent: 'space-between',
-  } as ViewStyle,
+  },
   header: {
-    color: colors.ProfileText,
+    color: dynamicColor.profileText,
     fontSize: 24,
-  } as TextStyle,
+  },
   button: {
     alignSelf: 'center',
     marginBottom: 15,
-  } as ViewStyle,
+  },
   buttonText: {
     fontSize: 16,
-    color: colors.ProfileText,
-  } as TextStyle,
+    color: dynamicColor.profileText,
+  },
 });

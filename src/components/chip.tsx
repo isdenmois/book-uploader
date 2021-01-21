@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
-import * as colors from 'theme/colors';
+import { Text, TouchableOpacity } from 'react-native';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
+import { dynamicColor } from 'theme/colors';
 
 type Props = {
   title: string;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export function Chip({ title, selected, disabled, onPress }: Props) {
+  const s = useDynamicStyleSheet(ds);
+
   return (
     <TouchableOpacity
       style={selected ? [s.container, s.selected] : s.container}
@@ -24,25 +27,25 @@ export function Chip({ title, selected, disabled, onPress }: Props) {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: colors.SecondaryBackground,
+    borderColor: dynamicColor.secondaryBackground,
     marginLeft: 15,
-  } as ViewStyle,
+  },
   text: {
-    color: colors.Secondary,
+    color: dynamicColor.secondary,
     height: 18,
     fontSize: 14,
-  } as TextStyle,
+  },
   selected: {
-    backgroundColor: colors.SearchBackground,
-    borderColor: colors.SearchSelected,
-  } as ViewStyle,
+    backgroundColor: dynamicColor.searchBackground,
+    borderColor: dynamicColor.searchSelected,
+  },
   selectedText: {
-    color: colors.SearchText,
-  } as TextStyle,
+    color: dynamicColor.searchText,
+  },
 });

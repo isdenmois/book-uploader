@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { sendLogin } from 'services/api';
 import { INITIAL_EMAIL, INITIAL_PASSWORD } from '@env';
-import { Alert, StyleSheet, Text, TextStyle, ToastAndroid, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Alert, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import { atom, selector, useRecoilValue } from 'recoil';
 import { useSnapshotCallback } from 'utils/recoil';
-import * as colors from 'theme/colors';
+import { dynamicColor, useSColor } from 'theme/colors';
 import { Input, useNextInput } from 'components/input';
 import { profileState } from './profile.state';
 import { EmailIcon, KeyIcon } from 'components/icons';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 const emailState = atom({ key: 'email', default: INITIAL_EMAIL });
 const passwordState = atom({ key: 'password', default: INITIAL_PASSWORD });
@@ -22,6 +23,7 @@ const allowLoginSelector = selector({
 });
 
 export function Login() {
+  const { s, color } = useSColor(ds);
   const [next, goToNext] = useNextInput();
   const { loading, allowLogin, login } = useLogin();
   const disabled = !allowLogin || loading;
@@ -33,7 +35,7 @@ export function Login() {
 
         <Input
           state={emailState}
-          textColor={colors.ProfileText}
+          textColor={color.profileText}
           icon={<EmailIcon />}
           placeholder='E-Mail'
           keyboardType='email-address'
@@ -44,7 +46,7 @@ export function Login() {
         />
         <Input
           state={passwordState}
-          textColor={colors.ProfileText}
+          textColor={color.profileText}
           icon={<KeyIcon />}
           placeholder='Password'
           textContentType='password'
@@ -91,30 +93,30 @@ export function useLogin() {
   return { loading, allowLogin, login };
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-  } as ViewStyle,
+  },
   header: {
     fontSize: 24,
-    color: colors.ProfileText,
+    color: dynamicColor.profileText,
     marginTop: 20,
     marginHorizontal: 15,
-  } as TextStyle,
+  },
   button: {
     alignSelf: 'center',
-    backgroundColor: colors.ProfileSelected,
+    backgroundColor: dynamicColor.profileSelected,
     paddingHorizontal: 32,
     paddingVertical: 10,
     borderRadius: 22,
     marginBottom: 20,
-  } as ViewStyle,
+  },
   buttonDisabled: {
-    backgroundColor: colors.SecondaryBackground,
-  } as ViewStyle,
+    backgroundColor: dynamicColor.secondaryBackground,
+  },
   buttonText: {
-    color: colors.InvertedText,
+    color: dynamicColor.invertedText,
     fontSize: 16,
-  } as TextStyle,
+  },
 });

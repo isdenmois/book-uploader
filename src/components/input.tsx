@@ -13,8 +13,9 @@ import {
 import mergeRefs from 'react-merge-refs';
 import { RecoilState, useRecoilState } from 'recoil';
 import { useAutofocus } from 'utils/autofocus';
-import * as colors from 'theme/colors';
+import { dynamicColor, useSColor } from 'theme/colors';
 import { ClearIcon } from './icons';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 type Props = {
   state: RecoilState<string>;
@@ -32,6 +33,7 @@ export function Input(props: Props) {
   const { state, icon, onSubmit, disabled, initValue, autoFocus, textColor, textInputRef, ...textInput } = props;
   const inputRef = useAutofocus([initValue]);
   const [value, onChange] = useRecoilState(state);
+  const { s, color } = useSColor(ds);
 
   return (
     <TouchableWithoutFeedback testID='container' onPress={() => inputRef.current?.focus()}>
@@ -46,7 +48,7 @@ export function Input(props: Props) {
           onChangeText={onChange}
           onSubmitEditing={onSubmit}
           returnKeyType='search'
-          placeholderTextColor={colors.Search}
+          placeholderTextColor={color.search}
           ref={mergeRefs([autoFocus && inputRef, textInputRef])}
           autoFocus={autoFocus}
           {...textInput}
@@ -69,29 +71,29 @@ export function useNextInput() {
   return [next, onSubmitEditing] as const;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flexDirection: 'row',
     margin: 15,
     marginHorizontal: 15,
-    backgroundColor: colors.Input,
+    backgroundColor: dynamicColor.input,
     borderRadius: 10,
     elevation: 4,
-  } as ViewStyle,
+  },
   input: {
     flex: 1,
     fontSize: 14,
     paddingVertical: 6,
     paddingLeft: 10,
-    color: colors.SearchText,
-  } as TextStyle,
+    color: dynamicColor.searchText,
+  },
   icon: {
     marginLeft: 10,
     justifyContent: 'center',
-  } as ViewStyle,
+  },
   clear: {
     paddingHorizontal: 8,
     paddingVertical: 5,
     justifyContent: 'center',
-  } as ViewStyle,
+  },
 });

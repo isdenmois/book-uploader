@@ -1,13 +1,15 @@
 import React from 'react';
-import { Text, FlatList, StyleSheet, ViewStyle, TextStyle, Image, View } from 'react-native';
-import * as colors from 'theme/colors';
+import { Text, FlatList, Image, View } from 'react-native';
+import { dynamicColor } from 'theme/colors';
 import { BookItem } from './book-item';
 import { withSuspense } from 'utils/withSuspense';
 import { useRecoilValue } from 'recoil';
 import { booksSelector } from './search.state';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 
 export const BookList = withSuspense(() => {
   const books = useRecoilValue(booksSelector);
+  const s = useDynamicStyleSheet(ds);
 
   if (!books)
     return (
@@ -34,29 +36,29 @@ export const BookList = withSuspense(() => {
   );
 });
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   empty: {
     flex: 1,
     marginTop: 30,
-  } as ViewStyle,
+  },
   image: {
     width: '100%',
   },
   startText: {
     fontSize: 20,
-    color: colors.Search,
+    color: dynamicColor.search,
     textAlign: 'center',
-  } as TextStyle,
+  },
   emptyText: {
     fontSize: 24,
-    color: colors.Search,
+    color: dynamicColor.search,
     textAlign: 'center',
     marginTop: 20,
-  } as TextStyle,
+  },
   list: {
     marginTop: 15,
   },
   listContent: {
     paddingHorizontal: 15,
-  } as ViewStyle,
+  },
 });

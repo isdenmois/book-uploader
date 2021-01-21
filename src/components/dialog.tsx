@@ -1,10 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { TouchableWithoutFeedback, StyleSheet, View, ViewStyle } from 'react-native';
-import * as colors from 'theme/colors';
+import { TouchableWithoutFeedback, View } from 'react-native';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
+import { dynamicColor } from 'theme/colors';
 
 export function Dialog({ children }) {
   const navigation = useNavigation();
+  const s = useDynamicStyleSheet(ds);
 
   return (
     <View style={s.container}>
@@ -17,14 +19,14 @@ export function Dialog({ children }) {
   );
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
     overflow: 'hidden',
-  } as ViewStyle,
+  },
   overlay: {
     backgroundColor: '#0007',
     position: 'absolute',
@@ -34,8 +36,8 @@ const s = StyleSheet.create({
     right: 0,
   },
   content: {
-    backgroundColor: colors.ModalBackground,
+    backgroundColor: dynamicColor.modalBackground,
     borderRadius: 20,
     overflow: 'hidden',
-  } as ViewStyle,
+  },
 });

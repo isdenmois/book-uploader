@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
-import * as colors from 'theme/colors';
+import { View } from 'react-native';
+import { dynamicColor } from 'theme/colors';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilValueLoadable } from 'recoil';
 import { Header } from './header';
@@ -8,8 +8,10 @@ import { BookList } from './book-list';
 import { booksParams, booksSelector, queryState, typeState } from './search.state';
 import { useSnapshotCallback } from 'utils/recoil';
 import { useDeepLink } from 'utils/deep-link';
+import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
 
 export function SearchScreen() {
+  const s = useDynamicStyleSheet(ds);
   const initQuery = useInitialQuery();
   const disabled = useRecoilValueLoadable(booksSelector).state === 'loading';
   const onSearch = useSnapshotCallback(({ get, set }) => {
@@ -44,10 +46,10 @@ function useInitialQuery(): string {
   return initQuery;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
     position: 'relative',
-    backgroundColor: colors.Background,
-  } as ViewStyle,
+    backgroundColor: dynamicColor.background,
+  },
 });

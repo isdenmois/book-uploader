@@ -1,23 +1,25 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import RNFS from 'react-native-fs';
-import * as colors from 'theme/colors';
+import { dynamicColor, useSColor } from 'theme/colors';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { FileLine } from './file-line';
 import { filesState, uploadState } from './upload.state';
 import { UploadHeader } from './header';
 import { UploadButton } from './upload-button';
+import { DynamicStyleSheet } from 'react-native-dynamic';
 
 export function UploadScreen() {
   const files = useFiles();
   const state = useRecoilValue(uploadState);
+  const { s, color } = useSColor(ds);
 
   return (
     <View style={s.container}>
       <UploadHeader />
 
-      {state === 'SCAN' && <ActivityIndicator style={s.loader} size='large' color={colors.UploadSelected} />}
+      {state === 'SCAN' && <ActivityIndicator style={s.loader} size='large' color={color.uploadSelected} />}
 
       <View style={s.files}>
         {files.map(name => (
@@ -52,9 +54,10 @@ export function useFiles() {
   return files;
 }
 
-const s = StyleSheet.create({
+const ds = new DynamicStyleSheet({
   container: {
     flex: 1,
+    backgroundColor: dynamicColor.background,
   },
   loader: {
     flex: 1,

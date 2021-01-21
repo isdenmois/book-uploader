@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import * as colors from 'theme/colors';
+import { useColor } from 'theme/colors';
 import { Input } from 'components/input';
 import { SearchIcon } from 'components/icons';
 import { Chip } from 'components/chip';
@@ -15,6 +15,7 @@ type Props = {
 
 export function Header({ initQuery, onSearch, disabled }: Props) {
   const [type, setZLib, setFlibusta] = useType();
+  const color = useColor();
   useInitQuery(initQuery);
 
   return (
@@ -25,7 +26,7 @@ export function Header({ initQuery, onSearch, disabled }: Props) {
         disabled={disabled}
         initValue={initQuery}
         placeholder='Search books by title '
-        icon={<SearchIcon size={24} color={colors.Search} />}
+        icon={<SearchIcon size={24} color={color.search} />}
         autoFocus
       />
 
