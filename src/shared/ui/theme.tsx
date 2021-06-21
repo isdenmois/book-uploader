@@ -27,6 +27,11 @@ export const theme = createTheme({
     defaults: {
       fontSize: 16,
     },
+    secondary: {
+      fontSize: 12,
+      lineHeight: 14,
+      color: 'secondary',
+    },
     chip: {
       fontSize: 14,
       lineHeight: 18,

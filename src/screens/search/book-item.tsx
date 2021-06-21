@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { slugify } from 'transliteration'
-import { View, TouchableOpacity, ToastAndroid } from 'react-native'
-import * as api from 'shared/api/book-download'
-import { FileIcon } from 'shared/ui/icons'
+import { ToastAndroid } from 'react-native'
+
 import { useConfirm } from 'shared/utils'
-import { ProgressBar } from 'shared/ui/progress-bar'
 import { BookItem as IBookItem } from 'shared/api/types'
-import { StyleSheet } from 'react-native'
-import { Text } from 'shared/ui'
+import { Item, FileIcon, ProgressBar } from 'shared/ui'
+import * as api from 'shared/api/book-download'
 
 type Props = {
   item: IBookItem
@@ -18,23 +16,16 @@ export function BookItem({ item }: Props) {
   const other = [item.size, item.lang, item.translation].filter(p => p).join(', ')
 
   return (
-    <TouchableOpacity style={s.container} onPress={onPress} testID='book-item'>
-      <View style={s.row}>
-        <FileIcon size={40} color='searchSelected' text={item.ext.replace('.zip', '')} />
+    <Item
+      mb={3}
+      onPress={onPress}
+      testID='book-item'
+      progress={<ProgressBar progress={progress} color='searchSelected' />}
+    >
+      <FileIcon size={40} color='searchSelected' text={item.ext.replace('.zip', '')} />
 
-        <View style={s.common}>
-          <Text style={s.secondary} color='secondary'>
-            {item.authors}
-          </Text>
-          <Text style={s.title} color='searchText'>
-            {item.title}
-          </Text>
-          {!!other && <Text style={s.secondary}>{other}</Text>}
-        </View>
-      </View>
-
-      <ProgressBar progress={progress} color='searchSelected' />
-    </TouchableOpacity>
+      <Item.Text suptitle={item.authors} title={item.title} subtitle={other} />
+    </Item>
   )
 }
 
@@ -60,23 +51,3 @@ export function useDownload(file: IBookItem) {
 
   return [progress, onPress] as const
 }
-
-const s = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-    overflow: 'hidden',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  common: {
-    marginLeft: 10,
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-  },
-  secondary: {
-    fontSize: 12,
-  },
-})

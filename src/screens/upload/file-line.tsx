@@ -1,13 +1,12 @@
 import React, { useCallback, memo } from 'react'
-import { View } from 'react-native'
 import RNFS from 'react-native-fs'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import FileOpener from 'react-native-file-opener'
 
 import { EbookParser } from 'shared/native'
 import { useRecoilValue } from 'recoil'
 import { useConfirm, useSnapshotCallback } from 'shared/utils'
-import { Text, ProgressBar, FileIcon, TimesIcon } from 'shared/ui'
+import { ProgressBar, FileIcon, TimesIcon, Item } from 'shared/ui'
 import { fileFamily, filesState, UPLOAD_STATE } from './upload.state'
 
 type Props = {
@@ -26,42 +25,23 @@ export const FileLine = memo(({ id, state }: Props) => {
   const parseDisabled = touchDisabled || data.isParsed
 
   return (
-    <View style={s.container}>
-      <View style={s.line}>
-        <TouchableOpacity
-          style={s.row}
-          onPress={shareFile}
-          onLongPress={parseDisabled ? null : parseFile}
-          disabled={touchDisabled}
-        >
-          <FileIcon size={34} color='uploadSelected' text={data.ext} />
+    <Item
+      mb={3}
+      onPress={shareFile}
+      onLongPress={parseDisabled ? null : parseFile}
+      disabled={touchDisabled}
+      progress={<ProgressBar progress={error ? 0 : progress} color='uploadSelected' />}
+    >
+      <FileIcon size={34} color='uploadSelected' text={data.ext} />
 
-          <View style={s.content}>
-            {!error && !!author && (
-              <Text style={s.secondary} color='secondary'>
-                {author}
-              </Text>
-            )}
-            <Text style={s.title} color='uploadText'>
-              {data.title}
-            </Text>
-            {!!error && (
-              <Text style={s.error} color='error'>
-                {error}
-              </Text>
-            )}
-          </View>
+      <Item.Text suptitle={author} title={data.title} error={error} />
+
+      {!touchDisabled && (
+        <TouchableOpacity onPress={removeFile}>
+          <TimesIcon />
         </TouchableOpacity>
-
-        {!touchDisabled && (
-          <TouchableOpacity onPress={removeFile}>
-            <TimesIcon />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      <ProgressBar progress={error ? 0 : progress} color='uploadSelected' />
-    </View>
+      )}
+    </Item>
   )
 })
 
@@ -101,32 +81,3 @@ export function useRemove(id: string) {
 
   return useConfirm('Remove file?', data.title || data.id, removeFile)
 }
-
-const s = StyleSheet.create({
-  container: {
-    marginBottom: 15,
-  },
-  line: {
-    flexDirection: 'row',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  content: {
-    justifyContent: 'center',
-    paddingLeft: 10,
-    overflow: 'hidden',
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-  },
-  secondary: {
-    fontSize: 12,
-  },
-  error: {
-    fontSize: 12,
-  },
-})
