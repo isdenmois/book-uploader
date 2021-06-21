@@ -15,7 +15,7 @@
     "rootDirs": ["./src"],
     "paths": {
       "*": ["./src/*"],
-      "api": ["./src/services/api"]
+      "api": ["src/shared/api"]
     }
   },
   "exclude": ["dev-tools", "node_modules", "babel.config.js", "metro.config.js"]

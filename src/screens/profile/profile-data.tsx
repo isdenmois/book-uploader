@@ -1,31 +1,33 @@
-import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
-import { useSetRecoilState } from 'recoil';
-import { dynamicColor } from 'theme/colors';
-import { DailyDownloads } from './daily-downloads';
-import { profileState } from './profile.state';
+import React from 'react'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { useSetRecoilState } from 'recoil'
+import { Text } from 'shared/ui'
+import { DailyDownloads } from './daily-downloads'
+import { profileState } from './profile.state'
 
 export function ProfileData() {
-  const setProfile = useSetRecoilState(profileState);
-  const s = useDynamicStyleSheet(ds);
+  const setProfile = useSetRecoilState(profileState)
 
   return (
     <View style={s.container}>
       <View>
-        <Text style={s.header}>Profile</Text>
+        <Text style={s.header} color='profileText'>
+          Profile
+        </Text>
 
         <DailyDownloads />
       </View>
 
       <TouchableOpacity style={s.button} onPress={() => setProfile(null)}>
-        <Text style={s.buttonText}>log out</Text>
+        <Text style={s.buttonText} color='profileText'>
+          log out
+        </Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
-const ds = new DynamicStyleSheet({
+const s = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
@@ -33,7 +35,6 @@ const ds = new DynamicStyleSheet({
     justifyContent: 'space-between',
   },
   header: {
-    color: dynamicColor.profileText,
     fontSize: 24,
   },
   button: {
@@ -42,6 +43,5 @@ const ds = new DynamicStyleSheet({
   },
   buttonText: {
     fontSize: 16,
-    color: dynamicColor.profileText,
   },
-});
+})

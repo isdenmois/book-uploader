@@ -8,5 +8,6 @@ module.exports = {
     'jsx-quotes': ['error', 'prefer-single'],
     'react-hooks/exhaustive-deps': ['warn'],
     curly: 0,
+    semi: 0,
   },
-};
+}

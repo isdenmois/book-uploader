@@ -1,42 +1,44 @@
-import React, { useState } from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { ParamListBase } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Text, View } from 'react-native';
-import { RNCamera } from 'react-native-camera';
-import { dynamicColor, useSColor } from 'theme/colors';
-import { Dialog } from 'components/dialog';
-import { addressState } from 'services/address';
-import { SuccessIcon } from 'components/icons';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import React, { useState } from 'react'
+import { useRecoilCallback, useRecoilValue } from 'recoil'
+import { ParamListBase } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { View } from 'react-native'
+import { RNCamera } from 'react-native-camera'
+import { Dialog } from 'shared/ui/dialog'
+import { addressState } from 'entities/upload-address'
+import { SuccessIcon } from 'shared/ui/icons'
+import { Text } from 'shared/ui'
+import { StyleSheet } from 'react-native'
 
 type Props = {
-  navigation: StackNavigationProp<ParamListBase>;
-};
+  navigation: StackNavigationProp<ParamListBase>
+}
 
 export function ScanScreen({ navigation }: Props) {
-  const [success, setSuccess] = useState(false);
-  const address = useRecoilValue(addressState);
-  const { s, color } = useSColor(ds);
+  const [success, setSuccess] = useState(false)
+  const address = useRecoilValue(addressState)
 
   const onScan = useRecoilCallback(
     ({ set }) => ({ data }) => {
-      if (!data) return;
+      if (!data) return
 
-      set(addressState, data.replace('http://', '').replace(/:\d+$/, ''));
-      setSuccess(true);
+      set(addressState, data.replace('http://', '').replace(/:\d+$/, ''))
+      setSuccess(true)
 
-      setTimeout(() => navigation.goBack(), 2000);
+      setTimeout(() => navigation.goBack(), 2000)
     },
     [],
-  );
+  )
 
   return (
     <Dialog>
       {success && (
         <View style={[s.camera, s.success]}>
-          <SuccessIcon size={100} color={color.success} />
-          <Text style={s.address}>{address}</Text>
+          <SuccessIcon size={100} color='success' />
+
+          <Text fontSize={20} color='uploadText'>
+            {address}
+          </Text>
         </View>
       )}
       {!success && (
@@ -51,10 +53,10 @@ export function ScanScreen({ navigation }: Props) {
         />
       )}
     </Dialog>
-  );
+  )
 }
 
-const ds = new DynamicStyleSheet({
+const s = StyleSheet.create({
   camera: {
     width: 250,
     height: 250,
@@ -65,8 +67,4 @@ const ds = new DynamicStyleSheet({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  address: {
-    color: dynamicColor.uploadText,
-    fontSize: 20,
-  },
-});
+})

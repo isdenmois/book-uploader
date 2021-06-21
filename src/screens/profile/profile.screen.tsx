@@ -1,28 +1,19 @@
-import React from 'react';
-import { View } from 'react-native';
-import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
-import { useRecoilValue } from 'recoil';
-import { dynamicColor } from 'theme/colors';
-import { Login } from './login';
-import { ProfileData } from './profile-data';
-import { profileState } from './profile.state';
+import React from 'react'
+import { useRecoilValue } from 'recoil'
+
+import { Box } from 'shared/ui'
+
+import { Login } from './login'
+import { ProfileData } from './profile-data'
+import { profileState } from './profile.state'
 
 export function ProfileScreen() {
-  const profile = useRecoilValue(profileState);
-  const s = useDynamicStyleSheet(ds);
+  const profile = useRecoilValue(profileState)
 
   return (
-    <View style={s.container}>
+    <Box flex={1} backgroundColor='background'>
       {!!profile && <ProfileData />}
       {!profile && <Login />}
-    </View>
-  );
+    </Box>
+  )
 }
-
-const ds = new DynamicStyleSheet({
-  container: {
-    flex: 1,
-    position: 'relative',
-    backgroundColor: dynamicColor.background,
-  },
-});

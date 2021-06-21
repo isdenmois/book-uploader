@@ -1,30 +1,27 @@
-import React, { useEffect, useRef } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { TextInput, StyleSheet, View, ViewStyle, ScrollView } from 'react-native';
-import { useColor } from 'theme/colors';
-import { Input } from 'components/input';
-import { SearchIcon } from 'components/icons';
-import { Chip } from 'components/chip';
-import { booksParams, extensionState, queryState, typeState } from './search.state';
+import React, { useEffect, useRef } from 'react'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { TextInput, StyleSheet, View, ViewStyle, ScrollView } from 'react-native'
+import { SearchIcon } from 'shared/ui/icons'
+import { Chip, Input } from 'shared/ui'
+import { booksParams, extensionState, queryState, typeState } from './search.state'
 
 type Props = {
-  initQuery?: string;
-  onSearch: () => void;
-  disabled?: boolean;
-};
+  initQuery?: string
+  onSearch: () => void
+  disabled?: boolean
+}
 
 export function Header({ initQuery, onSearch, disabled }: Props) {
-  const inputRef = useRef<TextInput>();
-  const [type, setZLib, setFlibusta] = useType();
-  const [extension, setEPUB, setFB2] = useExtension();
-  const color = useColor();
-  useInitQuery(initQuery);
+  const inputRef = useRef<TextInput>()
+  const [type, setZLib, setFlibusta] = useType()
+  const [extension, setEPUB, setFB2] = useExtension()
+  useInitQuery(initQuery)
 
   useEffect(() => {
-    inputRef.current?.focus();
-  }, [type, extension]);
+    inputRef.current?.focus()
+  }, [type, extension])
 
-  const isZLib = type === 'zlib';
+  const isZLib = type === 'zlib'
 
   return (
     <>
@@ -34,7 +31,7 @@ export function Header({ initQuery, onSearch, disabled }: Props) {
         disabled={disabled}
         initValue={initQuery}
         placeholder='Search books by title '
-        icon={<SearchIcon size={24} color={color.search} />}
+        icon={<SearchIcon size={24} color='search' />}
         textInputRef={inputRef}
         autoFocus
       />
@@ -51,37 +48,37 @@ export function Header({ initQuery, onSearch, disabled }: Props) {
         </ScrollView>
       </View>
     </>
-  );
+  )
 }
 
 function useInitQuery(initQuery) {
-  const setQuery = useSetRecoilState(queryState);
+  const setQuery = useSetRecoilState(queryState)
 
   useEffect(() => {
-    setQuery(initQuery || '');
-  }, [initQuery]);
+    setQuery(initQuery || '')
+  }, [initQuery])
 }
 
 export function useType() {
-  const setParams = useSetRecoilState(booksParams);
-  const [type, setType] = useRecoilState(typeState);
+  const setParams = useSetRecoilState(booksParams)
+  const [type, setType] = useRecoilState(typeState)
 
-  const setZLib = () => (setType('zlib'), setParams(null));
-  const setFlibusta = () => (setType('flibusta'), setParams(null));
+  const setZLib = () => (setType('zlib'), setParams(null))
+  const setFlibusta = () => (setType('flibusta'), setParams(null))
 
-  return [type, setZLib, setFlibusta] as const;
+  return [type, setZLib, setFlibusta] as const
 }
 
 function useExtension() {
-  const setParams = useSetRecoilState(booksParams);
-  const [extension, setExtension] = useRecoilState(extensionState);
+  const setParams = useSetRecoilState(booksParams)
+  const [extension, setExtension] = useRecoilState(extensionState)
 
-  const setEPUB = () => (setExtension('epub'), setParams(null));
-  const setFB2 = () => (setExtension('fb2'), setParams(null));
+  const setEPUB = () => (setExtension('epub'), setParams(null))
+  const setFB2 = () => (setExtension('fb2'), setParams(null))
 
-  return [extension, setEPUB, setFB2] as const;
+  return [extension, setEPUB, setFB2] as const
 }
 
 const s = StyleSheet.create({
   placeholder: { width: 20 } as ViewStyle,
-});
+})

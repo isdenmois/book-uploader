@@ -1,23 +1,23 @@
-import React from 'react';
-import { Text, FlatList, Image, View } from 'react-native';
-import { dynamicColor } from 'theme/colors';
-import { BookItem } from './book-item';
-import { withSuspense } from 'utils/withSuspense';
-import { useRecoilValue } from 'recoil';
-import { booksSelector } from './search.state';
-import { DynamicStyleSheet, useDynamicStyleSheet } from 'react-native-dynamic';
+import React from 'react'
+import { FlatList, Image, View } from 'react-native'
+import { BookItem } from './book-item'
+import { Text, withSuspense } from 'shared/ui'
+import { useRecoilValue } from 'recoil'
+import { booksSelector } from './search.state'
+import { StyleSheet } from 'react-native'
 
 export const BookList = withSuspense(() => {
-  const books = useRecoilValue(booksSelector);
-  const s = useDynamicStyleSheet(ds);
+  const books = useRecoilValue(booksSelector)
 
   if (!books)
     return (
       <View style={s.empty}>
         <Image style={s.image} source={require('./img/start-search.png')} fadeDuration={0} resizeMode='contain' />
-        <Text style={s.startText}>Start search books to see a result</Text>
+        <Text style={s.startText} color='search'>
+          Start search books to see a result
+        </Text>
       </View>
-    );
+    )
 
   return (
     <FlatList
@@ -29,14 +29,16 @@ export const BookList = withSuspense(() => {
       ListEmptyComponent={
         <View style={s.empty}>
           <Image style={s.image} source={require('./img/no-result.png')} fadeDuration={0} resizeMode='contain' />
-          <Text style={s.emptyText}>Nothing has found</Text>
+          <Text style={s.emptyText} color='search'>
+            Nothing has found
+          </Text>
         </View>
       }
     />
-  );
-});
+  )
+})
 
-const ds = new DynamicStyleSheet({
+const s = StyleSheet.create({
   empty: {
     flex: 1,
     marginTop: 30,
@@ -46,12 +48,10 @@ const ds = new DynamicStyleSheet({
   },
   startText: {
     fontSize: 20,
-    color: dynamicColor.search,
     textAlign: 'center',
   },
   emptyText: {
     fontSize: 24,
-    color: dynamicColor.search,
     textAlign: 'center',
     marginTop: 20,
   },
@@ -61,4 +61,4 @@ const ds = new DynamicStyleSheet({
   listContent: {
     paddingHorizontal: 15,
   },
-});
+})

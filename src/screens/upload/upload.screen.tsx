@@ -1,25 +1,25 @@
-import React, { useCallback } from 'react';
-import { View, ActivityIndicator } from 'react-native';
-import RNFS from 'react-native-fs';
-import { dynamicColor, useSColor } from 'theme/colors';
-import { useFocusEffect } from '@react-navigation/native';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { FileLine } from './file-line';
-import { filesState, uploadState } from './upload.state';
-import { UploadHeader } from './header';
-import { UploadButton } from './upload-button';
-import { DynamicStyleSheet } from 'react-native-dynamic';
+import React, { useCallback } from 'react'
+import { StyleSheet, View } from 'react-native'
+import RNFS from 'react-native-fs'
+import { useFocusEffect } from '@react-navigation/native'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+
+import { ActivityIndicator, Box } from 'shared/ui'
+
+import { FileLine } from './file-line'
+import { filesState, uploadState } from './upload.state'
+import { UploadHeader } from './header'
+import { UploadButton } from './upload-button'
 
 export function UploadScreen() {
-  const files = useFiles();
-  const state = useRecoilValue(uploadState);
-  const { s, color } = useSColor(ds);
+  const files = useFiles()
+  const state = useRecoilValue(uploadState)
 
   return (
-    <View style={s.container}>
+    <Box style={s.container} backgroundColor='background'>
       <UploadHeader />
 
-      {state === 'SCAN' && <ActivityIndicator style={s.loader} size='large' color={color.uploadSelected} />}
+      {state === 'SCAN' && <ActivityIndicator style={s.loader} size='large' color='uploadSelected' />}
 
       <View style={s.files}>
         {files.map(name => (
@@ -28,36 +28,35 @@ export function UploadScreen() {
       </View>
 
       <UploadButton />
-    </View>
-  );
+    </Box>
+  )
 }
 
-const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/;
+const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/
 
 export function useFiles() {
-  const [files, setFiles] = useRecoilState(filesState);
-  const setUpload = useSetRecoilState(uploadState);
+  const [files, setFiles] = useRecoilState(filesState)
+  const setUpload = useSetRecoilState(uploadState)
 
   useFocusEffect(
     useCallback(() => {
-      setUpload('SCAN');
+      setUpload('SCAN')
 
       RNFS.readDir(RNFS.DocumentDirectoryPath).then(result => {
-        const newFiles = result.filter(f => f.name.match(FILE_NAME)).map(f => f.name);
+        const newFiles = result.filter(f => f.name.match(FILE_NAME)).map(f => f.name)
 
-        setFiles(newFiles);
-        setUpload('IDLE');
-      });
+        setFiles(newFiles)
+        setUpload('IDLE')
+      })
     }, []),
-  );
+  )
 
-  return files;
+  return files
 }
 
-const ds = new DynamicStyleSheet({
+const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: dynamicColor.background,
   },
   loader: {
     flex: 1,
@@ -68,4 +67,4 @@ const ds = new DynamicStyleSheet({
     marginTop: 15,
     paddingHorizontal: 15,
   },
-});
+})
