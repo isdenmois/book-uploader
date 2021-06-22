@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef } from 'react'
+import React, { FC, MutableRefObject, useRef } from 'react'
 import { TextInput, Insets, TouchableWithoutFeedback, TextInputProps, StyleSheet } from 'react-native'
 import mergeRefs from 'react-merge-refs'
 import { RecoilState, useRecoilState } from 'recoil'
@@ -8,7 +8,8 @@ import { ClearIcon } from './icons'
 import { Box, Theme, TouchableBox, useTheme } from './theme'
 
 type Props = {
-  state: RecoilState<string>
+  // TODO: remove
+  state?: RecoilState<string>
   icon: React.ReactNode
   onSubmit?: () => void
   disabled?: boolean
@@ -19,15 +20,30 @@ type Props = {
 
 const hitSlop: Insets = { top: 10, right: 20, bottom: 10, left: 20 }
 
-export function Input(props: Props) {
-  const { state, icon, onSubmit, disabled, initValue, autoFocus, textColor, textInputRef, ...textInput } = props
+export const Input: FC<Props> = ({
+  state,
+  icon,
+  onSubmit,
+  disabled,
+  initValue,
+  autoFocus,
+  textColor,
+  textInputRef,
+  ...textInput
+}) => {
   const inputRef = useAutofocus([initValue], autoFocus)
-  const [value, onChange] = useRecoilState(state)
+  let recoilProps = {}
+
+  if (state) {
+    recoilProps = useRecoilState(state)
+  }
+
   const { colors } = useTheme()
   const clear = () => {
-    onChange('')
+    recoilProps.onChange ? recoilProps.onChange('') : textInput.onChangeText?.('')
     inputRef.current?.focus()
   }
+  const value = recoilProps.value ?? textInput.value
 
   return (
     <TouchableWithoutFeedback testID='container' onPress={() => inputRef.current?.focus()}>
@@ -40,13 +56,12 @@ export function Input(props: Props) {
           testID='input'
           style={[s.input, textColor && { color: colors[textColor] }]}
           editable={!disabled}
-          value={value}
-          onChangeText={onChange}
           onSubmitEditing={onSubmit}
           returnKeyType='search'
           placeholderTextColor={colors.search}
           ref={mergeRefs([inputRef, textInputRef])}
           autoFocus={autoFocus}
+          {...recoilProps}
           {...textInput}
         />
 

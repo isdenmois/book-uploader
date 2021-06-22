@@ -1,33 +1,34 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { useRecoilValueLoadable } from 'recoil'
-import { Header } from './header'
-import { BookList } from './book-list'
-import { booksParams, booksSelector, extensionState, queryState, typeState } from './search.state'
-import { useDeepLink, useSnapshotCallback } from 'shared/utils'
+
+import { useDeepLink } from 'shared/utils'
 import { Box } from 'shared/ui'
+import { $query, $searchFilters, BookList, fetchBookItemsFx, SearchFilters, setQuery } from 'entities/search'
 
 export function SearchScreen() {
-  const initQuery = useInitialQuery()
-  const disabled = useRecoilValueLoadable(booksSelector).state === 'loading'
-  const onSearch = useSnapshotCallback(({ get, set }) => {
-    const type = get(typeState)
-    const query = get(queryState)
-    const extension = get(extensionState)
+  const onSearch = () => {
+    const { type, extension } = $searchFilters.getState()
+    const query = $query.getState()
 
-    set(booksParams, { type, query, extension })
-  })
+    fetchBookItemsFx({ type, query, extension })
+  }
+
+  useInitialQuery()
 
   return (
     <Box flex={1} backgroundColor='background'>
-      <Header onSearch={onSearch} initQuery={initQuery} disabled={disabled} />
-      <BookList />
+      <SearchFilters onSubmit={onSearch} />
+
+      <BookList
+        onDownload={book => {
+          console.log('Download', book)
+        }}
+      />
     </Box>
   )
 }
 
-function useInitialQuery(): string {
-  const [initQuery, setQuery] = useState<string>(null)
+function useInitialQuery() {
   const navigation = useNavigation()
   const onLink = useCallback(link => {
     if (link) {
@@ -39,6 +40,4 @@ function useInitialQuery(): string {
   }, [])
 
   useDeepLink(onLink)
-
-  return initQuery
 }
