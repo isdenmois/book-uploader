@@ -1,19 +1,23 @@
 import React from 'react'
-import { useRecoilValue } from 'recoil'
+import { useStore } from 'effector-react'
 
-import { Box } from 'shared/ui'
+import { Login } from 'features/auth/ui'
+import { $hasCookie, UserProfile } from 'entities/user'
 
-import { Login } from './login'
-import { ProfileData } from './profile-data'
-import { profileState } from './profile.state'
+import { Box, Text } from 'shared/ui'
 
 export function ProfileScreen() {
-  const profile = useRecoilValue(profileState)
+  const hasCookie = useStore($hasCookie)
 
   return (
-    <Box flex={1} backgroundColor='background'>
-      {!!profile && <ProfileData />}
-      {!profile && <Login />}
+    <Box flex={1} backgroundColor='background' px={2} pt={3}>
+      <Text variant='header' color='profileText'>
+        Profile
+      </Text>
+
+      {hasCookie && <UserProfile />}
+
+      {!hasCookie && <Login />}
     </Box>
   )
 }

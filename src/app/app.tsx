@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { RecoilRoot } from 'recoil'
 import { StatusBar, StatusBarStyle, useColorScheme } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
@@ -8,14 +8,18 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { ScanScreen } from 'screens/scan'
 import { MainScreen } from 'screens/main'
 import { DownloadModal } from 'screens/download/download.modal'
+import { preloadCookie } from 'entities/user'
 import { ThemeProvider, useTheme } from 'shared/ui'
-import { useMemo } from 'react'
 
 const Stack = createStackNavigator()
 
 const header = () => null
 
 export const App = () => {
+  useEffect(() => {
+    preloadCookie()
+  }, [])
+
   return (
     <ThemeProvider>
       <RecoilRoot>
