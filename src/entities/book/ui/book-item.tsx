@@ -1,14 +1,14 @@
 import React, { FC } from 'react'
 
-import { BookItem } from 'shared/api'
+import { BookItem as IBookItem } from 'shared/api'
 import { FileIcon, Item } from 'shared/ui'
 
 interface Props {
-  item: BookItem
-  onPress: (item: BookItem) => void
+  item: IBookItem
+  onPress: (item: IBookItem) => void
 }
 
-export const SearchItem: FC<Props> = ({ item, onPress }) => {
+export const BookItem: FC<Props> = ({ item, onPress }) => {
   const other = [item.size, item.lang, item.translation].filter(p => p).join(', ')
   const ext = item.ext.replace('.zip', '')
 

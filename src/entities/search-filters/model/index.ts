@@ -1,5 +1,6 @@
 export * from './actions'
 export * from './effects'
 export * from './events'
+export * from './selectors'
 export * from './stores'
 export * from './types'

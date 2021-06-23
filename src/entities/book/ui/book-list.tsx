@@ -1,23 +1,20 @@
 import React, { FC } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
-import { useStore } from 'effector-react'
 
-import { BookItem } from 'shared/api'
+import { BookItem as IBookItem } from 'shared/api'
 import { ActivityIndicator, Box, Text } from 'shared/ui'
 import { Images } from 'shared/assets'
 
-import { SearchItem } from './search-item'
-import { $booksFound, fetchBookItemsFx } from '../model'
+import { BookItem } from './book-item'
 
 type Props = {
-  onDownload: (item: BookItem) => void
+  books: IBookItem[]
+  isLoading: boolean
+  onDownload: (item: IBookItem) => void
 }
 
-export const BookList: FC<Props> = ({ onDownload }) => {
-  const books = useStore($booksFound)
-  const loading = useStore(fetchBookItemsFx.pending)
-
-  if (loading) {
+export const BookList: FC<Props> = ({ onDownload, books, isLoading }) => {
+  if (isLoading) {
     return (
       <Box flex={1} justifyContent='center'>
         <ActivityIndicator color='searchSelected' size='large' />
@@ -39,7 +36,7 @@ export const BookList: FC<Props> = ({ onDownload }) => {
     <FlatList
       data={books}
       keyExtractor={item => item.link}
-      renderItem={({ item }) => <SearchItem item={item} onPress={onDownload} />}
+      renderItem={({ item }) => <BookItem item={item} onPress={onDownload} />}
       style={s.list}
       contentContainerStyle={s.listContent}
       ListEmptyComponent={

@@ -1,7 +1,9 @@
-export type SearchType = 'zlib' | 'flibusta'
+import { ProviderType } from 'shared/api'
+
 export type Extension = 'epub' | 'fb2'
 
 export type SearchFiltersState = {
-  type: SearchType
+  type: ProviderType
   extension: Extension
+  query: string
 }
