@@ -7,6 +7,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color'
 
 import { ScanScreen } from 'screens/scan'
 import { MainScreen } from 'screens/main'
+import { DownloadModal } from 'screens/download/download.modal'
 import { ThemeProvider, useTheme } from 'shared/ui'
 import { useMemo } from 'react'
 
@@ -36,9 +37,6 @@ function StackNavigator() {
       cardStyle: {
         backgroundColor: colors.background,
       },
-      modalCardStyle: {
-        backgroundColor: 'transparent',
-      },
     }),
     [mode],
   )
@@ -52,18 +50,19 @@ function StackNavigator() {
       <StatusBar backgroundColor={colors.background} barStyle={barStyle} />
       <Stack.Navigator screenOptions={{ cardStyle: s.cardStyle }}>
         <Stack.Screen name='main' component={MainScreen} options={{ header }} />
-        <Stack.Screen
-          name='scan'
-          component={ScanScreen}
-          options={{
-            title: '',
-            animationEnabled: false,
-            header,
-            cardStyle: s.modalCardStyle,
-            cardOverlayEnabled: false,
-          }}
-        />
+        <Stack.Screen name='scan' component={ScanScreen} options={modalOptions} />
+        <Stack.Screen name='Download' component={DownloadModal} options={modalOptions} />
       </Stack.Navigator>
     </>
   )
+}
+
+const modalOptions = {
+  title: '',
+  animationEnabled: false,
+  header,
+  cardStyle: {
+    backgroundColor: 'transparent',
+  },
+  cardOverlayEnabled: false,
 }

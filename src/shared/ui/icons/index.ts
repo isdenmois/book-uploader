@@ -1,4 +1,5 @@
 export { default as QrIcon } from './qr'
+export { default as DownloadIcon } from './download'
 export { default as SearchIcon } from './search'
 export { default as ClearIcon } from './clear'
 export { default as FileIcon } from './file'

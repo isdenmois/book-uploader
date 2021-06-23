@@ -4,15 +4,18 @@ import { useStore } from 'effector-react'
 import { BookList } from 'entities/book'
 import { $searchFilters, SearchFilters } from 'entities/search-filters'
 import { BookItem } from 'shared/api'
-import { Box } from 'shared/ui'
+import { Box, DownloadIcon, TouchableBox } from 'shared/ui'
 
 import { $booksFound, fetchBookItemsFx } from '../model'
+import { $isDownloading } from 'entities/download'
 
 interface Props {
   onDownload(book: BookItem)
+  onDownloadsOpen()
 }
 
-export const BookSearch: FC<Props> = ({ onDownload }) => {
+export const BookSearch: FC<Props> = ({ onDownload, onDownloadsOpen }) => {
+  const isDownloading = useStore($isDownloading)
   const books = useStore($booksFound)
   const isLoading = useStore(fetchBookItemsFx.pending)
 
@@ -24,7 +27,17 @@ export const BookSearch: FC<Props> = ({ onDownload }) => {
 
   return (
     <Box flex={1} backgroundColor='background'>
-      <SearchFilters onSubmit={onSearch} />
+      <Box flexDirection='row'>
+        <Box flex={1}>
+          <SearchFilters onSubmit={onSearch} />
+        </Box>
+
+        {isDownloading && (
+          <TouchableBox px={1} py={1} mt={2} onPress={onDownloadsOpen}>
+            <DownloadIcon />
+          </TouchableBox>
+        )}
+      </Box>
 
       <BookList books={books} isLoading={isLoading} onDownload={onDownload} />
     </Box>
