@@ -3,7 +3,7 @@ import React, { FC, useEffect, useRef } from 'react'
 import { TextInput } from 'react-native'
 
 import { Input, SearchIcon } from 'shared/ui'
-import { $searchFilters, $query, setQuery } from '../model'
+import { $searchFilters, setQuery } from '../model'
 
 interface Props {
   onSubmit(): void
@@ -11,9 +11,7 @@ interface Props {
 }
 
 export const SearchQueryInput: FC<Props> = ({ onSubmit, disabled }) => {
-  const { extension, type } = useStore($searchFilters)
-  const query = useStore($query)
-
+  const { extension, type, query } = useStore($searchFilters)
   const inputRef = useRef<TextInput>()
 
   useEffect(() => {
