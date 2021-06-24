@@ -14,8 +14,7 @@
     "noEmit": true,
     "rootDirs": ["./src"],
     "paths": {
-      "*": ["./src/*"],
-      "api": ["src/shared/api"]
+      "*": ["./src/*"]
     }
   },
   "exclude": ["dev-tools", "node_modules", "babel.config.js", "metro.config.js"]

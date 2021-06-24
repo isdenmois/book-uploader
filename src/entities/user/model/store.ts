@@ -1,6 +1,5 @@
 import { createStore } from 'effector'
-import { setCookie } from 'shared/api'
-import { DaylyDownloadsStat } from 'shared/api/daily-downloads'
+import { api, DaylyDownloadsStat } from 'shared/api'
 import { setCookie as setCookieEvent, setInitialCookie } from './events'
 
 export const $userCookie = createStore<string | null>(null)
@@ -14,7 +13,7 @@ export const $hasCookie = $userCookie.map(cookie => !!cookie)
 $userCookie
   .on(setInitialCookie, (_, value) => value)
   .on(setCookieEvent, (_, value) => {
-    setCookie(value)
+    api.setCookie(value)
 
     return value
   })

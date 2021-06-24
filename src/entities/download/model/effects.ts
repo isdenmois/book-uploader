@@ -2,8 +2,7 @@ import { ToastAndroid } from 'react-native'
 import { slugify } from 'transliteration'
 import { createEffect } from 'effector'
 
-import * as api from 'shared/api'
-import { BookItem } from 'shared/api'
+import { api, BookItem } from 'shared/api'
 import { resetDownload, setCurrentFile, setProgress } from './events'
 
 export const downloadFileFx = createEffect(async (file: BookItem) => {
