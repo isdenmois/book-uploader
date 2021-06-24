@@ -1,15 +1,12 @@
 import React, { FC, MutableRefObject, useRef } from 'react'
 import { TextInput, Insets, TouchableWithoutFeedback, TextInputProps, StyleSheet } from 'react-native'
 import mergeRefs from 'react-merge-refs'
-import { RecoilState, useRecoilState } from 'recoil'
-import { useAutofocus } from 'shared/utils'
 
+import { useAutofocus } from 'shared/utils'
 import { ClearIcon } from './icons'
 import { Box, Theme, TouchableBox, useTheme } from './theme'
 
 type Props = {
-  // TODO: remove
-  state?: RecoilState<string>
   icon: React.ReactNode
   onSubmit?: () => void
   disabled?: boolean
@@ -21,8 +18,9 @@ type Props = {
 const hitSlop: Insets = { top: 10, right: 20, bottom: 10, left: 20 }
 
 export const Input: FC<Props> = ({
-  state,
   icon,
+  value,
+  onChangeText,
   onSubmit,
   disabled,
   initValue,
@@ -32,18 +30,11 @@ export const Input: FC<Props> = ({
   ...textInput
 }) => {
   const inputRef = useAutofocus([initValue], autoFocus)
-  let recoilProps = {}
-
-  if (state) {
-    recoilProps = useRecoilState(state)
-  }
-
   const { colors } = useTheme()
   const clear = () => {
-    recoilProps.onChange ? recoilProps.onChange('') : textInput.onChangeText?.('')
+    onChangeText?.('')
     inputRef.current?.focus()
   }
-  const value = recoilProps.value ?? textInput.value
 
   return (
     <TouchableWithoutFeedback testID='container' onPress={() => inputRef.current?.focus()}>
@@ -61,7 +52,8 @@ export const Input: FC<Props> = ({
           placeholderTextColor={colors.search}
           ref={mergeRefs([inputRef, textInputRef])}
           autoFocus={autoFocus}
-          {...recoilProps}
+          value={value}
+          onChangeText={onChangeText}
           {...textInput}
         />
 
