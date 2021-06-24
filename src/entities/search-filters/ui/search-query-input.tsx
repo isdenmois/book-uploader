@@ -28,6 +28,7 @@ export const SearchQueryInput: FC<Props> = ({ onSubmit, disabled }) => {
       autoFocus
       value={query}
       onChangeText={setQuery}
+      textColor='searchText'
     />
   )
 }
