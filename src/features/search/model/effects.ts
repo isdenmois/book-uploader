@@ -17,6 +17,3 @@ export const fetchBookItemsFx = createEffect(({ type, query, extension }: FetchB
 
 $booksFound.on(fetchBookItemsFx.doneData, (_, books) => books)
 $booksFound.on($searchFilters, () => null)
-// $booksFound.on(setType, () => null)
-// $booksFound.on(setExtension, () => null)
-// $booksFound.on(setQuery, () => null)

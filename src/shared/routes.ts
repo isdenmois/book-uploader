@@ -4,6 +4,8 @@ type MainStackParamList = {
   Home: undefined
   Search: undefined
   Download: undefined
+  Upload: undefined
+  Scan: { scan?: boolean }
 }
 
 export type MainStackNavigationProp<RouteName extends keyof MainStackParamList> = StackNavigationProp<

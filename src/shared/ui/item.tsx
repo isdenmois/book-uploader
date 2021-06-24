@@ -11,8 +11,8 @@ type Props = ComponentProps<typeof TouchableBox> & {
 
 const ItemBox: FC<Props> = ({ children, progress, ...props }) => {
   return (
-    <TouchableBox flexDirection='row' {...props}>
-      <Box flexDirection='row' alignItems='center' flex={1}>
+    <TouchableBox {...props}>
+      <Box flexDirection='row' alignItems='center'>
         {children}
       </Box>
 

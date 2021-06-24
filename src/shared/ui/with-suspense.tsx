@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react'
-import { ActivityIndicator, Box } from 'shared/ui'
+import { ActivityIndicator } from './activity-indicator'
+import { Box } from './theme'
 
 export function withSuspense<T>(Component: T): T {
   const CMP: any = Component

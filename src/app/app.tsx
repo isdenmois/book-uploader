@@ -9,6 +9,7 @@ import { ScanScreen } from 'screens/scan'
 import { MainScreen } from 'screens/main'
 import { DownloadModal } from 'screens/download/download.modal'
 import { preloadCookie } from 'entities/user'
+import { preloadAddress } from 'entities/upload-address'
 import { ThemeProvider, useTheme } from 'shared/ui'
 
 const Stack = createStackNavigator()
@@ -18,6 +19,7 @@ const header = () => null
 export const App = () => {
   useEffect(() => {
     preloadCookie()
+    preloadAddress()
   }, [])
 
   return (
