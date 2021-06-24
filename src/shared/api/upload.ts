@@ -1,5 +1,5 @@
 import RNFS from 'react-native-fs'
-import { EbookFileParsed } from 'shared/native'
+import { EbookFileParsed } from 'shared/libs'
 
 type ProgressCallback = (progress: number) => void
 

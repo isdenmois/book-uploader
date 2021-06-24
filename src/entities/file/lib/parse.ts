@@ -1,4 +1,4 @@
-import { EbookParser } from 'shared/native'
+import { EbookParser } from 'shared/libs'
 
 import { FileData } from '../model'
 

@@ -1,5 +1,5 @@
 import { uploadFile } from 'shared/api'
-import { EbookParser } from 'shared/native'
+import { EbookParser } from 'shared/libs'
 
 import { FileData, parseFile as parseFileData, removeFile as removeFileOnDisk } from 'entities/file'
 import { $uploadAdress } from 'entities/upload-address'
