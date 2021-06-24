@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import { preloadCookie } from 'entities/user'
 import { preloadAddress } from 'entities/upload-address'
-import { ThemeProvider } from 'shared/ui'
+import { StatusBar, ThemeProvider } from 'shared/ui'
 
 import { MainNavigator } from './navigation'
 
@@ -16,6 +16,7 @@ export const App = () => {
   return (
     <ThemeProvider>
       <NavigationContainer>
+        <StatusBar />
         <MainNavigator />
       </NavigationContainer>
     </ThemeProvider>
