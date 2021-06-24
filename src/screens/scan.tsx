@@ -1,34 +1,26 @@
-import React, { useState } from 'react'
-import { useRecoilCallback, useRecoilValue } from 'recoil'
-import { ParamListBase } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
-import { View } from 'react-native'
+import React, { FC, useState } from 'react'
+import { View, StyleSheet } from 'react-native'
 import { RNCamera } from 'react-native-camera'
-import { Dialog } from 'shared/ui/dialog'
-import { addressState } from 'entities/upload-address'
-import { SuccessIcon } from 'shared/ui/icons'
-import { Text } from 'shared/ui'
-import { StyleSheet } from 'react-native'
+import { useStore } from 'effector-react'
 
-type Props = {
-  navigation: StackNavigationProp<ParamListBase>
-}
+import { Dialog, SuccessIcon, Text } from 'shared/ui'
+import { MainStackScreenProps } from 'shared/routes'
+import { $uploadAdress, setAddress } from 'entities/upload-address'
 
-export function ScanScreen({ navigation }: Props) {
+type Props = MainStackScreenProps<'Upload'>
+
+export const ScanScreen: FC<Props> = ({ navigation }) => {
   const [success, setSuccess] = useState(false)
-  const address = useRecoilValue(addressState)
+  const address = useStore($uploadAdress)
 
-  const onScan = useRecoilCallback(
-    ({ set }) => ({ data }) => {
-      if (!data) return
+  const onScan = ({ data }) => {
+    if (!data) return
 
-      set(addressState, data.replace('http://', '').replace(/:\d+$/, ''))
-      setSuccess(true)
+    setAddress(data.replace('http://', '').replace(/:\d+$/, ''))
+    setSuccess(true)
 
-      setTimeout(() => navigation.goBack(), 2000)
-    },
-    [],
-  )
+    setTimeout(() => navigation.goBack(), 2000)
+  }
 
   return (
     <Dialog>
@@ -41,6 +33,7 @@ export function ScanScreen({ navigation }: Props) {
           </Text>
         </View>
       )}
+
       {!success && (
         <RNCamera
           style={s.camera}

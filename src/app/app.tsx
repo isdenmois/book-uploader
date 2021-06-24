@@ -56,7 +56,7 @@ function StackNavigator() {
       <StatusBar backgroundColor={colors.background} barStyle={barStyle} />
       <Stack.Navigator screenOptions={{ cardStyle: s.cardStyle }}>
         <Stack.Screen name='main' component={MainScreen} options={{ header }} />
-        <Stack.Screen name='scan' component={ScanScreen} options={modalOptions} />
+        <Stack.Screen name='Scan' component={ScanScreen} options={modalOptions} />
         <Stack.Screen name='Download' component={DownloadModal} options={modalOptions} />
       </Stack.Navigator>
     </>
