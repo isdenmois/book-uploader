@@ -1,7 +1,7 @@
 import { combine, createStore } from 'effector'
 
 import { FileData, UPLOAD_STATE } from 'entities/file'
-import { $uploadAdress } from 'entities/upload-address'
+import { $uploadAddress } from 'entities/upload-address'
 
 import { fetchFilesFx } from './effects'
 import { removeFile, setProgress, updateFile } from './events'
@@ -23,6 +23,6 @@ $files.on(setProgress, (files, { id, progress }) => files.map(file => (file.id =
 /**
  * Combined selector to check upload availability
  */
-export const $canStartUpload = combine($files, $uploadState, $uploadAdress, (files, state, address) => {
+export const $canStartUpload = combine($files, $uploadState, $uploadAddress, (files, state, address) => {
   return address && (state === 'IDLE' || state === 'HAS_ERRORS') && files?.length > 0
 })

@@ -1,6 +1,4 @@
-import { createStore } from 'effector'
-import { setAddressEvent } from './events'
+import { restore } from 'effector'
+import { addressChanged } from './events'
 
-export const $uploadAdress = createStore<string | null>(null)
-
-$uploadAdress.on(setAddressEvent, (_, address) => address)
+export const $uploadAddress = restore<string | null>(addressChanged, null)

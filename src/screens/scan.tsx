@@ -5,13 +5,13 @@ import { useStore } from 'effector-react'
 
 import { Dialog, SuccessIcon, Text } from 'shared/ui'
 import { MainStackScreenProps } from 'shared/routes'
-import { $uploadAdress, setAddress } from 'entities/upload-address'
+import { $uploadAddress, setAddress } from 'entities/upload-address'
 
 type Props = MainStackScreenProps<'Upload'>
 
 export const ScanScreen: FC<Props> = ({ navigation }) => {
   const [success, setSuccess] = useState(false)
-  const address = useStore($uploadAdress)
+  const address = useStore($uploadAddress)
 
   const onScan = ({ data }) => {
     if (!data) return

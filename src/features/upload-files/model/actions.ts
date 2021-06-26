@@ -2,7 +2,7 @@ import { uploadFile } from 'shared/api'
 import { EbookParser } from 'shared/libs'
 
 import { FileData, parseFile as parseFileData, removeFile as removeFileOnDisk } from 'entities/file'
-import { $uploadAdress } from 'entities/upload-address'
+import { $uploadAddress } from 'entities/upload-address'
 
 import { fetchFilesFx } from './effects'
 import { updateFile, removeFile as removeFileEvent, setUploadState, setProgress } from './events'
@@ -31,7 +31,7 @@ export const removeFile = (file: FileData) => {
 
 export const startUpload = async () => {
   const files = $files.getState()
-  const address = $uploadAdress.getState()
+  const address = $uploadAddress.getState()
   let hasErrors = false
 
   setUploadState('UPLOAD')

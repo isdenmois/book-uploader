@@ -4,7 +4,7 @@ import { useStore } from 'effector-react'
 import { MainStackScreenProps } from 'shared/routes'
 import { Box, QrIcon, Text } from 'shared/ui'
 import { UPLOAD_STATE } from 'entities/file'
-import { $uploadAdress } from 'entities/upload-address'
+import { $uploadAddress } from 'entities/upload-address'
 import { $uploadState, UploadButton, UploadList } from 'features/upload-files'
 
 type Props = MainStackScreenProps<'Upload'>
@@ -18,7 +18,7 @@ const titles: Record<UPLOAD_STATE, string> = {
 }
 
 export const UploadScreen: FC<Props> = ({ navigation }) => {
-  const address = useStore($uploadAdress)
+  const address = useStore($uploadAddress)
   const state = useStore($uploadState)
   const openQrScanner = () => navigation.navigate('Scan', { scan: true })
 

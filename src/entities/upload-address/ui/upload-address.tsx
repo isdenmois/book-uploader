@@ -1,11 +1,16 @@
-import { useStore } from 'effector-react'
 import React, { FC } from 'react'
+import { useStore } from 'effector-react'
+
 import { Text } from 'shared/ui'
-import { $uploadAdress } from '../model'
+import { $uploadAddress } from '../model'
 
 export const UploadAddress: FC = () => {
-  const address = useStore($uploadAdress)
+  const address = useStore($uploadAddress)
   if (!address) return null
 
-  return <Text variant='secondary'>{address}</Text>
+  return (
+    <Text variant='secondary' testID='uploadAddress'>
+      {address}
+    </Text>
+  )
 }

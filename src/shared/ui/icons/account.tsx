@@ -1,10 +1,10 @@
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
-import { useTheme } from '../theme'
+import { Theme, useTheme } from '../theme'
 
 type Props = {
   size: number
-  color: string
+  color: keyof Theme['colors']
   fill?: boolean
 }
 
