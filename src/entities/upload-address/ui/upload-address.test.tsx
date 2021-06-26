@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react-native'
-jest.mock('@react-native-community/async-storage', () => ({}))
+jest.mock('@react-native-async-storage/async-storage', () => ({}))
 import { addressChanged } from '../model'
 import { UploadAddress } from '../ui'
 import { act } from 'react-test-renderer'

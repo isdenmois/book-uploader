@@ -1,8 +1,8 @@
 import { mock } from 'shared/utils/test-utils/async'
 
-jest.mock('@react-native-community/async-storage', () => ({}))
+jest.mock('@react-native-async-storage/async-storage', () => ({}))
 
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { $uploadAddress, setAddress, preloadAddress } from '../model'
 
 describe('setAddress action', () => {

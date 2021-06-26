@@ -11,6 +11,6 @@ const config = {
     ],
     ['module:react-native-dotenv'],
   ],
-};
+}
 
-module.exports = config;
+module.exports = config

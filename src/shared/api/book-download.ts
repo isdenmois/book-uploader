@@ -1,7 +1,7 @@
 import cheerio from 'react-native-cheerio'
 import RNFS from 'react-native-fs'
 import { TOR_HOST, FLIBUSTA_HOST, ZLIB_HOST, USER_AGENT } from '@env'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { querystring } from './utils'
 import * as tor from './tor-request'
 import { ZLIB_COOKIE } from './login'

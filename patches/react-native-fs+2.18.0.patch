@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
-index 5324a36..b72921d 100644
+index 5b2e594..cb0d35d 100644
 --- a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
 +++ b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
-@@ -51,8 +51,10 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+@@ -54,8 +54,10 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
          String twoHyphens = "--";
          String boundary = "*****";
          String tail = crlf + twoHyphens + boundary + twoHyphens + crlf;
@@ -15,12 +15,12 @@ index 5324a36..b72921d 100644
          int statusCode, byteSentTotal;
          int fileCount = 0;
          long totalFileLength = 0;
-@@ -81,10 +83,11 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+@@ -84,10 +86,11 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
              while (fieldsIterator.hasNextKey()) {
                  String key = fieldsIterator.nextKey();
                  String value = params.fields.getString(key);
 -                metaData += twoHyphens + boundary + crlf + "Content-Disposition: form-data; name=\"" + key + "\"" + crlf + crlf + value +crlf;
-+                metaData.append(twoHyphens).append(boundary).append(crlf).append("Content-Disposition: form-data; name=\"").append(key).append("\"").append(crlf).append(crlf).append(value).append(crlf);
++              metaData.append(twoHyphens).append(boundary).append(crlf).append("Content-Disposition: form-data; name=\"").append(key).append("\"").append(crlf).append(crlf).append(value).append(crlf);
              }
 -            stringData += metaData;
 -            fileHeader = new String[files.length];
@@ -30,7 +30,7 @@ index 5324a36..b72921d 100644
              for (ReadableMap map : params.files) {
                  try {
                      name = map.getString("name");
-@@ -108,8 +111,8 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+@@ -111,8 +114,8 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
                      }
  
                      String fileLengthHeader = "Content-length: " + fileLength + crlf;
@@ -41,7 +41,7 @@ index 5324a36..b72921d 100644
                  }
                  fileCount++;
              }
-@@ -119,23 +122,20 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+@@ -122,7 +125,7 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
              }
              if (!binaryStreamOnly) {
                  long requestLength = totalFileLength;
@@ -50,27 +50,28 @@ index 5324a36..b72921d 100644
                  connection.setRequestProperty("Content-length", "" +(int) requestLength);
                  connection.setFixedLengthStreamingMode((int)requestLength);
              }
-             connection.connect();
- 
+@@ -131,15 +134,11 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
              request = new DataOutputStream(connection.getOutputStream());
+             WritableByteChannel requestChannel = Channels.newChannel(request);
+ 
 -            if (!binaryStreamOnly) {
 -                request.writeBytes(metaData);
 -            }
- 
+-
              byteSentTotal = 0;
-             Runtime run = Runtime.getRuntime();
  
              for (ReadableMap map : params.files) {
                  if (!binaryStreamOnly) {
 -                    request.writeBytes(fileHeader[fileCount]);
-+                    request.write(fileHeader[fileCount]);
++                  request.write(fileHeader[fileCount]);
                  }
+ 
                  File file = new File(map.getString("filepath"));
-                 int fileLength = (int) file.length();
-@@ -159,6 +159,9 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
+@@ -168,7 +167,9 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
                  fileCount++;
-                 bufInput.close();
+                 fileStream.close();
              }
+-
 +            if (!binaryStreamOnly) {
 +                request.write(metaDataBytes);
 +            }

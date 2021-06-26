@@ -1,6 +1,6 @@
 import cheerio from 'react-native-cheerio'
 import { FLIBUSTA_HOST, ZLIB_HOST } from '@env'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as tor from './tor-request'
 import { ZLIB_COOKIE } from './login'
 import { BookItem, ProviderType, SearchConfig, SearchSelectors } from './types'

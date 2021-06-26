@@ -1,5 +1,5 @@
-jest.mock('@react-native-community/async-storage', () => ({}))
-import AsyncStorage from '@react-native-community/async-storage'
+jest.mock('@react-native-async-storage/async-storage', () => ({}))
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { mock, mockPromise } from 'shared/utils/test-utils/async'
 import * as tor from '../tor-request'
 import { sendLogin, setCookie, ZLIB_COOKIE } from '../login'

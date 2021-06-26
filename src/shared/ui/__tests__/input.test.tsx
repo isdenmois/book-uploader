@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render } from '@testing-library/react-native'
+import { act, fireEvent, render } from '@testing-library/react-native'
 import { Text } from 'react-native'
 import { createEvent, restore } from 'effector'
 import { useStore } from 'effector-react'
@@ -7,7 +7,7 @@ import { mockNavigation } from 'shared/utils/test-utils/navigation'
 import { Input } from '../input'
 import { ThemeProvider } from '../theme'
 
-test('Input', () => {
+test('Input', async () => {
   const textChanged = createEvent<string>()
   const $value = restore(textChanged, '')
   const { NavigationWrapper } = mockNavigation()
@@ -24,7 +24,7 @@ test('Input', () => {
     )
   }
 
-  const { getByTestId } = render(<Wrapper />)
+  const { getByTestId, unmount } = render(<Wrapper />)
 
   fireEvent(getByTestId('input'), 'onChangeText', 'test')
 
@@ -36,4 +36,8 @@ test('Input', () => {
 
   expect(getByTestId('input').props.value).toBe('')
   expect($value.getState()).toBe('')
+
+  await act(async () => {
+    unmount()
+  })
 })

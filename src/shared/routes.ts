@@ -1,10 +1,11 @@
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack'
 
-type MainStackParamList = {
+export type MainStackParamList = {
   Home: undefined
   Search: undefined
   Download: undefined
   Upload: undefined
+  Profile: undefined
   Scan: { scan?: boolean }
 }
 

@@ -5,12 +5,13 @@ import { useNavigation } from '@react-navigation/native'
 import { AccountIcon, SearchIcon, tabBar, UploadIcon } from 'shared/ui'
 import { useDeepLink } from 'shared/utils'
 import { setQuery } from 'entities/search-filters'
+import { MainStackParamList, MainStackNavigationProp } from 'shared/routes'
 
 import { SearchScreen } from 'screens/search.screen'
 import { UploadScreen } from 'screens/upload.screen'
 import { ProfileScreen } from 'screens/profile.screen'
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<MainStackParamList>()
 
 const SCREENS_OPTIONS: Record<string, any> = {
   search: { color: 'searchBackground', textColor: 'searchText', icon: SearchIcon },
@@ -22,7 +23,7 @@ export function TabsNavigator() {
   useInitialQuery()
 
   return (
-    <Tab.Navigator tabBar={tabBar}>
+    <Tab.Navigator tabBar={tabBar} screenOptions={{ headerShown: false }}>
       <Tab.Screen name='Upload' component={UploadScreen} options={SCREENS_OPTIONS.upload} />
       <Tab.Screen name='Search' component={SearchScreen} options={SCREENS_OPTIONS.search} />
       <Tab.Screen name='Profile' component={ProfileScreen} options={SCREENS_OPTIONS.profile} />
@@ -31,7 +32,7 @@ export function TabsNavigator() {
 }
 
 function useInitialQuery() {
-  const navigation = useNavigation()
+  const navigation = useNavigation<MainStackNavigationProp<'Home'>>()
   const onLink = useCallback(link => {
     if (link) {
       link = link.replace('booksearch://', '')
