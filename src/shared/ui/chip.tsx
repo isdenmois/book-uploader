@@ -3,8 +3,8 @@ import { Text, TouchableBox } from 'shared/ui/theme'
 
 type Props = {
   title: string
-  selected: boolean
-  onPress: () => void
+  selected?: boolean
+  onPress?: () => void
   disabled?: boolean
 }
 

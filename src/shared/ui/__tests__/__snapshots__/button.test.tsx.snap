@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "opacity": 1,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderRadius": 44,
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingHorizontal": 32,
+          "paddingVertical": 8,
+        },
+        Array [
+          Object {},
+          Array [
+            Object {
+              "backgroundColor": "#FF6842",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "display": "flex",
+            "fontSize": 16,
+            "lineHeight": 22,
+          },
+        ]
+      }
+    >
+      Hello
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Button 2`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "opacity": 1,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "borderRadius": 44,
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingHorizontal": 32,
+          "paddingVertical": 8,
+        },
+        Array [
+          Object {},
+          Array [
+            Object {
+              "backgroundColor": "#FF6842",
+            },
+          ],
+        ],
+      ]
+    }
+  >
+    <ActivityIndicator
+      animating={true}
+      color="#787D87"
+      hidesWhenStopped={true}
+      size="small"
+    />
+  </View>
+</View>
+`;

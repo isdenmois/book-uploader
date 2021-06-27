@@ -23,7 +23,6 @@ export function ProgressBar({ color, progress, showAlways, text }: Props) {
         overflow='hidden'
         flex={1}
       >
-        {/*<View style={[s.progress, progressStyle]} />*/}
         <Box
           position='absolute'
           left={0}

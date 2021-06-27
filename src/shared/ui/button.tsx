@@ -28,7 +28,7 @@ type Props = SpacingProps<Theme> &
   VariantProps<Theme, 'buttonVariants'> &
   BorderProps<Theme> &
   BackgroundColorProps<Theme> & {
-    onPress: () => void
+    onPress?: () => void
     label?: string
     outline?: boolean
     loading?: boolean

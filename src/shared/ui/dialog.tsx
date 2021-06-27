@@ -8,7 +8,7 @@ export function Dialog({ children }) {
 
   return (
     <View style={s.container}>
-      <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+      <TouchableWithoutFeedback onPress={() => navigation.goBack()} testID='dialogOverlay'>
         <View style={s.overlay} />
       </TouchableWithoutFeedback>
 
