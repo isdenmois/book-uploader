@@ -1,4 +1,4 @@
-import { uploadFile } from 'shared/api'
+import { api } from 'shared/api'
 import { EbookParser } from 'shared/libs'
 
 import { FileData, parseFile as parseFileData, removeFile as removeFileOnDisk } from 'entities/file'
@@ -50,7 +50,7 @@ export const startUpload = async () => {
       // Update book data
       update({ title: parsed.title, author: parsed.author, isParsed: true })
 
-      await uploadFile(address, parsed.file, updateProgress)
+      await api.uploadFile(address, parsed.file, updateProgress)
 
       // Remove file
       await removeFileOnDisk(file)

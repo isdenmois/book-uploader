@@ -1,12 +1,12 @@
 import { Alert, ToastAndroid } from 'react-native'
 import { createEffect, forward } from 'effector'
 
-import { sendLogin } from 'shared/api'
+import { api } from 'shared/api'
 import { setCookie } from 'entities/user'
 import { $email, $password } from './stores'
 
 export const authFx = createEffect(async () => {
-  const cookie = await sendLogin($email.getState(), $password.getState())
+  const cookie = await api.sendLogin($email.getState(), $password.getState())
 
   if (!cookie) throw 'Unable to login with that data'
 
