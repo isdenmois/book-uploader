@@ -1,0 +1,453 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileItem should render 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "display": "flex",
+      "marginBottom": 24,
+      "opacity": 1,
+    }
+  }
+  testID="file-item-123"
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <RNSVGSvgView
+      align="xMidYMid"
+      bbHeight={34}
+      bbWidth={34}
+      focusable={false}
+      height={34}
+      meetOrSlice={0}
+      minX={0}
+      minY={0}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
+          },
+          Object {
+            "marginLeft": -4,
+          },
+          Object {
+            "flex": 0,
+            "height": 34,
+            "width": 34,
+          },
+        ]
+      }
+      vbHeight={512}
+      vbWidth={384}
+      width={34}
+    >
+      <RNSVGGroup>
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M256 0H24A23.94 23.94 0 000 23.88V488a23.94 23.94 0 0023.88 24H360a23.94 23.94 0 0024-23.88V128H272a16 16 0 01-16-16z"
+            fill={4285026800}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+          <RNSVGPath
+            d="M384 121.9v6.1H272a16 16 0 01-16-16V0h6.1a24 24 0 0117 7l97.9 98a23.9 23.9 0 017 16.9z"
+            fill={4285026800}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+        <RNSVGText
+          content={null}
+          dx={Array []}
+          dy={Array []}
+          fill={4294967295}
+          font={
+            Object {
+              "fontSize": "120",
+              "fontWeight": "bold",
+              "textAnchor": "middle",
+            }
+          }
+          propList={
+            Array [
+              "fill",
+            ]
+          }
+          rotate={Array []}
+          x={
+            Array [
+              "192",
+            ]
+          }
+          y={
+            Array [
+              "440",
+            ]
+          }
+        >
+          <RNSVGTSpan
+            content="EPUB"
+            dx={Array []}
+            dy={Array []}
+            font={Object {}}
+            rotate={Array []}
+            x={Array []}
+            y={Array []}
+          />
+        </RNSVGText>
+      </RNSVGGroup>
+    </RNSVGSvgView>
+    <View
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flex": 1,
+            "marginLeft": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#787D87",
+              "display": "flex",
+              "fontSize": 12,
+              "lineHeight": 14,
+            },
+          ]
+        }
+      >
+        Somebody
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#092D5D",
+              "display": "flex",
+              "fontSize": 16,
+            },
+          ]
+        }
+      >
+        Hello
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+      testID="removeFile"
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={24}
+        bbWidth={24}
+        focusable={false}
+        height={24}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            Object {
+              "flex": 0,
+              "height": 24,
+              "width": 24,
+            },
+          ]
+        }
+        vbHeight={512}
+        vbWidth={320}
+        width={24}
+      >
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"
+            fill={4287402915}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+      </RNSVGSvgView>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "height": 12,
+        },
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`FileItem should show an error 1`] = `
+<View
+  accessible={true}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "display": "flex",
+      "marginBottom": 24,
+      "opacity": 1,
+    }
+  }
+  testID="file-item-123"
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <RNSVGSvgView
+      align="xMidYMid"
+      bbHeight={34}
+      bbWidth={34}
+      focusable={false}
+      height={34}
+      meetOrSlice={0}
+      minX={0}
+      minY={0}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
+          },
+          Object {
+            "marginLeft": -4,
+          },
+          Object {
+            "flex": 0,
+            "height": 34,
+            "width": 34,
+          },
+        ]
+      }
+      vbHeight={512}
+      vbWidth={384}
+      width={34}
+    >
+      <RNSVGGroup>
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M256 0H24A23.94 23.94 0 000 23.88V488a23.94 23.94 0 0023.88 24H360a23.94 23.94 0 0024-23.88V128H272a16 16 0 01-16-16z"
+            fill={4285026800}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+          <RNSVGPath
+            d="M384 121.9v6.1H272a16 16 0 01-16-16V0h6.1a24 24 0 0117 7l97.9 98a23.9 23.9 0 017 16.9z"
+            fill={4285026800}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+        <RNSVGText
+          content={null}
+          dx={Array []}
+          dy={Array []}
+          fill={4294967295}
+          font={
+            Object {
+              "fontSize": "120",
+              "fontWeight": "bold",
+              "textAnchor": "middle",
+            }
+          }
+          propList={
+            Array [
+              "fill",
+            ]
+          }
+          rotate={Array []}
+          x={
+            Array [
+              "192",
+            ]
+          }
+          y={
+            Array [
+              "440",
+            ]
+          }
+        >
+          <RNSVGTSpan
+            content="EPUB"
+            dx={Array []}
+            dy={Array []}
+            font={Object {}}
+            rotate={Array []}
+            x={Array []}
+            y={Array []}
+          />
+        </RNSVGText>
+      </RNSVGGroup>
+    </RNSVGSvgView>
+    <View
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flex": 1,
+            "marginLeft": 8,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#092D5D",
+              "display": "flex",
+              "fontSize": 16,
+            },
+          ]
+        }
+      >
+        Hello
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#FD4463",
+              "display": "flex",
+              "fontSize": 12,
+              "lineHeight": 14,
+            },
+          ]
+        }
+      >
+        Something went wrong
+      </Text>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+      testID="removeFile"
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={24}
+        bbWidth={24}
+        focusable={false}
+        height={24}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            Object {
+              "flex": 0,
+              "height": 24,
+              "width": 24,
+            },
+          ]
+        }
+        vbHeight={512}
+        vbWidth={320}
+        width={24}
+      >
+        <RNSVGGroup>
+          <RNSVGPath
+            d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"
+            fill={4287402915}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+          />
+        </RNSVGGroup>
+      </RNSVGSvgView>
+    </View>
+  </View>
+</View>
+`;

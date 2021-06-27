@@ -1,6 +1,6 @@
 import { EbookParser } from 'shared/libs'
 
-import { FileData } from '../model'
+import type { FileData } from '../model'
 
 export function parseFile(file: FileData) {
   return EbookParser.getMetadata(file.path)
