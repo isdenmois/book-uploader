@@ -38,7 +38,7 @@ export const startUpload = async () => {
 
   for (const file of files) {
     if (file.isUploaded) continue
-    const update = data => updateFile({ id: file.id, ...data })
+    const update = (data: Partial<FileData>) => updateFile({ id: file.id, ...data })
     const updateProgress = (progress: number) => setProgress({ id: file.id, progress })
 
     // Set initial progress
@@ -48,7 +48,8 @@ export const startUpload = async () => {
       const parsed = await EbookParser.getMetadata(file.path)
 
       // Update book data
-      update({ title: parsed.title, author: parsed.author, isParsed: true })
+      update({ title: parsed.title, author: parsed.author, isParsed: true, path: parsed.file.filepath })
+      file.path = parsed.file.filepath
 
       await api.uploadFile(address, parsed.file, updateProgress)
 
