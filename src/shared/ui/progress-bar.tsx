@@ -14,7 +14,7 @@ export function ProgressBar({ color, progress, showAlways, text }: Props) {
   const isDone = progress >= 100
 
   return (
-    <Box flexDirection='row' alignItems='center' height={10} marginTop={0.25}>
+    <Box flexDirection='row' alignItems='center' height={12} marginTop={0.25}>
       <Box
         height={5}
         position='relative'
@@ -33,7 +33,7 @@ export function ProgressBar({ color, progress, showAlways, text }: Props) {
         />
       </Box>
 
-      <Text color='secondary' fontSize={12} pl={0.5} textAlign='right'>
+      <Text color='secondary' fontSize={12} lineHeight={12} pl={0.5} textAlign='right'>
         {text || Math.round(progress) + '%'}
       </Text>
     </Box>
