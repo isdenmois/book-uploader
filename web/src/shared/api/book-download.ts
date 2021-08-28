@@ -6,8 +6,8 @@ import { BookItem, ProviderType } from './types'
 export async function downloadFile(file: BookItem): Promise<void> {
   const { host, path, query } = await getUrl(file.type, file.link)
 
-  const params = querystring(Object.assign({}, query, { host, path }))
-  const url = `${import.meta.env.VITE_TOR_HOST}/api/rewrite${params}`
+  const queryParams = Object.assign({}, query, { host, path })
+  const url = import.meta.env.VITE_TOR_HOST?.replace(/\/$/, '') + '/api/rewrite' + querystring(queryParams)
 
   console.log(url)
 
