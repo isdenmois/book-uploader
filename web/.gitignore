@@ -1,4 +1,10 @@
-/node_modules/
-/public/build/
-
+node_modules
 .DS_Store
+dist
+dist-ssr
+*.local
+
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
