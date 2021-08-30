@@ -1,6 +1,7 @@
 import { SearchSelector } from './types'
 
-const find = (entry: HTMLElement, cssSelector: string) => entry.querySelector<HTMLElement>(cssSelector)
+const find = <T extends Element = HTMLElement>(entry: HTMLElement, cssSelector: string) =>
+  entry.querySelector<T>(cssSelector)
 
 export const textSelector = (cssSelector: string): SearchSelector => {
   return entry => find(entry, cssSelector)?.innerText
@@ -21,7 +22,7 @@ export const listTextSelector = (cssSelector: string): SearchSelector => {
 }
 
 export const linkSelector = (cssSelector: string): SearchSelector => {
-  return entry => (find(entry, cssSelector)?.attributes as any).href?.value
+  return entry => find<any>(entry, cssSelector)?.attributes.href?.value
 }
 
 export const matchSelector = (cssSelector: string, regExp: RegExp): SearchSelector => {
