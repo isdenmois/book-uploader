@@ -79,8 +79,8 @@
     "pre-commit": "yarn pretty-quick --staged"
   },
   "resolutions": {
-    "react-native-file-opener@0.2.0": "patch:react-native-file-opener@npm:0.2.0#.yarn/patches/react-native-file-opener-npm-0.2.0-bba2579a7f",
-    "react-native-fs@2.18.0": "patch:react-native-fs@npm:2.18.0#.yarn/patches/react-native-fs-npm-2.18.0-e59e52f47e"
+    "react-native-file-opener@0.2.0": "patch:react-native-file-opener@npm:0.2.0#.yarn/patches/react-native-file-opener+0.2.0.patch",
+    "react-native-fs@2.18.0": "patch:react-native-fs@npm:2.18.0#.yarn/patches/react-native-fs+2.18.0.patch"
   },
   "packageManager": "yarn@3.0.1-rc.2"
 }
