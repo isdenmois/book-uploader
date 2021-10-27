@@ -13,9 +13,7 @@ exports[`BookItem 1`] = `
   }
 >
   <ActivityIndicator
-    animating={true}
     color="#5396EE"
-    hidesWhenStopped={true}
     size="large"
   />
 </View>
@@ -130,16 +128,12 @@ exports[`BookItem 3`] = `
       },
     ]
   }
-  disableVirtualization={false}
   getItem={[Function]}
   getItemCount={[Function]}
-  horizontal={false}
-  initialNumToRender={10}
   keyExtractor={[Function]}
-  maxToRenderPerBatch={10}
   onContentSizeChange={[Function]}
-  onEndReachedThreshold={2}
   onLayout={[Function]}
+  onMomentumScrollBegin={[Function]}
   onMomentumScrollEnd={[Function]}
   onScroll={[Function]}
   onScrollBeginDrag={[Function]}
@@ -153,9 +147,7 @@ exports[`BookItem 3`] = `
       "marginTop": 15,
     }
   }
-  updateCellsBatchingPeriod={50}
   viewabilityConfigCallbackPairs={Array []}
-  windowSize={21}
 >
   <View>
     <View
@@ -164,7 +156,9 @@ exports[`BookItem 3`] = `
     >
       <View
         accessible={true}
+        collapsable={false}
         focusable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -317,7 +311,9 @@ exports[`BookItem 3`] = `
     >
       <View
         accessible={true}
+        collapsable={false}
         focusable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
@@ -470,7 +466,9 @@ exports[`BookItem 3`] = `
     >
       <View
         accessible={true}
+        collapsable={false}
         focusable={true}
+        nativeID="animatedComponent"
         onClick={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}

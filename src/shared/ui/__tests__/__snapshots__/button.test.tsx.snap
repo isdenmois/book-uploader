@@ -2,8 +2,15 @@
 
 exports[`Button 1`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": false,
+    }
+  }
   accessible={true}
+  collapsable={false}
   focusable={false}
+  nativeID="animatedComponent"
   onClick={[Function]}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
@@ -59,6 +66,11 @@ exports[`Button 1`] = `
 
 exports[`Button 2`] = `
 <View
+  accessibilityState={
+    Object {
+      "disabled": true,
+    }
+  }
   accessible={true}
   focusable={false}
   onClick={[Function]}
@@ -97,9 +109,7 @@ exports[`Button 2`] = `
     }
   >
     <ActivityIndicator
-      animating={true}
       color="#787D87"
-      hidesWhenStopped={true}
       size="small"
     />
   </View>

@@ -29,11 +29,10 @@ function flibustaFileUrl(link: string) {
   return { host: import.meta.env.VITE_FLIBUSTA_HOST, path: link }
 }
 
-const parser = new DOMParser()
 async function zlibFileUrl(link: string) {
   const cookie = localStorage.getItem(ZLIB_COOKIE) ?? ''
   const body: string = await tor.request(import.meta.env.VITE_ZLIB_HOST, link, { query: { cookie } })
-  const doc = parser.parseFromString(body, 'text/html')
+  const doc = new DOMParser().parseFromString(body, 'text/html')
   const path = doc.querySelector<any>('a.addDownloadedBook')?.attributes.href.value
   const query = { nofollow: true, cookie }
 

@@ -1,0 +1,15 @@
+diff --git a/dist/hooks/useDimensions.js b/dist/hooks/useDimensions.js
+index 21f5e8a35d1c1fd1785762e8fffd7afe35e8f3e1..5bbeb8638c989598ecf77a069f62875d8705886b 100644
+--- a/dist/hooks/useDimensions.js
++++ b/dist/hooks/useDimensions.js
+@@ -9,8 +9,8 @@ var useDimensions = function () {
+         setDimensions(window);
+     };
+     react_1.useEffect(function () {
+-        react_native_1.Dimensions.addEventListener('change', onChange);
+-        return function () { return react_native_1.Dimensions.removeEventListener('change', onChange); };
++        var subscription = react_native_1.Dimensions.addEventListener('change', onChange);
++        return function () { return subscription && subscription.remove ? subscription.remove() : react_native_1.Dimensions.removeEventListener('change', onChange); };
+     }, []);
+     return dimensions;
+ };

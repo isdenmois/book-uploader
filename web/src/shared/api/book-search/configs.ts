@@ -3,7 +3,7 @@ import { SearchConfig } from './types'
 
 export const FLIBUSTA: SearchConfig = {
   type: 'FLIBUSTA',
-  host: import.meta.env.VITE_FLIBUSTA_HOST,
+  host: import.meta.env?.VITE_FLIBUSTA_HOST,
   path: '/opds/search',
   query: { searchType: 'books' },
   searchParam: 'searchTerm',
@@ -23,7 +23,7 @@ export const FLIBUSTA: SearchConfig = {
 
 export const ZLIB: SearchConfig = {
   type: 'ZLIB',
-  host: import.meta.env.VITE_ZLIB_HOST,
+  host: import.meta.env?.VITE_ZLIB_HOST,
   path: '/s/',
   query: { e: 1, extension: 'epub' },
   includeCookie: true,

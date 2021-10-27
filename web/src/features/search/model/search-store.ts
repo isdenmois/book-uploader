@@ -16,14 +16,14 @@ export const useSearch = defineStore('search', {
       isLoading: false,
     },
   actions: {
-    async searchBooks(type: ProviderType, query: string, ext: Extenstion = 'FB2') {
+    async searchBooks(type: ProviderType, query: string, ext: Extenstion = 'fb2') {
       this.books = null
       this.isLoading = true
 
       try {
         this.books = await api.bookSearch(type, query, ext)
       } catch (e) {
-        console.log(e)
+        alert(e)
       }
 
       this.isLoading = false

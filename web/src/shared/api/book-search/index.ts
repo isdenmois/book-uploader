@@ -27,10 +27,8 @@ export async function bookSearch(type: ProviderType, name: string, extension: st
   return parseSearch(body, config)
 }
 
-const parser = new DOMParser()
-
 function parseSearch(body: string, config: SearchConfig): BookItem[] {
-  const doc = parser.parseFromString(body, 'text/html')
+  const doc = new DOMParser().parseFromString(body, 'text/html')
   const entries = doc.querySelectorAll<HTMLElement>(config.selectors.entry)
 
   const books: any[] = Array.prototype.map
