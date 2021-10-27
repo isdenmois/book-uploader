@@ -1,17 +1,23 @@
-/**
- * Metro configuration for React Native
- * https://github.com/facebook/react-native
- *
- * @format
- */
+const { makeMetroConfig } = require('@rnx-kit/metro-config')
+const { MetroSerializer, esbuildTransformerConfig } = require('@rnx-kit/metro-serializer-esbuild')
 
-module.exports = {
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: true,
+const inProduction = process.env.NODE_ENV === 'production'
+
+module.exports = inProduction
+  ? makeMetroConfig({
+      projectRoot: __dirname,
+      serializer: {
+        customSerializer: MetroSerializer(),
       },
-    }),
-  },
-}
+      transformer: esbuildTransformerConfig,
+    })
+  : {
+      transformer: {
+        getTransformOptions: async () => ({
+          transform: {
+            experimentalImportSupport: false,
+            inlineRequires: true,
+          },
+        }),
+      },
+    }

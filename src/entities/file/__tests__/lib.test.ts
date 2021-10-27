@@ -1,10 +1,8 @@
 jest.mock('react-native-fs', () => ({}))
-jest.mock('react-native-file-opener', () => ({}))
-jest.mock('shared/libs', () => ({ EbookParser: {} }))
+jest.mock('shared/libs', () => ({ EbookParser: {}, FileOpener: {} }))
 
 import RNFS from 'react-native-fs'
-import FileOpener from 'react-native-file-opener'
-import { EbookParser } from 'shared/libs'
+import { EbookParser, FileOpener } from 'shared/libs'
 import { mock } from 'shared/utils/test-utils/async'
 import { parseFile, removeFile, shareFile } from '../lib'
 import { FileData } from '../model'

@@ -1,5 +1,7 @@
 default_platform(:android)
 
+ENV['NODE_ENV'] = 'production'
+
 platform :android do
   desc 'Upload a new version'
   lane :upload do

@@ -1,4 +1,4 @@
-import FileOpener from 'react-native-file-opener'
+import { FileOpener } from 'shared/libs'
 import type { FileData } from '../model'
 
 export function shareFile(file: FileData) {
