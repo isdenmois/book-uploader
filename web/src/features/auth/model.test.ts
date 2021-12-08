@@ -1,28 +1,23 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { keepMount } from 'nanostores'
 import { ZLIB_COOKIE } from 'shared/api/login'
-import { mockObject } from 'shared/test-utils/mock'
-import { useAuth } from './model'
+import { localStorage } from 'shared/test-utils/local-storage'
+import { authAtom, setCookie } from './model'
 
 describe('Auth feature', () => {
-  beforeEach(() => {
-    setActivePinia(createPinia())
-  })
-
   it('should contain initial state', () => {
-    const localStorage = mockObject(global, 'localStorage', { getItem: jest.fn().mockReturnValue('test') })
-    const auth = useAuth()
+    localStorage.getItem.mockReturnValue('test')
+    keepMount(authAtom)
 
     expect(localStorage.getItem).toHaveBeenCalledWith(ZLIB_COOKIE)
-    expect(auth.$state).toEqual({ cookie: 'test' })
+    expect(authAtom.get()).toEqual('test')
   })
 
   it('setCookie', () => {
-    const localStorage = mockObject(global, 'localStorage', { setItem: jest.fn(), getItem: jest.fn() })
-    const auth = useAuth()
+    keepMount(authAtom)
 
-    auth.setCookie('HELLO_IM_COOKIE')
+    setCookie('HELLO_IM_COOKIE')
 
-    expect(auth.cookie).toBe('HELLO_IM_COOKIE')
+    expect(authAtom.get()).toBe('HELLO_IM_COOKIE')
     expect(localStorage.setItem).toHaveBeenCalledWith(ZLIB_COOKIE, 'HELLO_IM_COOKIE')
   })
 })

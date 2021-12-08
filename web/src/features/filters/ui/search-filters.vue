@@ -2,12 +2,13 @@
 import SearchInput from './search-input.vue'
 import SearchChips from './search-chips.vue'
 
+defineProps<{ disabled?: boolean }>()
 defineEmits(['search'])
 </script>
 
 <template>
   <form @submit.prevent="$emit('search')" class="px-4">
-    <SearchInput />
+    <SearchInput :disabled="disabled" />
   </form>
 
   <div class="flex flex-row mt-4 mx-2 overflow-x-auto pb-2">

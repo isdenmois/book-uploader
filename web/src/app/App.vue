@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import SearchPage from 'pages/search-page.vue'
-import LoginPage from 'pages/login-page.vue'
-import { useAuth } from 'features/auth'
-import { useFilters } from 'features/filters'
+import { useStore } from '@nanostores/vue'
 
-const auth = useAuth()
-const filters = useFilters()
-let showLogin = $computed(() => filters.source === 'ZLIB' && !auth.cookie)
+import SearchPage from 'pages/search-page/search-page.vue'
+import LoginPage from 'pages/login-page.vue'
+import { $showLogin } from './app-model'
+import { sourceAtom } from 'features/filters'
+
+const showLogin = useStore($showLogin)
 </script>
 
 <template>

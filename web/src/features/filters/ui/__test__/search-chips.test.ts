@@ -1,17 +1,14 @@
 /**
  * @jest-environment jsdom
  */
-import { createTestingPinia } from '@pinia/testing'
 import { render, screen, fireEvent } from '@testing-library/vue'
 
 import SearchChips from '../search-chips.vue'
-import { useFilters } from '../../model'
+import { sourceAtom } from '../../model'
 
 describe('<SearchChips />', () => {
   it('should get filters from store', () => {
-    const pinia = createTestingPinia()
-
-    render(SearchChips, { global: { plugins: [pinia] } })
+    render(SearchChips)
 
     expect(screen.getByText('Flibusta').classList).toContain('selected')
     expect(screen.getByText('ZLib').classList).not.toContain('selected')
@@ -20,14 +17,11 @@ describe('<SearchChips />', () => {
   })
 
   it('should show extenstion when zlib selected', async () => {
-    const pinia = createTestingPinia()
-    const filters = useFilters()
-
-    render(SearchChips, { global: { plugins: [pinia] } })
+    render(SearchChips)
 
     await fireEvent.click(screen.getByText('ZLib'))
 
-    expect(filters.source).toBe('ZLIB')
+    expect(sourceAtom.get()).toBe('ZLIB')
 
     expect(screen.getByText('Flibusta').classList).not.toContain('selected')
     expect(screen.getByText('ZLib').classList).toContain('selected')

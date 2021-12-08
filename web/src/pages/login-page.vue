@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useAuth } from 'features/auth'
+import { setCookie } from 'features/auth'
 import { api } from 'shared/api'
 import { Input, EmailIcon, KeyIcon } from 'shared/ui'
 import Button from 'shared/ui/button.vue'
 
-const auth = useAuth()
 let email = $ref(import.meta.env.VITE_INITIAL_EMAIL)
 let password = $ref(import.meta.env.VITE_INITIAL_PASSWORD)
 let inProgress = $ref(false)
@@ -19,7 +18,7 @@ const login = async () => {
   try {
     const cookie = await api.sendLogin(email, password)
 
-    auth.setCookie(cookie)
+    setCookie(cookie)
   } catch (e) {
     alert(e)
   }

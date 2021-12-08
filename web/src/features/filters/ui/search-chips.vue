@@ -1,23 +1,21 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { useStore } from '@nanostores/vue'
 import { Chip } from 'shared/ui'
-import { useFilters } from '../'
+import { extAtom, sourceAtom } from '../model'
 
-const filters = useFilters()
-
-const source = computed(() => filters.source)
-const ext = computed(() => filters.ext)
+const source = useStore(sourceAtom)
+const ext = useStore(extAtom)
 </script>
 
 <template>
-  <Chip title="Flibusta" :selected="source === 'FLIBUSTA'" @select="filters.setSource('FLIBUSTA')" />
-  <Chip title="ZLib" :selected="source === 'ZLIB'" @select="filters.setSource('ZLIB')" />
+  <Chip title="Flibusta" :selected="source === 'FLIBUSTA'" @select="sourceAtom.set('FLIBUSTA')" />
+  <Chip title="ZLib" :selected="source === 'ZLIB'" @select="sourceAtom.set('ZLIB')" />
 
   <template v-if="source === 'ZLIB'">
     <div class="w-4" />
 
-    <Chip title="EPUB" :selected="ext === 'epub'" @select="filters.setExt('epub')" />
-    <Chip title="FB2" :selected="ext === 'fb2'" @select="filters.setExt('fb2')" />
-    <Chip title="PDF" :selected="ext === 'pdf'" @select="filters.setExt('pdf')" />
+    <Chip title="EPUB" :selected="ext === 'epub'" @select="extAtom.set('epub')" />
+    <Chip title="FB2" :selected="ext === 'fb2'" @select="extAtom.set('fb2')" />
+    <Chip title="PDF" :selected="ext === 'pdf'" @select="extAtom.set('pdf')" />
   </template>
 </template>

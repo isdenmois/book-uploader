@@ -1,20 +1,22 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-
+import { useStore } from '@nanostores/vue'
 import { Input } from 'shared/ui'
 
-import { useFilters } from '../model'
+import { queryAtom } from '../model'
 
-const filters = useFilters()
+const queryValue = useStore(queryAtom)
 
 const query = computed({
-  get: () => filters.query,
-  set: filters.setQuery,
+  get: () => queryValue.value,
+  set: (value: string) => queryAtom.set(value),
 })
+
+defineProps<{ disabled?: boolean }>()
 </script>
 
 <template>
-  <Input v-model:value="query" placeholder="Search books by title">
+  <Input v-model:value="query" placeholder="Search books by title" :disabled="disabled">
     <template v-slot:icon>
       <svg viewBox="0 0 26 26" width="21">
         <path
