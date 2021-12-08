@@ -1,18 +1,11 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import WindiCSS from 'vite-plugin-windicss'
+import solidPlugin from 'vite-plugin-solid'
 import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue({
-      script: {
-        refSugar: true,
-      },
-    }),
-    WindiCSS(),
-  ],
+  plugins: [solidPlugin(), WindiCSS()],
   resolve: {
     alias: {
       pages: resolve(__dirname, 'src/pages'),

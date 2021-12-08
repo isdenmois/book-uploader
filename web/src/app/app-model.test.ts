@@ -1,3 +1,4 @@
+jest.mock('features/filters/ui/search-filters', () => ({}))
 import { cleanStores } from 'nanostores'
 import 'shared/test-utils/local-storage'
 import { $auth } from 'features/auth'

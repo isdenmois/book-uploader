@@ -1,16 +1,18 @@
+jest.mock('features/filters/ui/search-filters', () => ({}))
 import { cleanStores, keepMount } from 'nanostores'
 import { $ext, $query, $source } from 'features/filters'
 import { $books, $isLoading } from 'features/search'
-import { startSearch } from './search-model'
 import { api } from 'shared/api'
 import { mockPromise } from 'shared/test-utils/async'
 import { mockObject } from 'shared/test-utils/mock'
+
+import { startSearch } from './search-model'
 
 describe('Search page model', () => {
   let location: Location, history: History
 
   beforeEach(() => {
-    location = mockObject(global, 'location', {})
+    location = mockObject(global, 'location', { search: 'azaza' })
     history = mockObject(global, 'history', { replaceState: jest.fn() })
   })
 

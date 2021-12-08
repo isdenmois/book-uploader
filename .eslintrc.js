@@ -9,5 +9,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': ['warn'],
     curly: 0,
     semi: 0,
+    'no-unused-vars': 0,
   },
 }

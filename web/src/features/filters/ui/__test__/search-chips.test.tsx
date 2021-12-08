@@ -1,14 +1,14 @@
 /**
  * @jest-environment jsdom
  */
-import { render, screen, fireEvent } from '@testing-library/vue'
+import { screen, render, fireEvent } from 'solid-testing-library'
 
-import SearchChips from '../search-chips.vue'
+import { SearchChips } from '../search-chips'
 import { $source } from '../../model'
 
 describe('<SearchChips />', () => {
   it('should get filters from store', () => {
-    render(SearchChips)
+    render(() => <SearchChips />)
 
     expect(screen.getByText('Flibusta').classList).toContain('selected')
     expect(screen.getByText('ZLib').classList).not.toContain('selected')
@@ -16,10 +16,10 @@ describe('<SearchChips />', () => {
     expect(screen.queryByText('EPUB')).toBeNull()
   })
 
-  it('should show extenstion when zlib selected', async () => {
-    render(SearchChips)
+  it('should show extenstion when zlib selected', () => {
+    render(() => <SearchChips />)
 
-    await fireEvent.click(screen.getByText('ZLib'))
+    fireEvent.click(screen.getByText('ZLib'))
 
     expect($source.get()).toBe('ZLIB')
 

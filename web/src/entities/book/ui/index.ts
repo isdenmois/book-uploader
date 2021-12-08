@@ -1,1 +1,1 @@
-export { default as BookItem } from './book-item.vue'
+export * from './book-item'

@@ -14,9 +14,24 @@ body {
 #app {
   max-width: 600px;
   margin: 0 auto;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
   font-size: 24px;
   color: var(--profileText);
+}
+
+.book-list > div:not(:first-child) {
+  @apply mt-4;
+}
+
+.input {
+  background: #ffffff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding-left: 4px;
 }

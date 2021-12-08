@@ -1,0 +1,15 @@
+.chip {
+  border: 1px solid var(--secondaryBackground);
+  border-radius: 20px;
+  color: var(--secondary);
+  cursor: pointer;
+  margin-left: 8px;
+  padding: 4px 12px;
+  font-size: 14px;
+}
+
+.chip.selected {
+  background-color: var(--searchBackground);
+  border-color: var(--searchSelected);
+  color: var(--searchText);
+}
