@@ -4,7 +4,7 @@
 import { render, screen, fireEvent } from '@testing-library/vue'
 
 import SearchChips from '../search-chips.vue'
-import { sourceAtom } from '../../model'
+import { $source } from '../../model'
 
 describe('<SearchChips />', () => {
   it('should get filters from store', () => {
@@ -21,7 +21,7 @@ describe('<SearchChips />', () => {
 
     await fireEvent.click(screen.getByText('ZLib'))
 
-    expect(sourceAtom.get()).toBe('ZLIB')
+    expect($source.get()).toBe('ZLIB')
 
     expect(screen.getByText('Flibusta').classList).not.toContain('selected')
     expect(screen.getByText('ZLib').classList).toContain('selected')

@@ -1,16 +1,10 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useStore } from '@nanostores/vue'
+import { useVModel } from '@nanostores/vue'
 import { Input } from 'shared/ui'
 
-import { queryAtom } from '../model'
+import { $query } from '../model'
 
-const queryValue = useStore(queryAtom)
-
-const query = computed({
-  get: () => queryValue.value,
-  set: (value: string) => queryAtom.set(value),
-})
+const query = useVModel($query)
 
 defineProps<{ disabled?: boolean }>()
 </script>

@@ -1,12 +1,12 @@
-import { extAtom, queryAtom, sourceAtom } from 'features/filters'
-import { $books, searchBooks } from 'features/search'
 import { onSet, onStart } from 'nanostores'
+import { $ext, $query, $source } from 'features/filters'
+import { $books, searchBooks } from 'features/search'
 import type { Extenstion, Source } from 'shared/types'
 
 export const startSearch = () => {
-  const ext = extAtom.get()
-  const query = queryAtom.get()
-  const source = sourceAtom.get()
+  const ext = $ext.get()
+  const query = $query.get()
+  const source = $source.get()
 
   searchBooks(source, query, ext)
 
@@ -20,18 +20,18 @@ const clearBooks = () => {
   $books.set(null)
 }
 
-onSet(extAtom, clearBooks)
-onSet(queryAtom, clearBooks)
-onSet(sourceAtom, clearBooks)
+onSet($ext, clearBooks)
+onSet($query, clearBooks)
+onSet($source, clearBooks)
 
 onStart($books, () => {
   const params = new URLSearchParams(location.search)
   const q = params.get('q')
 
   if (q) {
-    sourceAtom.set((params.get('source') as Source) || 'FLIBUSTA')
-    queryAtom.set(q)
-    extAtom.set((params.get('ext') as Extenstion) || 'epub')
+    $source.set((params.get('source') as Source) || 'FLIBUSTA')
+    $query.set(q)
+    $ext.set((params.get('ext') as Extenstion) || 'epub')
 
     startSearch()
   }

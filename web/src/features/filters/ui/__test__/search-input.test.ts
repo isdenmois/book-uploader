@@ -4,11 +4,11 @@
 import { mount } from '@vue/test-utils'
 
 import SearchInput from '../search-input.vue'
-import { queryAtom } from '../../model'
+import { $query } from '../../model'
 
 describe('<SearchInput />', () => {
   it('should get query from store', () => {
-    queryAtom.set('Harry')
+    $query.set('Harry')
 
     const wrapper = mount(SearchInput)
 
@@ -20,6 +20,6 @@ describe('<SearchInput />', () => {
 
     await wrapper.get<HTMLInputElement>('input').setValue('Hyperion')
 
-    expect(queryAtom.get()).toBe('Hyperion')
+    expect($query.get()).toBe('Hyperion')
   })
 })

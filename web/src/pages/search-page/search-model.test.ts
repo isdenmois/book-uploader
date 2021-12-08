@@ -1,5 +1,5 @@
 import { cleanStores, keepMount } from 'nanostores'
-import { extAtom, queryAtom, sourceAtom } from 'features/filters'
+import { $ext, $query, $source } from 'features/filters'
 import { $books, $isLoading } from 'features/search'
 import { startSearch } from './search-model'
 import { api } from 'shared/api'
@@ -15,7 +15,7 @@ describe('Search page model', () => {
   })
 
   afterEach(() => {
-    cleanStores(extAtom, queryAtom, sourceAtom, $books)
+    cleanStores($ext, $query, $source, $books)
   })
 
   describe('parse URL params on mount', () => {
@@ -42,15 +42,15 @@ describe('Search page model', () => {
 
   it('clearBooks when filters changes', () => {
     $books.set([{} as any])
-    extAtom.set('pdf')
+    $ext.set('pdf')
     expect($books.get()).toBeNull()
 
     $books.set([{} as any])
-    queryAtom.set('aaa')
+    $query.set('aaa')
     expect($books.get()).toBeNull()
 
     $books.set([{} as any])
-    sourceAtom.set('ZLIB')
+    $source.set('ZLIB')
     expect($books.get()).toBeNull()
   })
 

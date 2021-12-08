@@ -1,9 +1,9 @@
-import { extAtom, queryAtom, sourceAtom } from './filters-store'
+import { $ext, $query, $source } from './filters-store'
 
 describe('Feature filters model', () => {
   it('should contain initial state', () => {
-    expect(extAtom.get()).toBe('epub')
-    expect(queryAtom.get()).toBe('')
-    expect(sourceAtom.get()).toBe('FLIBUSTA')
+    expect($ext.get()).toBe('epub')
+    expect($query.get()).toBe('')
+    expect($source.get()).toBe('FLIBUSTA')
   })
 })

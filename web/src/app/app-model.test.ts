@@ -1,31 +1,31 @@
-import 'shared/test-utils/local-storage'
-import { authAtom } from 'features/auth'
-import { sourceAtom } from 'features/filters'
-import { $showLogin } from './app-model'
 import { cleanStores } from 'nanostores'
+import 'shared/test-utils/local-storage'
+import { $auth } from 'features/auth'
+import { $source } from 'features/filters'
+import { $showLogin } from './app-model'
 
 describe('showLogin', () => {
   afterAll(() => {
-    cleanStores(authAtom, sourceAtom)
+    cleanStores($auth, $source)
   })
 
   it('for FLIBUSTA do not show login', () => {
-    sourceAtom.set('FLIBUSTA')
+    $source.set('FLIBUSTA')
 
-    authAtom.set(null)
+    $auth.set(null)
     expect($showLogin.get()).toBeFalsy()
 
-    authAtom.set('aaaa')
+    $auth.set('aaaa')
     expect($showLogin.get()).toBeFalsy()
   })
 
   it('for ZLIB show login when cookie is empty', () => {
-    sourceAtom.set('ZLIB')
+    $source.set('ZLIB')
 
-    authAtom.set(null)
+    $auth.set(null)
     expect($showLogin.get()).toBeTruthy()
 
-    authAtom.set('aaaa')
+    $auth.set('aaaa')
     expect($showLogin.get()).toBeFalsy()
   })
 })
