@@ -40,7 +40,11 @@ function parseSearch(body: string, config: SearchConfig): BookItem[] {
       const data: any = { type: config.type, link }
 
       for (const key in config.selectors.fields) {
-        data[key] = (config.selectors.fields as any)[key](entry)
+        const value = (config.selectors.fields as any)[key](entry)
+
+        if (value) {
+          data[key] = value
+        }
       }
 
       return data

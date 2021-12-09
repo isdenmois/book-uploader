@@ -7,7 +7,7 @@ import { $showLogin } from './app-model'
 
 describe('showLogin', () => {
   afterAll(() => {
-    cleanStores($auth, $source)
+    cleanStores($auth, $source, $showLogin)
   })
 
   it('for FLIBUSTA do not show login', () => {

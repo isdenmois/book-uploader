@@ -17,6 +17,7 @@
     "@babel/plugin-syntax-import-meta": "7.10.4",
     "@babel/preset-env": "7.16.4",
     "@babel/preset-typescript": "7.16.0",
+    "@testing-library/jest-dom": "^5.16.1",
     "@types/jest": "27.0.3",
     "babel-jest": "27.4.2",
     "babel-plugin-transform-vite-meta-env": "1.0.3",

@@ -29,7 +29,7 @@ export const Input: Component<Props> = props => {
       />
 
       <Show when={props.value && !props.disabled}>
-        <div class='cursor-pointer px-2 z-10' onClick={() => props.onChange('')}>
+        <div class='cursor-pointer px-2 z-10' onClick={() => props.onChange('')} data-testid='clear'>
           <CloseIcon />
         </div>
       </Show>

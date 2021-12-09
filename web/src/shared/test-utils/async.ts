@@ -18,3 +18,18 @@ export const mockPromise = <T extends {}, M extends FunctionPropertyNames<Requir
 
   return [resolve, reject, spy] as const
 }
+
+export function mockFetch() {
+  const [resolve, reject, spy] = mockPromise(global, 'fetch')
+
+  const mockedFetch = {
+    spy,
+    resolveText: (value: string, headers?: [string, string][]) => {
+      resolve({ text: () => Promise.resolve(value), headers: new Map<string, string>(headers) })
+      return mockedFetch
+    },
+    reject,
+  }
+
+  return mockedFetch
+}

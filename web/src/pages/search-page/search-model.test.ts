@@ -31,7 +31,7 @@ describe('Search page model', () => {
 
     it('should parse params and start search', async () => {
       const [resolve, , bookSearch] = mockPromise(api, 'bookSearch')
-      location.search = 'ext=epub&q=test'
+      location.search = 'q=test'
       keepMount($books)
 
       expect(bookSearch).toHaveBeenCalledWith('FLIBUSTA', 'test', 'epub')

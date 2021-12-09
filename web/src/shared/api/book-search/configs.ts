@@ -14,9 +14,9 @@ export const FLIBUSTA: SearchConfig = {
       authors: listTextSelector('author name'),
       ext: value('fb2.zip'),
       title: textSelector('title'),
-      translation: matchSelector('content', new RegExp(/Перевод:\s?(.+?)\s?[&<]/)),
-      lang: matchSelector('content', new RegExp(/Язык:\s?(.+?)\s?[&<]/)),
-      size: matchSelector('content', new RegExp(/Размер:\s?(.+?)\s?[&<]/)),
+      translation: matchSelector('content', new RegExp(/Перевод:\s?(.+?)\s*[&<]/)),
+      lang: matchSelector('content', new RegExp(/Язык:\s?(.+?)\s*[&<]/)),
+      size: matchSelector('content', new RegExp(/Размер:\s?(.+?)\s*[&<]/)),
     },
   },
 }
