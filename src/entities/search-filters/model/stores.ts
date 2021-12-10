@@ -4,4 +4,4 @@ import { SearchFiltersState } from './types'
 /**
  * Search query filters
  */
-export const $searchFilters = createStore<SearchFiltersState>({ type: 'zlib', extension: 'epub', query: '' })
+export const $searchFilters = createStore<SearchFiltersState>({ type: 'ZLIB', extension: 'epub', query: '' })

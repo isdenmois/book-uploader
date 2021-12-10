@@ -8,9 +8,9 @@ import { BookList } from '../book-list'
 
 test('BookItem', async () => {
   const books: BookItem[] = [
-    { ext: 'epub', type: 'zlib', title: 'First result', link: 'http://example.com' },
-    { ext: 'epub', type: 'zlib', title: 'Second', link: 'http://ex.com' },
-    { ext: 'epub', type: 'zlib', title: 'Third res', link: 'http://q.com' },
+    { ext: 'epub', type: 'ZLIB', title: 'First result', link: 'http://example.com' },
+    { ext: 'epub', type: 'ZLIB', title: 'Second', link: 'http://ex.com' },
+    { ext: 'epub', type: 'ZLIB', title: 'Third res', link: 'http://q.com' },
   ]
   const onDownload = jest.fn()
 

@@ -2,23 +2,19 @@ import * as React from 'react'
 import Svg, { G, Path, Text } from 'react-native-svg'
 import { useTheme } from '../theme'
 
-function SvgComponent({ size, color, text }) {
+function SvgComponent({ color, text }) {
   const { colors } = useTheme()
 
   return (
-    <Svg viewBox='0 0 384 512' width={size} height={size} style={{ marginLeft: -4 }}>
+    <Svg viewBox='0 0 40 50' width={40} height={50}>
       <G>
         <Path
           fill={colors[color]}
-          d='M256 0H24A23.94 23.94 0 000 23.88V488a23.94 23.94 0 0023.88 24H360a23.94 23.94 0 0024-23.88V128H272a16 16 0 01-16-16z'
-        />
-        <Path
-          fill={colors[color]}
-          d='M384 121.9v6.1H272a16 16 0 01-16-16V0h6.1a24 24 0 0117 7l97.9 98a23.9 23.9 0 017 16.9z'
+          d='M24 0H2.4A2.394 2.394 90 000 2.388V48.8a2.394 2.394 90 002.388 2.4H36a2.394 2.394 90 002.4-2.388V14.4H25.6a1.6 1.6 90 01-1.6-1.6zm14.4 12.19v.61H27.2a1.6 1.6 90 01-1.6-1.6V0h.61a2.4 2.4 90 011.7.7l9.79 9.8a2.39 2.39 90 01.7 1.69z'
         />
       </G>
 
-      <Text fill='white' fontSize='120' fontWeight='bold' x='192' y='440' textAnchor='middle'>
+      <Text fill='#fff' fontSize='12' fontWeight='bold' x='19' y='44' textAnchor='middle'>
         {text.toUpperCase()}
       </Text>
     </Svg>

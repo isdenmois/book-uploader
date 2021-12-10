@@ -25,6 +25,7 @@ export const light = {
   deleteButton: '#9BA8CA',
   success: '#48B755',
   error: '#FD4463',
+  white: '#FFF',
 }
 
 export const dark = {
@@ -55,4 +56,5 @@ export const dark = {
   deleteButton: '#9BA8CA',
   success: '#22b07d',
   error: '#d8125d',
+  white: '#FFF',
 }

@@ -1,6 +1,6 @@
 import cheerio from 'react-native-cheerio'
 import RNFS from 'react-native-fs'
-import { TOR_HOST, FLIBUSTA_HOST, ZLIB_HOST, USER_AGENT } from '@env'
+import { API_CONFIG } from './config'
 import { MMKV } from 'shared/libs'
 import { querystring } from './utils'
 import * as tor from './tor-request'
@@ -14,9 +14,9 @@ export async function downloadFile(file: BookItem, fileName: string, setProgress
 
   // TODO: move to tor-request
   await RNFS.downloadFile({
-    fromUrl: TOR_HOST + '/api/rewrite' + querystring(Object.assign({}, query, { host, path })),
+    fromUrl: API_CONFIG.TOR_HOST + '/api/rewrite' + querystring(Object.assign({}, query, { host, path })),
     toFile: `${RNFS.DocumentDirectoryPath}/${fileName}`,
-    headers: Object.assign({}, headers, { 'user-agent': USER_AGENT }),
+    headers: Object.assign({}, headers, { 'user-agent': API_CONFIG.USER_AGENT }),
     progress: ({ contentLength, bytesWritten }) => setProgress(Math.round((bytesWritten / contentLength) * 100)),
   }).promise
 
@@ -24,7 +24,7 @@ export async function downloadFile(file: BookItem, fileName: string, setProgress
 }
 
 export function getUrl(type: ProviderType, link: string): any {
-  if (type === 'zlib') {
+  if (type === 'ZLIB') {
     return zlibFileUrl(link)
   }
 
@@ -32,14 +32,14 @@ export function getUrl(type: ProviderType, link: string): any {
 }
 
 function flibustaFileUrl(link: string) {
-  return { host: FLIBUSTA_HOST, path: link }
+  return { host: API_CONFIG.FLIBUSTA_HOST, path: link }
 }
 
 async function zlibFileUrl(link: string) {
   const headers = { Cookie: MMKV.getString(ZLIB_COOKIE) }
-  const $ = cheerio.load(await tor.request(ZLIB_HOST, link, { headers }))
+  const $ = cheerio.load(await tor.request(API_CONFIG.ZLIB_HOST, link, { headers }))
   const path = $('a.addDownloadedBook').attr('href')
   const query = { nofollow: true }
 
-  return { host: ZLIB_HOST, path, query, headers }
+  return { host: API_CONFIG.ZLIB_HOST, path, query, headers }
 }

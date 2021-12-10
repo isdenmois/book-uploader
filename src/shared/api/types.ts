@@ -1,4 +1,4 @@
-export type ProviderType = 'zlib' | 'flibusta'
+export type ProviderType = 'ZLIB' | 'FLIBUSTA'
 
 export interface SearchSelectors extends Record<string, string | Function> {
   entry: string
@@ -25,4 +25,5 @@ export interface BookItem {
   translation?: string
   lang?: string
   size?: string
+  imageUrl?: string
 }

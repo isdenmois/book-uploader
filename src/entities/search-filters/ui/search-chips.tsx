@@ -12,12 +12,12 @@ interface Props {
 
 export const SearchChips: FC<Props> = ({ disabled }) => {
   const { extension, type } = useStore($searchFilters)
-  const isZLib = type === 'zlib'
+  const isZLib = type === 'ZLIB'
 
   return (
     <ScrollView horizontal keyboardShouldPersistTaps='always'>
-      <Chip title='Z-Library' selected={type === 'zlib'} onPress={setZLib} disabled={disabled} />
-      <Chip title='Flibusta' selected={type === 'flibusta'} onPress={setFlibusta} disabled={disabled} />
+      <Chip title='Z-Library' selected={type === 'ZLIB'} onPress={setZLib} disabled={disabled} />
+      <Chip title='Flibusta' selected={type === 'FLIBUSTA'} onPress={setFlibusta} disabled={disabled} />
 
       <View style={s.placeholder} />
 

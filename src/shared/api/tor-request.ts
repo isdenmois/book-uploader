@@ -1,4 +1,4 @@
-import { TOR_HOST, USER_AGENT } from '@env'
+import { API_CONFIG } from './config'
 import { querystring } from './utils'
 
 const JSON_TYPE = 'application/json'
@@ -12,10 +12,10 @@ interface RequestParams {
 
 export function request<T>(host: string, path: string, params: RequestParams = {}): Promise<T> {
   params.headers = Object.assign({}, params.headers, {
-    'User-Agent': USER_AGENT,
+    'User-Agent': API_CONFIG.USER_AGENT,
   })
   const queryParams = Object.assign({}, params.query, { host, path })
-  const url = TOR_HOST + '/api/rewrite' + querystring(queryParams)
+  const url = API_CONFIG.TOR_HOST + '/api/rewrite' + querystring(queryParams)
 
   return fetch(url, params).then(response => {
     if (response.headers.get('Content-Type').startsWith(JSON_TYPE)) {
