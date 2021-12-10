@@ -12,7 +12,7 @@ test('useDeepLink', async () => {
 
   const { unmount } = renderHook(() => useDeepLink(onLink))
 
-  expect(Linking.addEventListener).toHaveBeenCalledWith('url', jasmine.any(Function))
+  expect(Linking.addEventListener).toHaveBeenCalledWith('url', expect.any(Function))
   expect(onLink).not.toHaveBeenCalled()
   expect(Linking.removeEventListener).not.toHaveBeenCalled()
 

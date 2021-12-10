@@ -1,6 +1,6 @@
 import cheerio from 'react-native-cheerio'
 import { FLIBUSTA_HOST, ZLIB_HOST } from '@env'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'shared/libs'
 import * as tor from './tor-request'
 import { ZLIB_COOKIE } from './login'
 import { BookItem, ProviderType, SearchConfig, SearchSelectors } from './types'
@@ -53,7 +53,7 @@ export async function bookSearch(type: ProviderType, name: string, extension: st
   }
 
   if (config.includeCookie) {
-    headers.Cookie = await AsyncStorage.getItem(config.includeCookie)
+    headers.Cookie = MMKV.getString(config.includeCookie)
   }
 
   const body = await tor.request<string>(config.host, path, { query, headers })

@@ -1,7 +1,7 @@
-diff --git a/android/src/main/java/com/rnfs/Uploader.java b/android/src/main/java/com/rnfs/Uploader.java
+diff --git a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
 index 5b2e594..cb0d35d 100644
---- a/android/src/main/java/com/rnfs/Uploader.java
-+++ b/android/src/main/java/com/rnfs/Uploader.java
+--- a/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
++++ b/node_modules/react-native-fs/android/src/main/java/com/rnfs/Uploader.java
 @@ -54,8 +54,10 @@ public class Uploader extends AsyncTask<UploadParams, int[], UploadResult> {
          String twoHyphens = "--";
          String boundary = "*****";

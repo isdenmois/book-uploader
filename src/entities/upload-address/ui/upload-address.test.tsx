@@ -1,9 +1,9 @@
 import React from 'react'
 import { render } from '@testing-library/react-native'
-jest.mock('@react-native-async-storage/async-storage', () => ({}))
+import { act } from 'react-test-renderer'
+jest.mock('shared/libs/mmkv', () => ({ MMKV: {} }))
 import { addressChanged } from '../model'
 import { UploadAddress } from '../ui'
-import { act } from 'react-test-renderer'
 
 it('UploadAddress', () => {
   addressChanged('192.168.1.1')

@@ -3,7 +3,7 @@ import React from 'react'
 
 import 'react-native-gesture-handler/jestSetup'
 jest.mock('./navigation', () => ({ MainNavigator: () => null }))
-jest.mock('@react-native-async-storage/async-storage', () => ({ getItem: () => null }))
+jest.mock('shared/libs/mmkv', () => ({ MMKV: { getString: () => null } }))
 jest.mock('@react-navigation/native', () => ({
   NavigationContainer({ children, ...props }) {
     const Element: any = 'NavigationContainer'

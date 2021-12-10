@@ -1,16 +1,14 @@
+jest.mock('shared/libs/mmkv', () => ({ MMKV: {} }))
 import { mock } from 'shared/utils/test-utils/async'
-
-jest.mock('@react-native-async-storage/async-storage', () => ({}))
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'shared/libs/mmkv'
 import { $uploadAddress, setAddress, preloadAddress } from '../model'
 
 describe('setAddress action', () => {
-  let setItem, removeItem
+  let setString, removeItem
 
   beforeAll(() => {
-    setItem = mock(AsyncStorage, 'setItem')
-    removeItem = mock(AsyncStorage, 'removeItem')
+    setString = mock(MMKV, 'setString')
+    removeItem = mock(MMKV, 'removeItem')
   })
 
   afterEach(() => {
@@ -25,30 +23,30 @@ describe('setAddress action', () => {
     expect($uploadAddress.getState()).toBe('192.168.1.60')
   })
 
-  it('should update the AsyncStorage', () => {
+  it('should update the MMKV', () => {
     setAddress('192.168.1.1')
 
-    expect(setItem).toHaveBeenCalledWith(jasmine.any(String), '192.168.1.1')
+    expect(setString).toHaveBeenCalledWith(expect.any(String), '192.168.1.1')
     expect(removeItem).not.toHaveBeenCalled()
   })
 
-  it('should remove item from the AsyncStorage when address is empty', () => {
+  it('should remove item from the MMKV when address is empty', () => {
     setAddress(null)
 
     expect(removeItem).toHaveBeenCalled()
-    expect(setItem).not.toHaveBeenCalled()
+    expect(setString).not.toHaveBeenCalled()
   })
 })
 
 test('preloadAddress action should only hydrate the store', async () => {
-  mock(AsyncStorage, 'getItem').mockReturnValue(Promise.resolve('192.168.1.77'))
+  mock(MMKV, 'getString').mockReturnValue('192.168.1.77')
 
-  const setItem = mock(AsyncStorage, 'setItem')
-  const removeItem = mock(AsyncStorage, 'removeItem')
+  const setString = mock(MMKV, 'setString')
+  const removeItem = mock(MMKV, 'removeItem')
 
   await preloadAddress()
 
   expect($uploadAddress.getState()).toBe('192.168.1.77')
-  expect(setItem).not.toHaveBeenCalled()
+  expect(setString).not.toHaveBeenCalled()
   expect(removeItem).not.toHaveBeenCalled()
 })

@@ -1,13 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'shared/libs'
 
 import { ZLIB_COOKIE } from 'shared/api/login'
 import { dailyDownloadsFx } from './effects'
 import { setInitialCookie, setCookie as setCookieEvent } from './events'
 
 export async function preloadCookie() {
-  const cookie = await AsyncStorage.getItem(ZLIB_COOKIE)
-
-  setInitialCookie(cookie)
+  setInitialCookie(MMKV.getString(ZLIB_COOKIE))
 }
 
 export const fetchDailyDownloads = () => {

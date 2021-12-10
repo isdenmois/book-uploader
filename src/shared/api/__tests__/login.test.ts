@@ -1,5 +1,5 @@
-jest.mock('@react-native-async-storage/async-storage', () => ({}))
-import AsyncStorage from '@react-native-async-storage/async-storage'
+jest.mock('shared/libs/mmkv', () => ({ MMKV: {} }))
+import { MMKV } from 'shared/libs/mmkv'
 import { mock, mockPromise } from 'shared/utils/test-utils/async'
 import * as tor from '../tor-request'
 import { sendLogin, setCookie, ZLIB_COOKIE } from '../login'
@@ -16,9 +16,9 @@ describe('sendLogin', () => {
 
     expect(await sendLogin('i', 'moron')).toBe('remix=1; value=true')
     expect(tor.request).toHaveBeenCalledWith(
-      jasmine.any(String),
+      expect.any(String),
       '/rpc.php',
-      jasmine.objectContaining({ body: 'email=i&password=moron&action=login' }),
+      expect.objectContaining({ body: 'email=i&password=moron&action=login' }),
     )
   })
 
@@ -30,9 +30,9 @@ describe('sendLogin', () => {
 })
 
 test('setCookie', async () => {
-  mock(AsyncStorage, 'setItem')
+  mock(MMKV, 'setString')
 
   await setCookie('123')
 
-  expect(AsyncStorage.setItem).toHaveBeenCalledWith(ZLIB_COOKIE, '123')
+  expect(MMKV.setString).toHaveBeenCalledWith(ZLIB_COOKIE, '123')
 })

@@ -1,5 +1,5 @@
 import { ZLIB_HOST } from '@env'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'shared/libs'
 import * as tor from './tor-request'
 import { queryParams } from './utils'
 
@@ -21,5 +21,5 @@ export async function sendLogin(email: string, password: string): Promise<string
 }
 
 export function setCookie(cookie: string) {
-  return cookie ? AsyncStorage.setItem(ZLIB_COOKIE, cookie) : AsyncStorage.removeItem(ZLIB_COOKIE)
+  return cookie ? MMKV.setString(ZLIB_COOKIE, cookie) : MMKV.removeItem(ZLIB_COOKIE)
 }
