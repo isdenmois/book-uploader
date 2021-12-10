@@ -35,10 +35,10 @@ exports[`FileItem should render 1`] = `
   >
     <RNSVGSvgView
       align="xMidYMid"
-      bbHeight={34}
-      bbWidth={34}
+      bbHeight={50}
+      bbWidth={40}
       focusable={false}
-      height={34}
+      height={50}
       meetOrSlice={0}
       minX={0}
       minY={0}
@@ -49,32 +49,20 @@ exports[`FileItem should render 1`] = `
             "borderWidth": 0,
           },
           Object {
-            "marginLeft": -4,
-          },
-          Object {
             "flex": 0,
-            "height": 34,
-            "width": 34,
+            "height": 50,
+            "width": 40,
           },
         ]
       }
-      vbHeight={512}
-      vbWidth={384}
-      width={34}
+      vbHeight={50}
+      vbWidth={40}
+      width={40}
     >
       <RNSVGGroup>
         <RNSVGGroup>
           <RNSVGPath
-            d="M256 0H24A23.94 23.94 0 000 23.88V488a23.94 23.94 0 0023.88 24H360a23.94 23.94 0 0024-23.88V128H272a16 16 0 01-16-16z"
-            fill={4285026800}
-            propList={
-              Array [
-                "fill",
-              ]
-            }
-          />
-          <RNSVGPath
-            d="M384 121.9v6.1H272a16 16 0 01-16-16V0h6.1a24 24 0 0117 7l97.9 98a23.9 23.9 0 017 16.9z"
+            d="M24 0H2.4A2.394 2.394 90 000 2.388V48.8a2.394 2.394 90 002.388 2.4H36a2.394 2.394 90 002.4-2.388V14.4H25.6a1.6 1.6 90 01-1.6-1.6zm14.4 12.19v.61H27.2a1.6 1.6 90 01-1.6-1.6V0h.61a2.4 2.4 90 011.7.7l9.79 9.8a2.39 2.39 90 01.7 1.69z"
             fill={4285026800}
             propList={
               Array [
@@ -90,7 +78,7 @@ exports[`FileItem should render 1`] = `
           fill={4294967295}
           font={
             Object {
-              "fontSize": "120",
+              "fontSize": "12",
               "fontWeight": "bold",
               "textAnchor": "middle",
             }
@@ -103,12 +91,12 @@ exports[`FileItem should render 1`] = `
           rotate={Array []}
           x={
             Array [
-              "192",
+              "19",
             ]
           }
           y={
             Array [
-              "440",
+              "44",
             ]
           }
         >
@@ -268,10 +256,10 @@ exports[`FileItem should show an error 1`] = `
   >
     <RNSVGSvgView
       align="xMidYMid"
-      bbHeight={34}
-      bbWidth={34}
+      bbHeight={50}
+      bbWidth={40}
       focusable={false}
-      height={34}
+      height={50}
       meetOrSlice={0}
       minX={0}
       minY={0}
@@ -282,32 +270,20 @@ exports[`FileItem should show an error 1`] = `
             "borderWidth": 0,
           },
           Object {
-            "marginLeft": -4,
-          },
-          Object {
             "flex": 0,
-            "height": 34,
-            "width": 34,
+            "height": 50,
+            "width": 40,
           },
         ]
       }
-      vbHeight={512}
-      vbWidth={384}
-      width={34}
+      vbHeight={50}
+      vbWidth={40}
+      width={40}
     >
       <RNSVGGroup>
         <RNSVGGroup>
           <RNSVGPath
-            d="M256 0H24A23.94 23.94 0 000 23.88V488a23.94 23.94 0 0023.88 24H360a23.94 23.94 0 0024-23.88V128H272a16 16 0 01-16-16z"
-            fill={4285026800}
-            propList={
-              Array [
-                "fill",
-              ]
-            }
-          />
-          <RNSVGPath
-            d="M384 121.9v6.1H272a16 16 0 01-16-16V0h6.1a24 24 0 0117 7l97.9 98a23.9 23.9 0 017 16.9z"
+            d="M24 0H2.4A2.394 2.394 90 000 2.388V48.8a2.394 2.394 90 002.388 2.4H36a2.394 2.394 90 002.4-2.388V14.4H25.6a1.6 1.6 90 01-1.6-1.6zm14.4 12.19v.61H27.2a1.6 1.6 90 01-1.6-1.6V0h.61a2.4 2.4 90 011.7.7l9.79 9.8a2.39 2.39 90 01.7 1.69z"
             fill={4285026800}
             propList={
               Array [
@@ -323,7 +299,7 @@ exports[`FileItem should show an error 1`] = `
           fill={4294967295}
           font={
             Object {
-              "fontSize": "120",
+              "fontSize": "12",
               "fontWeight": "bold",
               "textAnchor": "middle",
             }
@@ -336,12 +312,12 @@ exports[`FileItem should show an error 1`] = `
           rotate={Array []}
           x={
             Array [
-              "192",
+              "19",
             ]
           }
           y={
             Array [
-              "440",
+              "44",
             ]
           }
         >
