@@ -71,3 +71,5 @@ coverage
 !.yarn/plugins
 !.yarn/patches
 .pnp.*
+Gemfile.lock
+backend/dist

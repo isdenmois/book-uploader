@@ -9,7 +9,7 @@ app.use(cors())
 
 app.get('/api/rewrite', require('./api/rewrite'))
 app.post('/api/rewrite', require('./api/rewrite'))
-app.use(serveStatic('../web/dist', { index: ['index.html'] }))
+app.use(serveStatic('./dist', { index: ['index.html'] }))
 
 app.listen(port, () => {
   console.log(`Book search app listening at *:${port}`)
