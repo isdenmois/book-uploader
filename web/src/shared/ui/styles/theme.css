@@ -35,3 +35,28 @@ h1 {
   border-radius: 10px;
   padding-left: 4px;
 }
+
+.book-image {
+  margin-right: 2px;
+  position: relative;
+  min-height: 40px;
+  background-color: var(--searchSelected);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.book-image > img {
+  width: 38px;
+}
+
+.book-ext {
+  bottom: 0;
+  position: absolute;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background-color: #0005;
+}

@@ -21,8 +21,8 @@ export const listTextSelector = (cssSelector: string): SearchSelector => {
   }
 }
 
-export const linkSelector = (cssSelector: string): SearchSelector => {
-  return entry => find<any>(entry, cssSelector)?.attributes.href?.value
+export const propertySelector = (cssSelector: string, attribute: string): SearchSelector => {
+  return entry => find<any>(entry, cssSelector)?.attributes[attribute]?.value
 }
 
 export const matchSelector = (cssSelector: string, regExp: RegExp): SearchSelector => {

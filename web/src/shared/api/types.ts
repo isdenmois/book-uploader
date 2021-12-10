@@ -25,4 +25,5 @@ export interface BookItem {
   translation?: string
   lang?: string
   size?: string
+  imageUrl?: string
 }

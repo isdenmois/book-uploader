@@ -8,3 +8,4 @@ dist-ssr
 !.yarn/releases
 !.yarn/plugins
 .pnp.*
+pnpm-lock.yaml

@@ -4,7 +4,7 @@ module.exports = {
     '\\.[jt]sx?$': 'babel-jest',
   },
   testEnvironment: 'node',
-  transformIgnorePatterns: ['node_modules/(?!nanostores|@nanostores)'],
+  transformIgnorePatterns: ['node_modules/(?!nanostores|@nanostores|.pnpm/nanostores)'],
   moduleNameMapper: {
     '\\.(css|less)$': '<rootDir>/__mocks__/style-mock.js',
     'shared/(.*)': '<rootDir>/src/shared/$1',

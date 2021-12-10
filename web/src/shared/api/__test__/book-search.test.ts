@@ -36,6 +36,7 @@ describe('bookSearch', () => {
             <name>J. K. Rowling</name>
           </author>
           <title>Harry Potter and the Philosopher's Stone</title>
+          <link href="/i/82/605182/cover.jpg" rel="http://opds-spec.org/image" type="image/jpeg" />
         </entry>
         <entry>
           <link href="/2.fb2"></link>
@@ -64,6 +65,7 @@ describe('bookSearch', () => {
           authors: 'J. K. Rowling',
           title: "Harry Potter and the Philosopher's Stone",
           ext: 'fb2.zip',
+          imageUrl: '/i/82/605182/cover.jpg',
         },
         {
           type: 'FLIBUSTA',
@@ -99,6 +101,9 @@ describe('bookSearch', () => {
       <body>
         <div id="searchResultBox">
           <div class="resItemBox">
+            <div class="itemCover">
+              <img class="cover" data-src="/hp.jpg" />
+            </div>
             <h3 itemprop="name">
               <a href="/hp3.epub">
                 Harry Potter and the Prisoner of Azkaban
@@ -130,6 +135,7 @@ describe('bookSearch', () => {
         {
           type: 'ZLIB',
           link: '/hp3.epub',
+          imageUrl: '/hp.jpg',
           authors: 'J. K. Rowling; Someone else',
           title: 'Harry Potter and the Prisoner of Azkaban',
           size: '10Mb',

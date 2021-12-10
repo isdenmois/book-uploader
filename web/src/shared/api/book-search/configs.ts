@@ -1,4 +1,4 @@
-import { cutSelector, linkSelector, listTextSelector, matchSelector, textSelector, value } from './selectors'
+import { cutSelector, propertySelector, listTextSelector, matchSelector, textSelector, value } from './selectors'
 import { SearchConfig } from './types'
 
 export const FLIBUSTA: SearchConfig = {
@@ -9,7 +9,7 @@ export const FLIBUSTA: SearchConfig = {
   searchParam: 'searchTerm',
   selectors: {
     entry: 'entry',
-    link: linkSelector('link[href$="fb2"]'),
+    link: propertySelector('link[href$="fb2"]', 'href'),
     fields: {
       authors: listTextSelector('author name'),
       ext: value('fb2.zip'),
@@ -17,6 +17,7 @@ export const FLIBUSTA: SearchConfig = {
       translation: matchSelector('content', new RegExp(/Перевод:\s?(.+?)\s*[&<]/)),
       lang: matchSelector('content', new RegExp(/Язык:\s?(.+?)\s*[&<]/)),
       size: matchSelector('content', new RegExp(/Размер:\s?(.+?)\s*[&<]/)),
+      imageUrl: propertySelector('[rel="http://opds-spec.org/image"]', 'href'),
     },
   },
 }
@@ -29,13 +30,14 @@ export const ZLIB: SearchConfig = {
   includeCookie: true,
   selectors: {
     entry: '#searchResultBox .resItemBox',
-    link: linkSelector('h3[itemprop="name"] a'),
+    link: propertySelector('h3[itemprop="name"] a', 'href'),
     fields: {
       authors: listTextSelector('.authors a'),
       ext: cutSelector('.property__file .property_value', /,.*/),
       title: textSelector('h3[itemprop="name"] a'),
       lang: cutSelector('.property_language', 'Language:'),
       size: cutSelector('.property__file .property_value', /.*,/),
+      imageUrl: propertySelector('.itemCover img.cover', 'data-src'),
     } as any,
   },
 }
