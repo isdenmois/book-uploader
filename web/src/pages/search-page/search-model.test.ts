@@ -1,10 +1,10 @@
-jest.mock('features/filters/ui/search-filters', () => ({}))
 import { cleanStores, keepMount } from 'nanostores'
+jest.mock('features/filters/ui/search-filters', () => ({}))
+import { mockPromise, mockObject } from 'shared/test-utils'
+
 import { $ext, $query, $source } from 'features/filters'
 import { $books, $isLoading } from 'features/search'
 import { api } from 'shared/api'
-import { mockPromise } from 'shared/test-utils/async'
-import { mockObject } from 'shared/test-utils/mock'
 
 import { startSearch } from './search-model'
 

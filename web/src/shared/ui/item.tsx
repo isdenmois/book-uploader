@@ -10,7 +10,13 @@ interface Props {
 
 export const Item: Component<Props> = props => {
   return (
-    <div class='flex flex-row items-center cursor-pointer' onClick={props.onClick} data-testid={props.title}>
+    <div
+      class='flex flex-row items-center cursor-pointer'
+      onClick={props.onClick}
+      data-testid={props.title}
+      role='listitem'
+      aria-label={props.title}
+    >
       <Show when={!!props.icon}>
         <div class='mr-1'>{props.icon}</div>
       </Show>

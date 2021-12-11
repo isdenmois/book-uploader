@@ -15,3 +15,7 @@ export function mockObject<T extends {}, M extends keyof T>(object: T, method: M
 
   return value
 }
+
+export const mockLocalStorageGetItem = (value: string) => {
+  jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(value)
+}

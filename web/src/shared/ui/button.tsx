@@ -8,7 +8,7 @@ interface Props {
 
 export const Button: Component<Props> = props => {
   return (
-    <button class='button' disabled={props.disabled} type={props.type}>
+    <button class='button' disabled={props.disabled} type={props.type} role='button'>
       {props.children}
     </button>
   )

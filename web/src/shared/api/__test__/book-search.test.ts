@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { mockFetch } from 'shared/test-utils/async'
+import { mockFetch, mockLocalStorageGetItem } from 'shared/test-utils'
 
 import { bookSearch } from '../book-search'
 import { FLIBUSTA, ZLIB } from '../book-search/configs'
@@ -83,7 +83,7 @@ describe('bookSearch', () => {
 
   describe('ZLib', () => {
     beforeEach(() => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue('cococo')
+      mockLocalStorageGetItem('cococo')
     })
 
     it('Empty response', async () => {

@@ -9,6 +9,7 @@ interface Props {
   type?: string
   icon?: JSXElement
   role?: any
+  name?: string
 }
 
 export const Input: Component<Props> = props => {
@@ -19,6 +20,8 @@ export const Input: Component<Props> = props => {
       </span>
 
       <input
+        aria-label={props.name}
+        name={props.name}
         class='flex-1 py-2 rounded-md pl-10'
         placeholder={props.placeholder}
         value={props.value}

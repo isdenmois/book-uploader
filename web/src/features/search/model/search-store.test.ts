@@ -1,6 +1,6 @@
+import { mock, mockPromise } from 'shared/test-utils'
+
 import { api } from 'shared/api'
-import { mockPromise } from 'shared/test-utils/async'
-import { mock } from 'shared/test-utils/mock'
 import { $books, $isLoading, searchBooks } from './search-store'
 
 describe('Search store', () => {
