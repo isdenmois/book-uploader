@@ -2,10 +2,13 @@
   "private": true,
   "scripts": {
     "start": "vite",
+    "serve": "http-server -c5 -p7777 dist",
     "build": "vite build",
+    "build:e2e": "vite build -m test",
     "test": "jest",
-    "test:w": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium",
+    "test:all": "npm test && npm run build:e2e && npm run test:e2e"
   },
   "dependencies": {
     "nanostores": "0.5.8",
@@ -17,6 +20,7 @@
     "@babel/plugin-syntax-import-meta": "7.10.4",
     "@babel/preset-env": "7.16.4",
     "@babel/preset-typescript": "7.16.0",
+    "@playwright/test": "1.17.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@types/jest": "27.0.3",
     "babel-jest": "27.4.4",
@@ -26,6 +30,7 @@
     "eslint": "8.4.1",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "4.0.0",
+    "http-server": "14.0.0",
     "jest": "27.4.4",
     "prettier": "2.5.1",
     "solid-testing-library": "0.2.1",

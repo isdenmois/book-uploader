@@ -9,3 +9,4 @@ dist-ssr
 !.yarn/plugins
 .pnp.*
 pnpm-lock.yaml
+.env.test
