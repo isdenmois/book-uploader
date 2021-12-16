@@ -10,7 +10,7 @@ export const downloadFileFx = createEffect(async (file: BookItem) => {
   setProgress(0)
 
   const title = slugify(file.title).slice(0, 100)
-  const fileName = `${title}.${file.ext}`
+  const fileName = `${title}.${file.ext}`.toLowerCase()
 
   ToastAndroid.show('Start downloading', ToastAndroid.SHORT)
 

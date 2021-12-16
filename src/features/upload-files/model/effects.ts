@@ -3,7 +3,7 @@ import { createEffect } from 'effector'
 
 import { FileData } from 'entities/file'
 
-const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip)$/
+const FILE_NAME = /\.(fb2|epub|fb2\.zip|zip|mobi|pdf)$/i
 
 export const fetchFilesFx = createEffect(async () => {
   const allFiles = await RNFS.readDir(RNFS.DocumentDirectoryPath)
