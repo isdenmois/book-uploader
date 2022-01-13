@@ -30,6 +30,12 @@ local.properties
 *.iml
 *.hprof
 
+/build
+/features/build
+/libraries/build
+/app/release
+/captures
+
 # node.js
 #
 node_modules/

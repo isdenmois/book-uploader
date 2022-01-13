@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="uploadSelected">#6851F0</color>
+    <color name="search">#8C93A3</color>
+    <color name="uploadText">#15085E</color>
+</resources>

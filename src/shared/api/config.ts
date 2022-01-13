@@ -1,8 +1,0 @@
-import { TOR_HOST, USER_AGENT, FLIBUSTA_HOST, ZLIB_HOST } from '@env'
-
-export const API_CONFIG = {
-  FLIBUSTA_HOST: FLIBUSTA_HOST || '',
-  ZLIB_HOST: ZLIB_HOST || '',
-  TOR_HOST: TOR_HOST || '',
-  USER_AGENT: USER_AGENT || '',
-}

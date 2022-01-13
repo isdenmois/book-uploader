@@ -1,0 +1,4 @@
+<resources>
+    <string name="upload_base_url_key">upload_base_url</string>
+    <string name="zlib_auth_key">zlib_auth</string>
+</resources>

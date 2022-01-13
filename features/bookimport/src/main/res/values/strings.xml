@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="import_dialog_title">Do you want to import file?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="empty_data">Data is empty</string>
+    <string name="file_import_success">Файл успешно импортирован</string>
+    <string name="file_import_error">Не удалось импортировать файл</string>
+    <string name="file_import_wrong_schema">Неправильная схема для импорта: %1$s</string>
+    <string name="import_in_progress">Importing…</string>
+</resources>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Book Uploader</string>
+    <string name="import_dialog_title">Do you want to import file?</string>
+    <string name="preference_file_key">com.isdenmois.bookuploader.PREFERENCE_FILE_KEY</string>
+</resources>
