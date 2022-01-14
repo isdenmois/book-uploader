@@ -8,7 +8,7 @@ const providers = <const>{ FLIBUSTA, ZLIB }
 
 export async function bookSearch(type: ProviderType, name: string, extension: string): Promise<BookItem[]> {
   const config = providers[type] || FLIBUSTA
-  const query: Record<string, string> = { ...config.query, extension }
+  const query: Record<string, string | string[]> = { ...config.query, extensions: [extension] }
   const headers: Record<string, string> = {}
   let path = config.path
 

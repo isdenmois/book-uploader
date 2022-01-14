@@ -23,7 +23,7 @@ describe('bookSearch', () => {
       const result = await bookSearch('FLIBUSTA', 'Harry Ptter', 'fb2')
 
       expect(fetch.spy.mock.calls[0][0]).toBe(
-        '/api/rewrite?searchType=books&extension=fb2&searchTerm=Harry%20Ptter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
+        '/api/rewrite?searchType=books&extensions[]=fb2&searchTerm=Harry%20Ptter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
       )
       expect(result).toEqual([])
     })
@@ -56,7 +56,7 @@ describe('bookSearch', () => {
       const result = await bookSearch('FLIBUSTA', 'Harry Potter', 'fb2')
 
       expect(fetch.spy.mock.calls[0][0]).toBe(
-        '/api/rewrite?searchType=books&extension=fb2&searchTerm=Harry%20Potter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
+        '/api/rewrite?searchType=books&extensions[]=fb2&searchTerm=Harry%20Potter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
       )
       expect(result).toEqual([
         {
@@ -91,7 +91,7 @@ describe('bookSearch', () => {
       const result = await bookSearch('ZLIB', 'Harry Ptter', 'epub')
 
       expect(fetch.spy.mock.calls[0][0]).toBe(
-        '/api/rewrite?e=1&extension=epub&cookie=cococo&host=http%3A%2F%2Fzlib.com&path=%2Fs%2FHarry%20Ptter',
+        '/api/rewrite?e=1&extensions[]=epub&cookie=cococo&host=http%3A%2F%2Fzlib.com&path=%2Fs%2FHarry%20Ptter',
       )
       expect(result).toEqual([])
     })
@@ -129,7 +129,7 @@ describe('bookSearch', () => {
       const result = await bookSearch('ZLIB', 'Harry Potter', 'epub')
 
       expect(fetch.spy.mock.calls[0][0]).toBe(
-        '/api/rewrite?e=1&extension=epub&cookie=cococo&host=http%3A%2F%2Fzlib.com&path=%2Fs%2FHarry%20Potter',
+        '/api/rewrite?e=1&extensions[]=epub&cookie=cococo&host=http%3A%2F%2Fzlib.com&path=%2Fs%2FHarry%20Potter',
       )
       expect(result).toEqual([
         {

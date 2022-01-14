@@ -26,7 +26,7 @@ export const ZLIB: SearchConfig = {
   type: 'ZLIB',
   host: import.meta.env?.VITE_ZLIB_HOST,
   path: '/s/',
-  query: { e: 1, extension: 'epub' },
+  query: { e: 1, extensions: ['epub'] },
   includeCookie: true,
   selectors: {
     entry: '#searchResultBox .resItemBox',
