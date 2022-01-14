@@ -17,7 +17,6 @@ export const FLIBUSTA: SearchConfig = {
       translation: matchSelector('content', new RegExp(/Перевод:\s?(.+?)\s*[&<]/)),
       lang: matchSelector('content', new RegExp(/Язык:\s?(.+?)\s*[&<]/)),
       size: matchSelector('content', new RegExp(/Размер:\s?(.+?)\s*[&<]/)),
-      imageUrl: propertySelector('[rel="http://opds-spec.org/image"]', 'href'),
     },
   },
 }
@@ -37,7 +36,6 @@ export const ZLIB: SearchConfig = {
       title: textSelector('h3[itemprop="name"] a'),
       lang: cutSelector('.property_language', 'Language:'),
       size: cutSelector('.property__file .property_value', /.*,/),
-      imageUrl: propertySelector('.itemCover img.cover', 'data-src'),
     } as any,
   },
 }

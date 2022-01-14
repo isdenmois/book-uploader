@@ -13,15 +13,5 @@ describe('<SearchChips />', () => {
     ))
 
     expect(container.getElementsByTagName('svg')[0]).toBeInTheDocument()
-    expect(container.getElementsByTagName('img').length).toBeFalsy()
-  })
-
-  it('should render thumbnail when book has an image', () => {
-    const { container } = render(() => (
-      <BookItem book={{ link: '', ext: '', title: '', type: 'ZLIB', imageUrl: '/1.jpg' }} onDownload={() => {}} />
-    ))
-
-    expect(container.getElementsByTagName('svg').length).toBeFalsy()
-    expect(container.getElementsByTagName('img')[0]).toBeInTheDocument()
   })
 })

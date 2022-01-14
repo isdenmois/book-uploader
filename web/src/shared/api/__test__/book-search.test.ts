@@ -65,7 +65,6 @@ describe('bookSearch', () => {
           authors: 'J. K. Rowling',
           title: "Harry Potter and the Philosopher's Stone",
           ext: 'fb2.zip',
-          imageUrl: '/i/82/605182/cover.jpg',
         },
         {
           type: 'FLIBUSTA',
@@ -135,7 +134,6 @@ describe('bookSearch', () => {
         {
           type: 'ZLIB',
           link: '/hp3.epub',
-          imageUrl: '/hp.jpg',
           authors: 'J. K. Rowling; Someone else',
           title: 'Harry Potter and the Prisoner of Azkaban',
           size: '10Mb',
