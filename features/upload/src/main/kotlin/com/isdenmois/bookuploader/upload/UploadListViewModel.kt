@@ -58,6 +58,7 @@ class UploadListViewModel @Inject constructor(
             try {
                 uploadEbook(book)
             } catch (e: Exception) {
+                book.progress.value = -1f
                 book.error.value = e.message
             }
         }

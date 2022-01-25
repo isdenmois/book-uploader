@@ -35,6 +35,13 @@ fun ItemProgress(progress: State<Float>, progressColor: Color = AppTheme.colors.
                 modifier = Modifier.fillMaxWidth(),
             )
         }
+        value > 1 && value < 2 -> {
+            LinearProgressIndicator(
+                color = color,
+                backgroundColor = AppTheme.colors.background,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
         else -> {
             LinearProgressIndicator(
                 color = color,

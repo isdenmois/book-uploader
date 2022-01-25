@@ -33,6 +33,8 @@ fun File.asRequestBodyWithProgress(
                     read = inSt.read(buffer)
                 }
             }
+
+            progressCallback(1.01f)
         }
     }
 }
