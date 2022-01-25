@@ -1,6 +1,8 @@
 package com.isdenmois.bookuploader.search
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.isdenmois.bookuploader.core.AppPreferences
@@ -21,31 +23,35 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
     val zlibAuth = appPreferences.zlibAuth
 
-    val query = mutableStateOf("")
+    var query by mutableStateOf("")
+
     val provider = mutableStateOf(if (zlibAuth.value.isNullOrBlank()) ProviderType.FLIBUSTA else ProviderType.ZLIBRARY)
     val extension = mutableStateOf(Extension.EPUB)
 
-    var isSearching = mutableStateOf(false)
-    var books = mutableStateOf<List<Book>?>(null)
+    var isSearching by mutableStateOf(false)
+        private set
+
+    var books by mutableStateOf<List<Book>?>(null)
+        private set
 
     fun searchBooks() {
-        if (query.value.isNotBlank()) {
-            isSearching.value = true
+        if (query.isNotBlank()) {
+            isSearching = true
 
             viewModelScope.launch {
-                try {
-                    books.value = searchBooksUseCase(
-                        query.value.trim(),
+                books = try {
+                    searchBooksUseCase(
+                        query.trim(),
                         providerType = provider.value,
                         extension = extension.value
                     )
                 } catch (e: Exception) {
                     e.printStackTrace()
                     // TODO: add error handling
-                    books.value = listOf()
+                    listOf()
                 }
 
-                isSearching.value = false
+                isSearching = false
             }
         }
     }
@@ -60,22 +66,22 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun setQuery(value: String) {
-        query.value = value
-        books.value = null
+    fun changeQuery(value: String) {
+        query = value
+        books = null
     }
 
     fun setProvider(value: ProviderType) {
         if (provider.value != value) {
             provider.value = value
-            books.value = null
+            books = null
         }
     }
 
     fun setExtension(value: Extension) {
         if (extension.value != value) {
             extension.value = value
-            books.value = null
+            books = null
         }
     }
 }

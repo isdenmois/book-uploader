@@ -1,5 +1,6 @@
 package com.isdenmois.bookuploader.search.presentation.ui
 
+import android.util.Log
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +22,9 @@ fun SearchFilters(vm: SearchViewModel = viewModel()) {
     val zlibAuth by vm.zlibAuth
     val provider by vm.provider
     val extension by vm.extension
-    val isSearching by vm.isSearching
+    val isSearching = vm.isSearching
+
+    Log.d("SearchFilters", "change")
 
     Row(
         modifier = Modifier

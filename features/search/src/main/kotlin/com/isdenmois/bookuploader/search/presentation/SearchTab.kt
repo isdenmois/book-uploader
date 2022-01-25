@@ -31,9 +31,7 @@ import com.isdenmois.bookuploader.search.presentation.ui.SearchFilters
 @Composable
 fun SearchTab(isActive: Boolean = false) {
     val vm: SearchViewModel = viewModel()
-    val query by vm.query
-    val books by vm.books
-    val isSearching by vm.isSearching
+    val isSearching = vm.isSearching
 
     val focusRequester = remember { FocusRequester() }
     var toDownload by remember { mutableStateOf<Book?>(null) }
@@ -45,8 +43,8 @@ fun SearchTab(isActive: Boolean = false) {
             val focusManager = LocalFocusManager.current
 
             Input(
-                value = query,
-                onValueChange = vm::setQuery,
+                value = vm.query,
+                onValueChange = vm::changeQuery,
                 placeholder = "Search by title",
                 enabled = !isSearching,
                 icon = {
@@ -67,10 +65,10 @@ fun SearchTab(isActive: Boolean = false) {
                 ),
             )
 
-            SearchFilters(vm = vm)
+            SearchFilters()
         }
 
-        BookList(books = books, isLoading = isSearching, onDownload = { toDownload = it })
+        BookList(books = vm.books, isLoading = isSearching, onDownload = { toDownload = it })
     }
 
     val onDismissRequest = { toDownload = null }
