@@ -19,7 +19,6 @@ import com.isdenmois.bookuploader.search.SearchViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @ExperimentalPagerApi
@@ -69,9 +68,12 @@ class MainActivity : ComponentActivity(), ActivityRunner {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        searchViewModel.query = getQuery(intent)
 
-        if (searchViewModel.query.isNotBlank()) {
+        val query = getQuery(intent)
+
+        if (query.isNotBlank()) {
+            searchViewModel.query = query
+
             lifecycleScope.launchWhenResumed {
                 pagerState.scrollToPage(searchTabIndex)
             }
