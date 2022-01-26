@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,10 @@ fun SearchTab(isActive: Boolean = false) {
     var toDownload by remember { mutableStateOf<Book?>(null) }
 
     AutofocusRequester(focusRequester = focusRequester, isActive = isActive)
+
+    LaunchedEffect(vm.extension.value, vm.provider.value) {
+        focusRequester.requestFocus()
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
