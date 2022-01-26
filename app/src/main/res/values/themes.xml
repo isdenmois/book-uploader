@@ -5,6 +5,7 @@
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/tabsBackground</item>
+        <item name="android:background">@color/tabsBackground</item>
         <!-- Customize your theme here. -->
     </style>
 
