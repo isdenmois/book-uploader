@@ -4,6 +4,7 @@ import android.content.Context
 import com.isdenmois.bookuploader.data.remote.UploadApi
 import com.isdenmois.bookuploader.domain.model.UploadEbook
 import com.isdenmois.bookuploader.domain.repository.UploadRepository
+import com.isdenmois.ebookparser.EBookFile
 import com.isdenmois.ebookparser.EBookParser
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.regex.Pattern
@@ -14,13 +15,15 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import java.io.File
 
 class UploadRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val uploadApi: UploadApi,
 ) : UploadRepository {
     companion object {
-        private val filter = "(epub|fb2|fb2.zip|txt|pdf)\$".toPattern(Pattern.CASE_INSENSITIVE)
+        private val filter = "(epub|fb2|fb2.zip|txt|pdf|mobi)\$".toPattern(Pattern.CASE_INSENSITIVE)
+        private val parsable = "(epub|fb2|fb2.zip)\$".toPattern(Pattern.CASE_INSENSITIVE)
     }
 
     override suspend fun findAllEBookFiles(): List<UploadEbook> = withContext(Dispatchers.Default) {
@@ -28,7 +31,7 @@ class UploadRepositoryImpl @Inject constructor(
 
         return@withContext files
             .filter { filter.matcher(it.name).find() }
-            .mapNotNull { EBookParser.parseBook(it) }
+            .mapNotNull { parseFile(it) }
             .map { UploadEbook.create(it) }
             .sortedBy { it.title }
     }
@@ -41,4 +44,12 @@ class UploadRepositoryImpl @Inject constructor(
 
         close()
     }.flowOn(Dispatchers.IO)
+
+    private fun parseFile(file: File): EBookFile? {
+        if (parsable.matcher(file.name).find()) {
+            return EBookParser.parseBook(file)
+        }
+
+        return EBookFile(title = file.name, file = file)
+    }
 }

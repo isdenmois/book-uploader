@@ -26,7 +26,9 @@ fun FileItem(ebook: UploadEbook, disabled: Boolean, onShare: () -> Unit, onRemov
             FileCover(file = ebook.file)
         }
 
-        ItemText(title = ebook.title, supTitle = ebook.author, subTitle = ebook.file.name, error = ebook.error.value)
+        val subTitle = if (ebook.file.name != ebook.title) ebook.file.name else null
+
+        ItemText(title = ebook.title, supTitle = ebook.author, subTitle = subTitle, error = ebook.error.value)
 
         if (!disabled && ebook.file.exists()) {
             IconButton(onClick = onRemove) {
