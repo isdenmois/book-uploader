@@ -38,12 +38,13 @@ class BookSearchRepositoryImpl @Inject constructor(
         path = book.link,
     ).downloadToFileWithProgress(cacheDir, book.getFileName())
 
-    override suspend fun searchBooksInZLibrary(query: String, extension: Extension): List<Book> =
+    override suspend fun searchBooksInZLibrary(query: String, extension: Extension?): List<Book> =
         withContext(Dispatchers.Default) {
+            val queryMap = if (extension == null) mapOf() else mapOf("extensions[]" to extension.value)
             val body = torApi.textRequest(
                 host = zLibraryParser.host,
                 path = zLibraryParser.path + query,
-                query = zLibraryParser.query + mapOf("extensions[]" to extension.value),
+                query = zLibraryParser.query + queryMap,
                 cookie = preferences.zlibAuth.value,
             )
 

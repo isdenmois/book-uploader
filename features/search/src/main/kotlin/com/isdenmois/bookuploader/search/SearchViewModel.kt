@@ -26,7 +26,7 @@ class SearchViewModel @Inject constructor(
     var query by mutableStateOf("")
 
     val provider = mutableStateOf(if (zlibAuth.value.isNullOrBlank()) ProviderType.FLIBUSTA else ProviderType.ZLIBRARY)
-    val extension = mutableStateOf(Extension.EPUB)
+    val extension = mutableStateOf<Extension?>(Extension.EPUB)
 
     var isSearching by mutableStateOf(false)
         private set
@@ -81,7 +81,9 @@ class SearchViewModel @Inject constructor(
     fun setExtension(value: Extension) {
         if (extension.value != value) {
             extension.value = value
-            books = null
+        } else {
+            extension.value = null
         }
+        books = null
     }
 }

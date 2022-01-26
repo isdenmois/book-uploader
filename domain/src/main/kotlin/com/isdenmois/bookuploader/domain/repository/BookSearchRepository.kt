@@ -18,7 +18,7 @@ interface BookSearchRepository {
     /**
      * Produces search for books in zlibrary
      */
-    suspend fun searchBooksInZLibrary(query: String, extension: Extension): List<Book>
+    suspend fun searchBooksInZLibrary(query: String, extension: Extension?): List<Book>
 
     /**
      * Downloads the book to the cache file
