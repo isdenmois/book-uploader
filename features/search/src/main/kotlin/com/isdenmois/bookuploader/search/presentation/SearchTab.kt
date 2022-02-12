@@ -40,7 +40,9 @@ fun SearchTab(isActive: Boolean = false) {
     AutofocusRequester(focusRequester = focusRequester, isActive = isActive)
 
     LaunchedEffect(vm.extension.value, vm.provider.value) {
-        focusRequester.requestFocus()
+        if (isActive) {
+            focusRequester.requestFocus()
+        }
     }
 
     Column(modifier = Modifier.fillMaxWidth()) {
