@@ -47,7 +47,11 @@ class UploadRepositoryImpl @Inject constructor(
 
     private fun parseFile(file: File): EBookFile? {
         if (parsable.matcher(file.name).find()) {
-            return EBookParser.parseBook(file)
+            try {
+                return EBookParser.parseBook(file)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         return EBookFile(title = file.name, file = file)
