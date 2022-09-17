@@ -6,7 +6,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 abstract class BookParser {
-    abstract val host: String
     abstract val path: String
     abstract val query: Map<String, String>
 

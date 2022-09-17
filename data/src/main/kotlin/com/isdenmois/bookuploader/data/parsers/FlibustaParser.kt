@@ -13,7 +13,6 @@ class FlibustaParser @Inject constructor(config: AppConfig) : BookParser() {
         private val sizePattern = "Размер:\\s?(.+?)\\s*[&<]".toPattern()
     }
 
-    override val host = config.FLIBUSTA_HOST
     override val path = "/opds/search"
     override val query = mapOf("searchType" to "books")
 

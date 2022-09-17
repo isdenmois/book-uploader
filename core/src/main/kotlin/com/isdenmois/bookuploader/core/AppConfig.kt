@@ -9,6 +9,7 @@ import javax.inject.Singleton
 class AppConfig @Inject constructor(@ApplicationContext context: Context) {
     val ZLIB_HOST = context.getString(R.string.ZLIB_HOST)
     val FLIBUSTA_HOST = context.getString(R.string.FLIBUSTA_HOST)
+    val FLIBUSTA_TOR_HOST = context.getString(R.string.FLIBUSTA_HOST_TOR)
     val TOR_HOST = context.getString(R.string.TOR_HOST)
     val USER_AGENT = context.getString(R.string.USER_AGENT)
     val INITIAL_EMAIL = context.getString(R.string.INITIAL_EMAIL)

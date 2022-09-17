@@ -11,9 +11,19 @@ interface BookSearchRepository {
     suspend fun searchBooksInFlibusta(query: String): List<Book>
 
     /**
+     * Produces search for books in flibusta
+     */
+    suspend fun searchBooksInFlibustaTor(query: String): List<Book>
+
+    /**
      * Downloads the book to the cache file
      */
     suspend fun downloadFlibustaBook(book: Book): Flow<Float>
+
+    /**
+     * Downloads the book to the cache file
+     */
+    suspend fun downloadFlibustaTorBook(book: Book): Flow<Float>
 
     /**
      * Produces search for books in zlibrary

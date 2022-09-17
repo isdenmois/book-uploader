@@ -16,6 +16,7 @@ class SearchBooksUseCase @Inject constructor(
     ): List<Book> {
         return when (providerType) {
             ProviderType.FLIBUSTA -> bookSearchRepository.searchBooksInFlibusta(query)
+            ProviderType.FLIBUSTA_TOR -> bookSearchRepository.searchBooksInFlibustaTor(query)
             ProviderType.ZLIBRARY -> bookSearchRepository.searchBooksInZLibrary(query, extension)
         }
     }

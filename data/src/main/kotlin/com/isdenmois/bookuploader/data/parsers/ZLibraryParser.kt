@@ -14,12 +14,11 @@ import org.jsoup.nodes.Element
 
 @Singleton
 class ZLibraryParser @Inject constructor(
-    config: AppConfig,
+    private val config: AppConfig,
     private val torApi: TorApi,
     private val preferences: AppPreferences,
 ) :
     BookParser() {
-    override val host = config.ZLIB_HOST
     override val path = "/s/"
     override val query = mapOf("e" to "1")
 
@@ -43,7 +42,7 @@ class ZLibraryParser @Inject constructor(
     }
 
     suspend fun getFilePath(link: String): String = withContext(Dispatchers.Default) {
-        val body = torApi.textRequest(host = host, path = link, cookie = preferences.zlibAuth.value)
+        val body = torApi.textRequest(host = config.ZLIB_HOST, path = link, cookie = preferences.zlibAuth.value)
         val doc = Jsoup.parse(body)
 
         return@withContext doc.select("a.addDownloadedBook").attr("href")

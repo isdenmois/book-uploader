@@ -44,6 +44,13 @@ fun SearchFilters(vm: SearchViewModel = viewModel()) {
             onClick = { vm.setProvider(ProviderType.FLIBUSTA) },
             disabled = isSearching
         )
+        Spacer(modifier = Modifier.width(16.dp))
+        Chip(
+            title = "Flibusta TOR",
+            selected = provider == ProviderType.FLIBUSTA_TOR,
+            onClick = { vm.setProvider(ProviderType.FLIBUSTA_TOR) },
+            disabled = isSearching
+        )
 
         Spacer(modifier = Modifier.width(32.dp))
 
