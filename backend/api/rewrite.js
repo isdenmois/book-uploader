@@ -7,30 +7,31 @@ const proxyAgent = isSocks ? require('socks-proxy-agent') : require('http-proxy-
 
 module.exports = async (oreq, ores) => {
   const passHeaders = ['cookie', 'accept', 'content-type', 'connection', 'content-length', 'origin', 'referer']
-  let { path, proxy, host, nofollow, cookie, ...params } = oreq.query
-
-  const agent = new proxyAgent(
-    isSocks
-      ? process.env.PROXY
-      : {
-          protocol: 'http',
-          host: proxy || process.env.HTTP_PROXY,
-          port: process.env.HTTP_PROXY_PORT,
-          rejectUnauthorized: false,
-        },
-  )
+  let { path, proxy, host, nofollow, cookie, noproxy, ...params } = oreq.query
 
   path = Object.keys(params).length > 0 ? `${encodeURI(path)}?${querystring.stringify(params)}` : path
 
   const options = {
     method: oreq.method,
-    agent,
     host: host || process.env.FLIBUSTA_HOST,
     path,
     headers: {
       'user-agent':
-        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.83 Safari/537.36',
     },
+  }
+
+  if (!noproxy) {
+    options.agent = new proxyAgent(
+      isSocks
+        ? process.env.PROXY
+        : {
+            protocol: 'http',
+            host: proxy || process.env.HTTP_PROXY,
+            port: process.env.HTTP_PROXY_PORT,
+            rejectUnauthorized: false,
+          },
+    )
   }
 
   passHeaders.forEach(h => {
