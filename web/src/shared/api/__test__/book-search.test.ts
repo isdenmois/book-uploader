@@ -23,7 +23,7 @@ describe('bookSearch', () => {
       const result = await bookSearch('FLIBUSTA', 'Harry Ptter', 'fb2')
 
       expect(fetch.spy.mock.calls[0][0]).toBe(
-        '/api/rewrite?searchType=books&extensions[]=fb2&searchTerm=Harry%20Ptter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
+        '/api/rewrite?searchType=books&noproxy=true&extensions[]=fb2&searchTerm=Harry%20Ptter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
       )
       expect(result).toEqual([])
     })
@@ -56,7 +56,7 @@ describe('bookSearch', () => {
       const result = await bookSearch('FLIBUSTA', 'Harry Potter', 'fb2')
 
       expect(fetch.spy.mock.calls[0][0]).toBe(
-        '/api/rewrite?searchType=books&extensions[]=fb2&searchTerm=Harry%20Potter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
+        '/api/rewrite?searchType=books&noproxy=true&extensions[]=fb2&searchTerm=Harry%20Potter&host=http%3A%2F%2Ffb.com&path=%2Fopds%2Fsearch',
       )
       expect(result).toEqual([
         {

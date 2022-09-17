@@ -10,6 +10,7 @@ export const SearchChips: Component = () => {
   return (
     <>
       <Chip title='Flibusta' selected={source() === 'FLIBUSTA'} onSelect={() => $source.set('FLIBUSTA')} />
+      <Chip title='Flibusta TOR' selected={source() === 'FLIBUSTA_TOR'} onSelect={() => $source.set('FLIBUSTA_TOR')} />
       <Chip title='ZLib' selected={source() === 'ZLIB'} onSelect={() => $source.set('ZLIB')} />
 
       <Show when={source() === 'ZLIB'}>

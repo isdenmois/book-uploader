@@ -1,4 +1,4 @@
-export type ProviderType = 'ZLIB' | 'FLIBUSTA'
+export type ProviderType = 'ZLIB' | 'FLIBUSTA' | 'FLIBUSTA_TOR'
 
 export interface SearchSelectors extends Record<string, string | Function> {
   entry: string

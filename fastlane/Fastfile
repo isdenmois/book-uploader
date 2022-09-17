@@ -53,6 +53,7 @@ platform :web do
     sftp_upload(
       server_url: ENV['SFTP_HOST'],
       server_user: ENV['SFTP_USER'],
+      server_port: ENV['SFTP_PORT'],
       server_key: "#{Dir.home}/.ssh/id_rsa",
       target_dir: ENV['SFTP_TARGET'],
       file_paths:["web/dist"],

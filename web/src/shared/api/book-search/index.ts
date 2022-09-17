@@ -1,10 +1,10 @@
 import * as tor from '../tor-request'
 import type { BookItem, ProviderType } from '../types'
 import type { SearchConfig } from './types'
-import { FLIBUSTA, ZLIB } from './configs'
+import { FLIBUSTA, FLIBUSTA_TOR, ZLIB } from './configs'
 import { ZLIB_COOKIE } from '../login'
 
-const providers = <const>{ FLIBUSTA, ZLIB }
+const providers = <const>{ FLIBUSTA, FLIBUSTA_TOR, ZLIB }
 
 export async function bookSearch(type: ProviderType, name: string, extension: string): Promise<BookItem[]> {
   const config = providers[type] || FLIBUSTA

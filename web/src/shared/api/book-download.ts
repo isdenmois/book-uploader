@@ -21,10 +21,18 @@ export function getUrl(type: ProviderType, link: string): any {
     return zlibFileUrl(link)
   }
 
+  if (type === 'FLIBUSTA_TOR') {
+    return flibustaTorFileUrl(link)
+  }
+
   return flibustaFileUrl(link)
 }
 
 function flibustaFileUrl(link: string) {
+  return { host: API_CONFIG.FLIBUSTA_HOST, path: link, query: { noproxy: true } }
+}
+
+function flibustaTorFileUrl(link: string) {
   return { host: API_CONFIG.FLIBUSTA_HOST, path: link }
 }
 

@@ -6,7 +6,7 @@ test('basic test', async ({ page, baseURL }) => {
   await page.goto(baseURL)
 
   await expect(mainPage.searchBox).toBeVisible()
-  await expect(await mainPage.chips.count()).toBe(2)
+  await expect(await mainPage.chips.count()).toBe(3)
   await expect(await mainPage.selectedChips.count()).toBe(1)
   await expect(mainPage.selectedChips).toHaveText('Flibusta')
 })
@@ -21,7 +21,6 @@ test('FLIBUSTA', async ({ page, baseURL }) => {
   await mainPage.search('Harry Potter')
 
   expect(mainPage.url.searchParams.get('searchTerm')).toBe('Harry Potter')
-  expect(mainPage.url.searchParams.get('host')).toBe('flibusta.cc')
 
   await mainPage.checkFlibustaItems()
   await mainPage.clear.click()
@@ -44,7 +43,7 @@ test.describe('ZLIB', () => {
     await mainPage.mockZLibResponse()
 
     await mainPage.selectSource('ZLib')
-    await expect(await mainPage.chips.count()).toBe(5)
+    await expect(await mainPage.chips.count()).toBe(6)
     await mainPage.search('HP3')
 
     expect(mainPage.url.searchParams.get('path')).toBe('/s/HP3')

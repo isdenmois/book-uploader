@@ -20,7 +20,7 @@ describe('downloadFile', () => {
 
     await downloadFile({ type: 'FLIBUSTA', link: '/hp7.epub', ext: 'epub', title: 'HP7' })
 
-    expect(element.href).toBe('/api/rewrite?host=http%3A%2F%2Ffb.com&path=%2Fhp7.epub')
+    expect(element.href).toBe('/api/rewrite?noproxy=true&host=http%3A%2F%2Ffb.com&path=%2Fhp7.epub')
     expect(element.click).toHaveBeenCalled()
   })
 

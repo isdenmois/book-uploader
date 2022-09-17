@@ -1,11 +1,12 @@
+import { API_CONFIG } from '../config'
 import { cutSelector, propertySelector, listTextSelector, matchSelector, textSelector, value } from './selectors'
 import { SearchConfig } from './types'
 
 export const FLIBUSTA: SearchConfig = {
   type: 'FLIBUSTA',
-  host: import.meta.env?.VITE_FLIBUSTA_HOST,
+  host: API_CONFIG.FLIBUSTA_HOST,
   path: '/opds/search',
-  query: { searchType: 'books' },
+  query: { searchType: 'books', noproxy: true },
   searchParam: 'searchTerm',
   selectors: {
     entry: 'entry',
@@ -21,9 +22,16 @@ export const FLIBUSTA: SearchConfig = {
   },
 }
 
+export const FLIBUSTA_TOR = {
+  ...FLIBUSTA,
+  type: 'FLIBUSTA_TOR',
+  host: API_CONFIG.FLIBUSTA_HOST_TOR,
+  query: { searchType: 'books' },
+}
+
 export const ZLIB: SearchConfig = {
   type: 'ZLIB',
-  host: import.meta.env?.VITE_ZLIB_HOST,
+  host: API_CONFIG.ZLIB_HOST,
   path: '/s/',
   query: { e: 1, extensions: ['epub'] },
   includeCookie: true,
