@@ -6,7 +6,7 @@ const isSocks = process.env.PROXY && process.env.PROXY.slice(0, 5) === 'socks'
 const proxyAgent = isSocks ? require('socks-proxy-agent') : require('http-proxy-agent')
 
 module.exports = async (oreq, ores) => {
-  const passHeaders = ['cookie', 'accept', 'content-type', 'connection', 'content-length', 'origin', 'referer']
+  const passHeaders = ['cookie', 'accept', 'content-type', 'connection', 'content-length']
   let { path, proxy, host, nofollow, cookie, noproxy, ...params } = oreq.query
 
   path = Object.keys(params).length > 0 ? `${encodeURI(path)}?${querystring.stringify(params)}` : path
@@ -22,6 +22,7 @@ module.exports = async (oreq, ores) => {
   }
 
   if (!noproxy) {
+    passHeaders.push('origin', 'referer')
     options.agent = new proxyAgent(
       isSocks
         ? process.env.PROXY

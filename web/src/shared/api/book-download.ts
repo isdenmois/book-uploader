@@ -29,11 +29,11 @@ export function getUrl(type: ProviderType, link: string): any {
 }
 
 function flibustaFileUrl(link: string) {
-  return { host: API_CONFIG.FLIBUSTA_HOST, path: link, query: { noproxy: true } }
+  return { host: API_CONFIG.FLIBUSTA_HOST, path: link, query: { host: API_CONFIG.FLIBUSTA_HOST, noproxy: true } }
 }
 
 function flibustaTorFileUrl(link: string) {
-  return { host: API_CONFIG.FLIBUSTA_HOST, path: link }
+  return { host: API_CONFIG.FLIBUSTA_HOST_TOR, path: link, query: { host: API_CONFIG.FLIBUSTA_HOST_TOR } }
 }
 
 async function zlibFileUrl(link: string) {
