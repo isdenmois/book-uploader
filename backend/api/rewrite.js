@@ -3,7 +3,7 @@ const httpdd = require('http')
 const querystring = require('querystring')
 
 const isSocks = process.env.PROXY && process.env.PROXY.slice(0, 5) === 'socks'
-const proxyAgent = isSocks ? require('socks-proxy-agent') : require('http-proxy-agent')
+const proxyAgent = isSocks ? require('socks-proxy-agent').SocksProxyAgent : require('http-proxy-agent')
 
 module.exports = async (oreq, ores) => {
   const passHeaders = ['cookie', 'accept', 'content-type', 'connection', 'content-length']
