@@ -41,7 +41,7 @@ async function zlibFileUrl(link: string) {
   const body: string = await tor.request(API_CONFIG.ZLIB_HOST, link, { query: { cookie } })
   const doc = new DOMParser().parseFromString(body, 'text/html')
   const path = doc.querySelector<any>('a.addDownloadedBook')?.attributes.href.value
-  const query = { nofollow: true, cookie }
+  const query = { cookie }
 
   return { host: API_CONFIG.ZLIB_HOST, path, query, cookie }
 }

@@ -72,7 +72,6 @@ class BookSearchRepositoryImpl @Inject constructor(
     override suspend fun downloadZLibraryBook(book: Book): Flow<Float> = torApi.downloadFile(
         host = config.ZLIB_HOST,
         path = zLibraryParser.getFilePath(book.link),
-        query = mapOf("nofollow" to "true"),
         cookie = preferences.zlibAuth.value,
     ).downloadToFileWithProgress(cacheDir, book.getFileName())
 }

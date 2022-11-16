@@ -20,7 +20,7 @@ describe('downloadFile', () => {
 
     await downloadFile({ type: 'FLIBUSTA', link: '/hp7.epub', ext: 'epub', title: 'HP7' })
 
-    expect(element.href).toBe('/api/rewrite?noproxy=true&host=http%3A%2F%2Ffb.com&path=%2Fhp7.epub')
+    expect(element.href).toBe('/api/rewrite?host=http%3A%2F%2Ffb.com&noproxy=true&path=%2Fhp7.epub')
     expect(element.click).toHaveBeenCalled()
   })
 
@@ -33,9 +33,7 @@ describe('downloadFile', () => {
 
     await downloadFile({ type: 'ZLIB', link: '/hp11.pdf', ext: 'pdf', title: 'HP11' })
 
-    expect(element.href).toBe(
-      '/api/rewrite?nofollow=true&cookie=goodkuka&host=http%3A%2F%2Fzlib.com&path=%2Fdld%2Fhp11-special.pdf',
-    )
+    expect(element.href).toBe('/api/rewrite?cookie=goodkuka&host=http%3A%2F%2Fzlib.com&path=%2Fdld%2Fhp11-special.pdf')
     expect(element.click).toHaveBeenCalled()
   })
 })
