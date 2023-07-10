@@ -5,7 +5,6 @@ import com.isdenmois.bookuploader.core.AppPreferences
 import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.domain.model.User
 import com.isdenmois.bookuploader.domain.repository.UserRepository
-import java.util.regex.Pattern
 import javax.inject.Inject
 import org.json.JSONObject
 
@@ -30,26 +29,25 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun login(email: String, password: String): String {
-        val body = torApi.postForm(
+        val response = torApi.postForm(
             host = config.ZLIB_HOST,
             path = "/rpc.php",
             body = mapOf("email" to email, "password" to password, "action" to "login")
         )
-        val matcher = COOKIE_REGEXP.matcher(body)
-        var cookie: String? = null
 
-        if (matcher.find()) {
-            cookie = matcher.group(1)
+        val headers = response.headers().toMultimap()
+        val cookies = mutableMapOf<String, String>()
+
+        headers.getOrDefault("set-cookie", listOf()).forEach {
+            val (key, value) = it.substringBefore(';').split('=')
+
+            cookies[key] = value
         }
 
-        if (cookie != null) {
-            return cookie.replace("&", "; ")
+        if (cookies.isNotEmpty()) {
+            return cookies.entries.joinToString("; ") { (key, value) -> "$key=$value" }
         }
 
         throw Exception("Can't login")
-    }
-
-    companion object {
-        val COOKIE_REGEXP = "onion/?\\?(.*?)\"".toPattern(Pattern.CASE_INSENSITIVE)
     }
 }
