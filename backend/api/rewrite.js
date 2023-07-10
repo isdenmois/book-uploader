@@ -52,9 +52,12 @@ module.exports = async (oreq, ores) => {
         .map(cookie => cookie.split(';')[0])
         .join(';')
 
-      ores.setHeader('kuka', cookies)
+      ores.setHeader('Access-Control-Expose-Headers', 'kuki')
+      ores.setHeader('kuki', cookies)
     }
+
     ores.writeHead(res.statusCode, res.headers)
+
     res.pipe(ores, {
       end: true,
     })
