@@ -3,6 +3,5 @@
 # Ensure this file is checked in to source control!
 
 gem 'fastlane-plugin-upload_to_server'
-gem 'fastlane-plugin-sftp', :git => 'git://github.com/isdenmois/fastlane-plugin-sftp.git'
 gem 'fastlane-plugin-yarn'
 gem 'fastlane-plugin-delete_files'
