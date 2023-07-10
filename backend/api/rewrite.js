@@ -46,6 +46,14 @@ module.exports = async (oreq, ores) => {
   }
 
   const proxyReq = (nofollow ? httpdd : http).request(options, function (res) {
+    if (res.headers['set-cookie']) {
+      const cookies = []
+        .concat(res.headers['set-cookie'])
+        .map(cookie => cookie.split(';')[0])
+        .join(';')
+
+      ores.setHeader('kuka', cookies)
+    }
     ores.writeHead(res.statusCode, res.headers)
     res.pipe(ores, {
       end: true,
