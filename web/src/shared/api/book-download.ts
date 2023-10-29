@@ -1,3 +1,4 @@
+import * as v from 'valibot'
 import { querystring } from './utils'
 import * as tor from './tor-request'
 import { ZLIB_COOKIE } from './login'
@@ -5,10 +6,16 @@ import { API_CONFIG } from './config'
 import { BookItem, ProviderType } from './types'
 
 export async function downloadFile(file: BookItem): Promise<void> {
-  const { host, path, query } = await getUrl(file.type, file.link)
+  const downloadUrl = await getUrl(file.type, file.link)
+  let url: string
 
-  const queryParams = Object.assign({}, query, { host, path })
-  const url = API_CONFIG.TOR_HOST.replace(/\/$/, '') + '/api/rewrite' + querystring(queryParams)
+  if (typeof downloadUrl === 'object') {
+    const { host, path, query } = downloadUrl
+    const queryParams = Object.assign({}, query, { host, path })
+    url = API_CONFIG.TOR_HOST.replace(/\/$/, '') + '/api/rewrite' + querystring(queryParams)
+  } else {
+    url = downloadUrl
+  }
 
   const a = document.createElement('a')
   a.href = url
@@ -36,12 +43,17 @@ function flibustaTorFileUrl(link: string) {
   return { host: API_CONFIG.FLIBUSTA_HOST_TOR, path: link, query: { host: API_CONFIG.FLIBUSTA_HOST_TOR } }
 }
 
+const ZLIB_FILE_RESPONSE = v.object({
+  success: v.number(),
+  file: v.object({
+    downloadLink: v.string(),
+  }),
+})
+
 async function zlibFileUrl(link: string) {
   const cookie = localStorage.getItem(ZLIB_COOKIE) ?? ''
-  const body: string = await tor.request(API_CONFIG.ZLIB_HOST, link, { query: { cookie } })
-  const doc = new DOMParser().parseFromString(body, 'text/html')
-  const path = doc.querySelector<any>('a.addDownloadedBook')?.attributes.href.value
-  const query = { cookie }
+  const body = await tor.request(API_CONFIG.ZLIB_HOST, `/eapi${link}/file`, { query: { cookie } })
+  const { file } = v.parse(ZLIB_FILE_RESPONSE, body)
 
-  return { host: API_CONFIG.ZLIB_HOST, path, query, cookie }
+  return file.downloadLink
 }
