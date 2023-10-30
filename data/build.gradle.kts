@@ -57,6 +57,10 @@ dependencies {
     implementation(Square.okHttp3.okHttp)
     implementation(Square.okHttp3.loggingInterceptor)
 
+    // Moshi
+    kapt(Square.moshi.kotlinCodegen)
+    implementation(Square.moshi)
+
     // Test
     testImplementation(Testing.junit4)
     testImplementation(Testing.mockK)

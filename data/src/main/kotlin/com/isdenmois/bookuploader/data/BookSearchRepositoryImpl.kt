@@ -10,12 +10,15 @@ import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.data.remote.downloadToFileWithProgress
 import com.isdenmois.bookuploader.domain.model.Book
 import com.isdenmois.bookuploader.domain.repository.BookSearchRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Named
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 class BookSearchRepositoryImpl @Inject constructor(
     @Named("cacheDir") private val cacheDir: File,
@@ -24,6 +27,7 @@ class BookSearchRepositoryImpl @Inject constructor(
     private val flibustaParser: FlibustaParser,
     private val zLibraryParser: ZLibraryParser,
     private val preferences: AppPreferences,
+    private val httpClient: OkHttpClient,
 ) : BookSearchRepository {
     override suspend fun searchBooksInFlibusta(query: String): List<Book> = withContext(Dispatchers.Default) {
         val body = torApi.textRequest(
@@ -58,22 +62,32 @@ class BookSearchRepositoryImpl @Inject constructor(
 
     override suspend fun searchBooksInZLibrary(query: String, extension: Extension?): List<Book> =
         withContext(Dispatchers.Default) {
-            val queryMap = if (extension == null) mapOf() else mapOf("extensions[]" to extension.value)
-            val body = torApi.textRequest(
+            val queryMap = if (extension == null) mapOf() else mapOf("extensions" to extension.value)
+            val response = torApi.postForm(
                 host = config.ZLIB_HOST,
-                path = zLibraryParser.path + query,
-                query = zLibraryParser.query + queryMap,
+                path = "/eapi/book/search",
+                body = queryMap + mapOf(
+                    "message" to query,
+                    "limit" to "50",
+                    "order" to "popular",
+                ),
                 cookie = preferences.zlibAuth.value,
             )
 
-            return@withContext zLibraryParser.parse(body)
+            return@withContext zLibraryParser.parseBody(response.body() ?: "{\"success\": 0}", extension?.value)
         }
 
-    override suspend fun downloadZLibraryBook(book: Book): Flow<Float> = torApi.downloadFile(
-        host = config.ZLIB_HOST,
-        path = zLibraryParser.getFilePath(book.link),
-        cookie = preferences.zlibAuth.value,
-    ).downloadToFileWithProgress(cacheDir, book.getFileName())
+    override suspend fun downloadZLibraryBook(book: Book): Flow<Float> {
+        val url = zLibraryParser.getFilePath(book.link)
+
+        return withContext(Dispatchers.IO) {
+            val request = Request.Builder().url(url).build();
+            val response = httpClient.newCall(request).execute()
+            val body = response.body ?: return@withContext flowOf(100.0f)
+
+            return@withContext body.downloadToFileWithProgress(cacheDir, book.getFileName())
+        }
+    }
 }
 
 fun Book.getFileName() = Transliterator.transliterate("${authors}_$title.$ext")

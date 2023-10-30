@@ -1,10 +1,16 @@
 package com.isdenmois.bookuploader.data.parsers
 
+import android.util.Log
 import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.core.AppPreferences
+import com.isdenmois.bookuploader.core.Extension
+import com.isdenmois.bookuploader.data.model.ZDownloadLinkResponse
+import com.isdenmois.bookuploader.data.model.ZSearchResponse
 import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.domain.model.Book
 import com.isdenmois.bookuploader.domain.model.ProviderType
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
@@ -17,34 +23,40 @@ class ZLibraryParser @Inject constructor(
     private val config: AppConfig,
     private val torApi: TorApi,
     private val preferences: AppPreferences,
-) :
-    BookParser() {
-    override val path = "/s/"
-    override val query = mapOf("e" to "1")
+) {
+    private val moshi = Moshi.Builder().build()
+    private val searchAdapter: JsonAdapter<ZSearchResponse> = moshi.adapter(ZSearchResponse::class.java)
+    private val downloadLinkAdapter = moshi.adapter(ZDownloadLinkResponse::class.java)
 
-    override val entrySelector = "#searchResultBox .resItemBox"
+    fun parseBody(body: String, extension: String?): List<Book> {
+        val result = searchAdapter.fromJson(body)
 
-    override fun parseEntry(entry: Element): Book? {
-        val link = entry.propertySelector("h3[itemprop=\"name\"] a", "href") ?: return null
+        if (result?.success == 0 || result?.books.isNullOrEmpty()) {
+            return emptyList()
+        }
 
-        return Book(
-            id = link,
-            link = link,
-            type = ProviderType.ZLIBRARY,
-            ext = entry.cutSelector(".property__file .property_value", ",.*".toRegex()) ?: return null,
-            title = entry.textSelector("h3[itemprop=\"name\"] a"),
-            authors = entry.listTextSelector(".authors a"),
-            language = entry.cutSelector(".property_language", "Language:"),
-            size = entry.cutSelector(".property__file .property_value", ".*,".toRegex()),
-            translation = null,
-            cover = null,
-        )
+        return result?.books?.map {
+            Book(
+                id = it.id,
+                title = it.title,
+                link = "/eapi/book/${it.id}/${it.hash}/file",
+                ext = extension ?: it.extension ?: "NOPE",
+                type = ProviderType.ZLIBRARY,
+                authors = it.author,
+                language = it.language,
+                size = it.filesizeString,
+            )
+        } ?: emptyList()
     }
 
     suspend fun getFilePath(link: String): String = withContext(Dispatchers.Default) {
         val body = torApi.textRequest(host = config.ZLIB_HOST, path = link, cookie = preferences.zlibAuth.value)
-        val doc = Jsoup.parse(body)
+        val result = downloadLinkAdapter.fromJson(body)
 
-        return@withContext doc.select("a.addDownloadedBook").attr("href")
+        if (result?.success == 1 && result.file?.allowDownload == true) {
+            return@withContext result.file.downloadLink ?: "null"
+        }
+
+        return@withContext "null"
     }
 }

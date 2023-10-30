@@ -38,32 +38,32 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideTorApi(config: AppConfig): TorApi {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BASIC
-                }
-            )
-            .addNetworkInterceptor { chain ->
-                chain.proceed(
-                    chain.request()
-                        .newBuilder()
-                        .header("User-Agent", config.USER_AGENT)
-                        .build()
-                )
+    fun provideHttpClient(config: AppConfig): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
             }
-            .connectTimeout(Duration.ofSeconds(60))
-            .readTimeout(Duration.ofSeconds(60))
-            .build()
+        )
+        .addNetworkInterceptor { chain ->
+            chain.proceed(
+                chain.request()
+                    .newBuilder()
+                    .header("User-Agent", config.USER_AGENT)
+                    .build()
+            )
+        }
+        .connectTimeout(Duration.ofSeconds(60))
+        .readTimeout(Duration.ofSeconds(60))
+        .build()
 
-        return Retrofit.Builder()
-            .baseUrl(config.TOR_HOST)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-            .create(TorApi::class.java)
-    }
+    @Singleton
+    @Provides
+    fun provideTorApi(config: AppConfig, okHttpClient: OkHttpClient): TorApi = Retrofit.Builder()
+        .baseUrl(config.TOR_HOST)
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .client(okHttpClient)
+        .build()
+        .create(TorApi::class.java)
 
     @Singleton
     @Provides

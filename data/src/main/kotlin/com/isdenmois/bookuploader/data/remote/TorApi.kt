@@ -34,6 +34,8 @@ interface TorApi {
     suspend fun postForm(
         @Query("host") host: String,
         @Query("path") path: String,
+        @QueryMap query: Map<String, String> = mapOf(),
         @FieldMap body: Map<String, String>,
+        @Header("cookie") cookie: String? = null,
     ): Response<String>
 }
