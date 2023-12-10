@@ -9,15 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import com.isdenmois.bookuploader.presentation.home.HomeContent
-import com.isdenmois.bookuploader.presentation.home.TabItem
-import com.isdenmois.bookuploader.presentation.home.tabs
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
 import com.isdenmois.bookuploader.core.theme.AppTheme
 import com.isdenmois.bookuploader.data.ActivityResultManager
 import com.isdenmois.bookuploader.data.ActivityRunner
+import com.isdenmois.bookuploader.presentation.home.HomeContent
+import com.isdenmois.bookuploader.presentation.home.TabItem
 import com.isdenmois.bookuploader.search.SearchViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,12 +24,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), ActivityRunner {
     private val searchViewModel: SearchViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     @Inject
     lateinit var activityResultManager: ActivityResultManager
 
     private lateinit var pagerState: PagerState
-    private val searchTabIndex = tabs.indexOf(TabItem.Search)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +40,8 @@ class MainActivity : ComponentActivity(), ActivityRunner {
         if (query.isNotBlank()) {
             searchViewModel.query = getQuery(intent)
         }
+
+        val searchTabIndex = mainViewModel.tabs.indexOf(TabItem.Search)
 
         pagerState = PagerState(
             currentPage = if (searchViewModel.query.isNotBlank()) searchTabIndex else 0,
@@ -69,6 +70,7 @@ class MainActivity : ComponentActivity(), ActivityRunner {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
+        val searchTabIndex = mainViewModel.tabs.indexOf(TabItem.Search)
         val query = getQuery(intent)
 
         if (query.isNotBlank()) {

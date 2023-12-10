@@ -1,5 +1,6 @@
 package com.isdenmois.bookuploader.profile
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,12 +22,26 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     val zlibAuth = preferences.zlibAuth
 
+    val useDirectDownloads = preferences.useDirectDownloads
+    val showFlibustaFirst = derivedStateOf {
+        preferences.initialSearchEngine.value == "flibusta"
+    }
+
     val email = mutableStateOf(config.INITIAL_EMAIL)
     val password = mutableStateOf(config.INITIAL_PASSWORD)
 
     val user = mutableStateOf<User?>(null)
     val isLoading = mutableStateOf(zlibAuth.value?.isNotBlank() == true)
     val error = mutableStateOf<String?>(null)
+
+    fun toggleShowFlibustaFirst(enabled: Boolean) {
+        val newSearchEngine = if (enabled) "flibusta" else "zlib"
+        preferences.setInitialSearchEngine(newSearchEngine)
+    }
+
+    fun setUseDirectDownloads(value: Boolean) {
+        preferences.setUseDirectDownloads(value)
+    }
 
     fun loadProfileInfo() {
         if (zlibAuth.value?.isNotBlank() == true) {

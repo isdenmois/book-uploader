@@ -1,7 +1,9 @@
 package com.isdenmois.bookuploader.profile.presentation.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.CircularProgressIndicator
@@ -27,7 +29,12 @@ fun UserProfile(vm: ProfileViewModel) {
     Spacer(modifier = Modifier.height(8.dp))
 
     if (vm.isLoading.value) {
-        CircularProgressIndicator(color = AppTheme.colors.profileSelected)
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            CircularProgressIndicator(color = AppTheme.colors.profileSelected)
+        }
     } else {
         Row(verticalAlignment = Alignment.CenterVertically) {
             LinearProgressIndicator(
@@ -46,6 +53,11 @@ fun UserProfile(vm: ProfileViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileButton(text = "Log out", onClick = vm::logout, enabled = !vm.isLoading.value)
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            ProfileButton(text = "Log out", onClick = vm::logout, enabled = !vm.isLoading.value)
+        }
     }
 }

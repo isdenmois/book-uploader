@@ -2,8 +2,10 @@ package com.isdenmois.bookuploader.profile.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.isdenmois.bookuploader.core.theme.AppTheme
 import com.isdenmois.bookuploader.profile.ProfileViewModel
 import com.isdenmois.bookuploader.profile.presentation.ui.LoginForm
+import com.isdenmois.bookuploader.profile.presentation.ui.SettingsForm
 import com.isdenmois.bookuploader.profile.presentation.ui.UserProfile
 
 @Composable
@@ -32,13 +35,17 @@ fun ProfileTab(isActive: Boolean, vm: ProfileViewModel = viewModel()) {
         }
 
         Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth()
                 .weight(1f),
         ) {
+            SettingsForm(vm)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             if (vm.zlibAuth.value.isNullOrBlank()) {
                 LoginForm(vm)
             } else {

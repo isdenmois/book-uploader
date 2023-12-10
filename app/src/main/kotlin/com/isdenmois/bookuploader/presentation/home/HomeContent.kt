@@ -21,17 +21,17 @@ import com.isdenmois.bookuploader.upload.UploadListViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.isdenmois.bookuploader.presentation.MainViewModel
 import kotlinx.coroutines.launch
-
-val tabs = listOf(TabItem.Upload, TabItem.Search, TabItem.Profile)
 
 @ExperimentalPagerApi
 @Composable
 fun HomeContent(pagerState: PagerState) {
     val vm: UploadListViewModel = viewModel()
+    val mainVm: MainViewModel = viewModel()
 
     LaunchedEffect(pagerState.currentPage) {
-        if (pagerState.currentPage == 0) {
+        if (mainVm.tabs[pagerState.currentPage] == TabItem.Upload) {
             vm.loadBookList()
         }
     }
@@ -39,21 +39,22 @@ fun HomeContent(pagerState: PagerState) {
     Scaffold(
         backgroundColor = AppTheme.colors.background,
         bottomBar = {
-            Tabs(pagerState = pagerState)
+            Tabs(pagerState = pagerState, tabs = mainVm.tabs)
         }
     ) {
         Column(modifier = Modifier.padding(it)) {
-            TabsContent(pagerState = pagerState)
+            TabsContent(pagerState = pagerState, tabs = mainVm.tabs)
         }
     }
 }
 
 @ExperimentalPagerApi
 @Composable
-fun Tabs(pagerState: PagerState) {
+fun Tabs(pagerState: PagerState, tabs: List<TabItem>) {
     val scope = rememberCoroutineScope()
 
     HomeNavBar(
+        tabs = tabs,
         selected = pagerState.targetPage,
         onChange = remember {
             { index ->
@@ -66,14 +67,27 @@ fun Tabs(pagerState: PagerState) {
 }
 
 @Composable
-fun HomeNavBar(selected: Int, onChange: (Int) -> Unit) {
+fun HomeNavBar(tabs: List<TabItem>, selected: Int, onChange: (Int) -> Unit) {
     val colors = AppTheme.colors
     val items = remember(colors) {
-        listOf(
-            NavItem("Upload", Icons.Outlined.Home, colors.uploadBackground, colors.uploadText),
-            NavItem("Search", Icons.Outlined.Search, colors.searchBackground, colors.searchText),
-            NavItem("Profile", Icons.Outlined.Person, colors.profileBackground, colors.profileText),
+        val backgroundColors = mapOf(
+            TabItem.Upload to colors.uploadBackground,
+            TabItem.Search to colors.searchBackground,
+            TabItem.Profile to colors.profileBackground,
         )
+        val textColors = mapOf(
+            TabItem.Upload to colors.uploadText,
+            TabItem.Search to colors.searchText,
+            TabItem.Profile to colors.profileText,
+        )
+        tabs.map {
+            NavItem(
+                label = it.title,
+                icon = it.icon,
+                backgroundColor = backgroundColors[it] ?: colors.uploadText,
+                textColor = textColors[it] ?: colors.uploadText,
+                )
+        }
     }
 
     NavBar(items = items, selected = selected, onChange = onChange)
@@ -81,7 +95,7 @@ fun HomeNavBar(selected: Int, onChange: (Int) -> Unit) {
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState) {
+fun TabsContent(pagerState: PagerState, tabs: List<TabItem>) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
         Column(modifier = Modifier.fillMaxHeight()) {
             tabs[page].screen(page == pagerState.currentPage)

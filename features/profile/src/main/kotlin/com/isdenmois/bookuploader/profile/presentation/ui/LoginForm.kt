@@ -1,6 +1,9 @@
 package com.isdenmois.bookuploader.profile.presentation.ui
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -78,5 +81,10 @@ fun LoginForm(vm: ProfileViewModel = viewModel()) {
 
     Spacer(modifier = Modifier.height(24.dp))
 
-    ProfileButton(text = "Log in", onClick = vm::login, enabled = !vm.isLoading.value)
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        ProfileButton(text = "Log in", onClick = vm::login, enabled = !vm.isLoading.value)
+    }
 }

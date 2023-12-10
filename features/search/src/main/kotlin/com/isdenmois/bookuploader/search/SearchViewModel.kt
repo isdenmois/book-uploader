@@ -25,7 +25,11 @@ class SearchViewModel @Inject constructor(
 
     var query by mutableStateOf("")
 
-    val provider = mutableStateOf(if (zlibAuth.value.isNullOrBlank()) ProviderType.FLIBUSTA else ProviderType.ZLIBRARY)
+    val provider = mutableStateOf(
+        if (zlibAuth.value.isNullOrBlank() || appPreferences.initialSearchEngine.value == "flibusta")
+            ProviderType.FLIBUSTA
+        else ProviderType.ZLIBRARY
+    )
     val extension = mutableStateOf<Extension?>(Extension.EPUB)
 
     var isSearching by mutableStateOf(false)
