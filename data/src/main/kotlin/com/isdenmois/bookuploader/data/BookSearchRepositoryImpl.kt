@@ -138,7 +138,6 @@ class BookSearchRepositoryImpl @Inject constructor(
     private fun createBookDownloadUri(book: Book): Uri? {
         val contentValues = ContentValues().apply {
             put(MediaStore.Downloads.DISPLAY_NAME, book.getFileName())
-            put(MediaStore.Downloads.MIME_TYPE, "application/epub+zip")
             put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
 
