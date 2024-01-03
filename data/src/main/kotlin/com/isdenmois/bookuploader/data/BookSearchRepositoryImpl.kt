@@ -107,11 +107,14 @@ class BookSearchRepositoryImpl @Inject constructor(
     override suspend fun downloadZLibraryBook(book: Book): Flow<Float> {
         val url = zLibraryParser.getFilePath(book.link)
 
-        val request = Request.Builder().url(url).build();
-        val response = httpClient.newCall(request).execute()
-        val body = response.body ?: return flowOf(100.0f)
+        return withContext(Dispatchers.Default) {
 
-        return downloadFile(book, body)
+            val request = Request.Builder().url(url).build();
+            val response = httpClient.newCall(request).execute()
+            val body = response.body ?: return@withContext flowOf(100.0f)
+
+            return@withContext downloadFile(book, body)
+        }
     }
 
     private fun downloadFile(book: Book, body: ResponseBody): Flow<Float> {
