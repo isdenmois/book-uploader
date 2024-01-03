@@ -8,7 +8,6 @@ export interface SearchConfig {
   path: string
   query: Record<string, any>
   searchParam?: string
-  includeCookie?: boolean
   selectors: {
     entry: string
     link: SearchSelector

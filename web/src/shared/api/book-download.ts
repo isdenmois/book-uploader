@@ -52,7 +52,7 @@ const ZLIB_FILE_RESPONSE = v.object({
 
 async function zlibFileUrl(link: string) {
   const cookie = localStorage.getItem(ZLIB_COOKIE) ?? ''
-  const body = await tor.request(API_CONFIG.ZLIB_HOST, `/eapi${link}/file`, { query: { cookie } })
+  const body = await tor.request(API_CONFIG.ZLIB_HOST, `/eapi/book/${link}/file`, { query: { cookie } })
   const { file } = v.parse(ZLIB_FILE_RESPONSE, body)
 
   return file.downloadLink

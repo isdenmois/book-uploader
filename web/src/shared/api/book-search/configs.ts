@@ -28,22 +28,3 @@ export const FLIBUSTA_TOR = {
   host: API_CONFIG.FLIBUSTA_HOST_TOR,
   query: { searchType: 'books' },
 }
-
-export const ZLIB: SearchConfig = {
-  type: 'ZLIB',
-  host: API_CONFIG.ZLIB_HOST,
-  path: '/s/',
-  query: { e: 1, extensions: ['epub'] },
-  includeCookie: true,
-  selectors: {
-    entry: '#searchResultBox .resItemBox',
-    link: propertySelector('h3[itemprop="name"] a', 'href'),
-    fields: {
-      authors: listTextSelector('.authors a'),
-      ext: cutSelector('.property__file .property_value', /,.*/),
-      title: textSelector('h3[itemprop="name"] a'),
-      lang: cutSelector('.property_language', 'Language:'),
-      size: cutSelector('.property__file .property_value', /.*,/),
-    } as any,
-  },
-}
