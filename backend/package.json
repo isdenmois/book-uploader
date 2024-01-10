@@ -6,7 +6,7 @@
   "dependencies": {
     "cors": "2.8.5",
     "dotenv": "16.0.2",
-    "follow-redirects": "1.15.2",
+    "follow-redirects": "1.15.4",
     "http-proxy-agent": "5.0.0",
     "polka": "^0.5.2",
     "serve-static": "1.15.0",
