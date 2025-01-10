@@ -11,6 +11,7 @@ data class Book(
     val authors: String? = null,
     val translation: String? = null,
     val language: String? = null,
+    val series: String? = null,
     val size: String? = null,
     val cover: String? = null,
 ) {

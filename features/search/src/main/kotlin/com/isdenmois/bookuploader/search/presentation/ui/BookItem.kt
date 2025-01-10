@@ -14,7 +14,7 @@ import com.isdenmois.bookuploader.domain.model.ProviderType
 
 @Composable
 fun BookItem(book: Book, onClick: (book: Book) -> Unit) {
-    val other = listOf(book.size, book.language, book.translation).filter { it != null }
+    val other = listOf(book.size, book.language, book.translation, book.series).filter { it != null }
         .joinToString()
     val extension = book.ext.replace(".zip", "")
 

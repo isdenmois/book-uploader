@@ -6,6 +6,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.isdenmois.bookuploader.core.R
 import com.isdenmois.bookuploader.core.presentational.FileCover
 import com.isdenmois.bookuploader.core.presentational.ImageCover
 import com.isdenmois.bookuploader.core.presentational.getExt
@@ -14,7 +15,6 @@ import com.isdenmois.bookuploader.core.presentational.item.ItemProgress
 import com.isdenmois.bookuploader.core.presentational.item.ItemText
 import com.isdenmois.bookuploader.core.theme.AppTheme
 import com.isdenmois.bookuploader.domain.model.UploadEbook
-import com.isdenmois.bookuploader.upload.R
 import java.io.File
 
 @Composable

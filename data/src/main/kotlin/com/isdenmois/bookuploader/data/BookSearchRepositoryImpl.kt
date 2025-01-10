@@ -14,9 +14,12 @@ import android.provider.MediaStore
 import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.core.AppPreferences
 import com.isdenmois.bookuploader.core.Extension
+import com.isdenmois.bookuploader.core.R
 import com.isdenmois.bookuploader.core.Transliterator
+import com.isdenmois.bookuploader.data.model.toBook
 import com.isdenmois.bookuploader.data.parsers.FlibustaParser
 import com.isdenmois.bookuploader.data.parsers.ZLibraryParser
+import com.isdenmois.bookuploader.data.remote.FlibustaApi
 import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.data.remote.downloadToFileWithProgress
 import com.isdenmois.bookuploader.data.remote.downloadToStreamWithProgress
@@ -42,6 +45,7 @@ class BookSearchRepositoryImpl @Inject constructor(
     private val contentResolver: ContentResolver,
     private val config: AppConfig,
     private val torApi: TorApi,
+    private val flibustaApi: FlibustaApi,
     private val flibustaParser: FlibustaParser,
     private val zLibraryParser: ZLibraryParser,
     private val preferences: AppPreferences,
@@ -49,8 +53,14 @@ class BookSearchRepositoryImpl @Inject constructor(
     private val notificationManager: NotificationManager,
 ) : BookSearchRepository {
     override suspend fun searchBooksInFlibusta(query: String): List<Book> = withContext(Dispatchers.Default) {
+        val response = flibustaApi.searchBooks(query)
+
+        return@withContext response.map { it.toBook() }
+    }
+
+    override suspend fun searchBooksInFlibustaOld(query: String): List<Book> = withContext(Dispatchers.Default) {
         val body = torApi.textRequest(
-            host = config.FLIBUSTA_HOST,
+            host = config.FLIBUSTA_OLD_HOST,
             path = flibustaParser.path,
             query = flibustaParser.query + mapOf("searchTerm" to query, "noproxy" to "true"),
         )
@@ -69,8 +79,14 @@ class BookSearchRepositoryImpl @Inject constructor(
     }
 
     override suspend fun downloadFlibustaBook(book: Book): Flow<Float> {
+        val body = flibustaApi.downloadBook(book.id)
+
+        return downloadFile(book, body)
+    }
+
+    override suspend fun downloadFlibustaOldBook(book: Book): Flow<Float> {
         val body = torApi.downloadFile(
-            host = config.FLIBUSTA_HOST,
+            host = config.FLIBUSTA_OLD_HOST,
             query = mapOf("noproxy" to "true"),
             path = book.link,
         )

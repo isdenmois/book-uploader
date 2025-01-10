@@ -15,16 +15,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
 
 @Singleton
 class ZLibraryParser @Inject constructor(
     private val config: AppConfig,
+    private val moshi: Moshi,
     private val torApi: TorApi,
     private val preferences: AppPreferences,
 ) {
-    private val moshi = Moshi.Builder().build()
     private val searchAdapter: JsonAdapter<ZSearchResponse> = moshi.adapter(ZSearchResponse::class.java)
     private val downloadLinkAdapter = moshi.adapter(ZDownloadLinkResponse::class.java)
 

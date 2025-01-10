@@ -1,17 +1,13 @@
 plugins {
-    id(Plugins.androidLibrary)
-    kotlin("android")
-    kotlin("kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
-apply { plugin(Plugins.hiltAndroid) }
 
 android {
+    namespace = "com.isdenmois.bookuploader.data"
+
     compileSdk = Versions.sdk
 
     defaultConfig {
@@ -19,8 +15,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     buildFeatures {
@@ -28,48 +24,50 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
+    implementation(libs.core.ktx)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.activity.compose)
 
-    implementation(Libs.EBookParser)
-    implementation(Libs.jsoup)
+    implementation(libs.ebookparser)
+    implementation(libs.jsoup)
 
     // Coroutines
-    implementation(KotlinX.coroutines.core)
-    implementation(KotlinX.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Hilt
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    implementation(JavaX.AnnotationApi)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+//    implementation(JavaX.AnnotationApi)
 
     // Retrofit
-    implementation(Square.retrofit2.retrofit)
-    implementation(Square.retrofit2.converter.scalars)
-    implementation(Square.okHttp3.okHttp)
-    implementation(Square.okHttp3.loggingInterceptor)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi)
+    implementation(libs.retrofit.scalars)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
 
     // Moshi
-    kapt(Square.moshi.kotlinCodegen)
-    implementation(Square.moshi)
+    ksp(libs.moshi.codegen)
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
 
     // Test
-    testImplementation(Testing.junit4)
-    testImplementation(Testing.mockK)
-    testImplementation(Testing.mockK.common)
-    testImplementation(KotlinX.coroutines.test)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugImplementation(AndroidX.compose.ui.tooling)
+    testImplementation(libs.junit)
+//    testImplementation(Testing.mockK)
+//    testImplementation(Testing.mockK.common)
+//    testImplementation(KotlinX.coroutines.test)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso)
+//    androidTestImplementation(AndroidX.compose.ui.testJunit4)
+//    debugImplementation(AndroidX.compose.ui.tooling)
 
     // Project dependencies
     implementation(project(ModuleDependency.core))

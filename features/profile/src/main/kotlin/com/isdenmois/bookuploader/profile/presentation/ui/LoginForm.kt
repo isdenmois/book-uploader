@@ -18,10 +18,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.isdenmois.bookuploader.core.R
 import com.isdenmois.bookuploader.core.presentational.Input
 import com.isdenmois.bookuploader.core.theme.AppTheme
 import com.isdenmois.bookuploader.profile.ProfileViewModel
-import com.isdenmois.bookuploader.profile.R
 
 @Composable
 fun LoginForm(vm: ProfileViewModel = viewModel()) {

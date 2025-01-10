@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity(), ActivityRunner {
         activityResultManager.onResult(requestCode, resultCode, data)
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
         val searchTabIndex = mainViewModel.tabs.indexOf(TabItem.Search)

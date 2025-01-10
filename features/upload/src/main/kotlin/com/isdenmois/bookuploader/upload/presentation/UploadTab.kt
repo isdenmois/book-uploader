@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.isdenmois.bookuploader.core.presentational.focus.OnLifecycleResume
+import com.isdenmois.bookuploader.core.R
 import com.isdenmois.bookuploader.core.theme.AppTheme
-import com.isdenmois.bookuploader.upload.R
 import com.isdenmois.bookuploader.upload.UploadListViewModel
 import com.isdenmois.bookuploader.upload.presentation.ui.UploadList
 

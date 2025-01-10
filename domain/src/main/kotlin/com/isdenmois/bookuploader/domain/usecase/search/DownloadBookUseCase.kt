@@ -16,6 +16,7 @@ class DownloadBookUseCase @Inject constructor(
 
         val downloadFlow = when (book.type) {
             ProviderType.FLIBUSTA -> bookSearchRepository.downloadFlibustaBook(book)
+            ProviderType.FLIBUSTA_OLD -> bookSearchRepository.downloadFlibustaOldBook(book)
             ProviderType.FLIBUSTA_TOR -> bookSearchRepository.downloadFlibustaTorBook(book)
             ProviderType.ZLIBRARY -> bookSearchRepository.downloadZLibraryBook(book)
         }

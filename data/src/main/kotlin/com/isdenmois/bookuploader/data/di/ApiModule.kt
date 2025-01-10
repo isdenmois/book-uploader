@@ -2,9 +2,12 @@ package com.isdenmois.bookuploader.data.di
 
 import android.content.Context
 import com.isdenmois.bookuploader.core.AppConfig
+import com.isdenmois.bookuploader.data.remote.FlibustaApi
 import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.data.remote.UploadApi
 import com.isdenmois.bookuploader.data.remote.UploadHostInterceptor
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,11 +19,17 @@ import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
+    @Singleton
+    @Provides
+    fun provideMoshi(): Moshi =
+        Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+
     @Singleton
     @Provides
     fun provideUploadApi(uploadHostInterceptor: UploadHostInterceptor): UploadApi {
@@ -64,6 +73,16 @@ object ApiModule {
         .client(okHttpClient)
         .build()
         .create(TorApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideFlibustaApi(config: AppConfig, okHttpClient: OkHttpClient, moshi: Moshi): FlibustaApi = Retrofit.Builder()
+        .baseUrl(config.FLIBUSTA_HOST)
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .client(okHttpClient)
+        .build()
+        .create(FlibustaApi::class.java)
 
     @Singleton
     @Provides

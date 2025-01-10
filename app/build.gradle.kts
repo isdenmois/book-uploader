@@ -1,25 +1,21 @@
 plugins {
-    id(Plugins.androidApplication)
-    kotlin("android")
-    kotlin("kapt")
+    alias(libs.plugins.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
-apply { plugin(Plugins.hiltAndroid) }
 
 android {
+    namespace = "com.isdenmois.bookuploader"
+
     compileSdk = Versions.sdk
 
     defaultConfig {
         applicationId = "com.isdenmois.bookuploader"
         minSdk = Versions.minSdk
         targetSdk = Versions.sdk
-        versionCode = 3100
-        versionName = "3.1.0"
+        versionCode = 3200
+        versionName = "3.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -36,19 +32,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -56,32 +52,33 @@ android {
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
+    implementation(libs.core.ktx)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.material.icons)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.activity.compose)
 
-    testImplementation(Testing.junit4)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugImplementation(AndroidX.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.tooling)
 
-    implementation(Libs.EBookParser)
+    implementation(libs.ebookparser)
 
     // Coroutines
-    implementation(KotlinX.coroutines.core)
-    implementation(KotlinX.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Hilt
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    implementation(AndroidX.lifecycle.viewModelCompose)
-    implementation(JavaX.AnnotationApi)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.lifecycle.viewmodel.compose)
+//    implementation(JavaX.AnnotationApi)
 
     // Accompanist
-    implementation(Google.accompanist.pager)
+    // Deprecated because Pager is now directly into androidx.compose.foundation.
+    //FIXME: Migrate using the following guide:
+    // https://google.github.io/accompanist/pager/
+    implementation(libs.accompanist.pager)
 
     // Project dependencies
     implementation(project(ModuleDependency.core))
@@ -91,4 +88,9 @@ dependencies {
     implementation(project(ModuleDependency.Feature.profile))
     implementation(project(ModuleDependency.Feature.search))
     implementation(project(ModuleDependency.Feature.upload))
+
+    // Testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso)
 }

@@ -24,7 +24,7 @@ class FlibustaParser @Inject constructor(config: AppConfig) : BookParser() {
         return Book(
             id = link,
             link = link,
-            type = ProviderType.FLIBUSTA,
+            type = ProviderType.FLIBUSTA_OLD,
             ext = "fb2.zip",
             title = entry.textSelector("title"),
             authors = entry.listTextSelector("author name"),

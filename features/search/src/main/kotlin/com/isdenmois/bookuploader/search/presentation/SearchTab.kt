@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.isdenmois.bookuploader.core.presentational.Input
 import com.isdenmois.bookuploader.core.presentational.focus.AutofocusRequester
+import com.isdenmois.bookuploader.core.R
 import com.isdenmois.bookuploader.core.theme.AppTheme
 import com.isdenmois.bookuploader.domain.model.Book
-import com.isdenmois.bookuploader.search.R
 import com.isdenmois.bookuploader.search.SearchViewModel
 import com.isdenmois.bookuploader.search.presentation.ui.BookList
 import com.isdenmois.bookuploader.search.presentation.ui.ConfirmFileDownloadDialog

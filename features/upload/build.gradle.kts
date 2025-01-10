@@ -1,17 +1,13 @@
 plugins {
-    id(Plugins.androidLibrary)
-    kotlin("android")
-    kotlin("kapt")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
-apply { plugin(Plugins.hiltAndroid) }
 
 android {
+    namespace = "com.isdenmois.bookuploader.upload"
+
     compileSdk = Versions.sdk
 
     defaultConfig {
@@ -19,8 +15,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     buildFeatures {
@@ -28,35 +24,35 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
+    implementation(libs.core.ktx)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.activity.compose)
 
-    implementation(Libs.EBookParser)
+    implementation(libs.ebookparser)
 
     // Coroutines
-    implementation(KotlinX.coroutines.core)
-    implementation(KotlinX.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Hilt
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    implementation(AndroidX.lifecycle.viewModelCompose)
-    implementation(JavaX.AnnotationApi)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.lifecycle.viewmodel.compose)
+//    implementation(JavaX.AnnotationApi)
 
     // Test
-    testImplementation(Testing.junit4)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugImplementation(AndroidX.compose.ui.tooling)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso)
+//    androidTestImplementation(AndroidX.compose.ui.testJunit4)
+//    debugImplementation(AndroidX.compose.ui.tooling)
 
     // Project dependencies
     implementation(project(ModuleDependency.core))

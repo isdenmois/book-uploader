@@ -5,20 +5,26 @@ import com.isdenmois.bookuploader.domain.model.Book
 import kotlinx.coroutines.flow.Flow
 
 interface BookSearchRepository {
+    suspend fun searchBooksInFlibusta(query: String): List<Book>
     /**
      * Produces search for books in flibusta
      */
-    suspend fun searchBooksInFlibusta(query: String): List<Book>
+    suspend fun searchBooksInFlibustaOld(query: String): List<Book>
 
     /**
-     * Produces search for books in flibusta
+     * Downloads the book to the cache file (old)
+     */
+    suspend fun downloadFlibustaBook(book: Book): Flow<Float>
+
+    /**
+     * Produces search for books in flibusta (old)
      */
     suspend fun searchBooksInFlibustaTor(query: String): List<Book>
 
     /**
-     * Downloads the book to the cache file
+     * Downloads the book to the cache file (old)
      */
-    suspend fun downloadFlibustaBook(book: Book): Flow<Float>
+    suspend fun downloadFlibustaOldBook(book: Book): Flow<Float>
 
     /**
      * Downloads the book to the cache file

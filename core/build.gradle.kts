@@ -1,18 +1,14 @@
 plugins {
-    id(Plugins.androidLibrary)
-    id(Plugins.dotEnv) version Versions.dotEnv
-    kotlin("android")
-    kotlin("kapt")
+    alias(libs.plugins.dotenv)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
-apply { plugin(Plugins.hiltAndroid) }
 
 android {
+    namespace = "com.isdenmois.bookuploader.core"
+
     compileSdk = Versions.sdk
 
     defaultConfig {
@@ -20,6 +16,7 @@ android {
 
         resValue("string", "ZLIB_HOST", env.ZLIB_HOST.value)
         resValue("string", "FLIBUSTA_HOST", env.FLIBUSTA_HOST.value)
+        resValue("string", "FLIBUSTA_OLD_HOST", env.FLIBUSTA_OLD_HOST.value)
         resValue("string", "FLIBUSTA_HOST_TOR", env.FLIBUSTA_HOST_TOR.value)
         resValue("string", "TOR_HOST", env.TOR_HOST.value)
         resValue("string", "USER_AGENT", env.USER_AGENT.value)
@@ -28,8 +25,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     buildFeatures {
@@ -37,28 +34,29 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.activity.compose)
+    implementation(libs.core.ktx)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.material.icons)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.activity.compose)
 
     // Coil
-    implementation(COIL.compose)
+    implementation(libs.coil.compose)
 
     // Hilt
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    implementation(JavaX.AnnotationApi)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+//    implementation(JavaX.AnnotationApi)
 
-    testImplementation(Testing.junit4)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugImplementation(AndroidX.compose.ui.tooling)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso)
+//    androidTestImplementation(AndroidX.compose.ui.testJunit4)
+//    debugImplementation(AndroidX.compose.ui.tooling)
 }
