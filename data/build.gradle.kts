@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
 
+    // Other
+    implementation(libs.code.scanner)
+
     // Test
     testImplementation(libs.junit)
 //    testImplementation(Testing.mockK)

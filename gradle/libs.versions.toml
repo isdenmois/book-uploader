@@ -34,6 +34,8 @@ hiltAndroid = "2.50"
 # Coil
 coil = "2.5.0"
 
+code-scanner = "16.1.0"
+
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -78,6 +80,7 @@ jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
+code-scanner = {module = "com.google.android.gms:play-services-code-scanner", version.ref = "code-scanner"}
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
