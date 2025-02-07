@@ -15,8 +15,8 @@ android {
         applicationId = "com.isdenmois.bookuploader"
         minSdk = Versions.minSdk
         targetSdk = Versions.sdk
-        versionCode = 3200
-        versionName = "3.2.0"
+        versionCode = 3300
+        versionName = "3.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
