@@ -3,6 +3,8 @@ package com.isdenmois.bookuploader.presentation.home
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,14 +15,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.isdenmois.bookuploader.core.presentational.NavBar
 import com.isdenmois.bookuploader.core.presentational.NavItem
 import com.isdenmois.bookuploader.core.theme.AppTheme
-import com.isdenmois.bookuploader.upload.UploadListViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.isdenmois.bookuploader.presentation.MainViewModel
+import com.isdenmois.bookuploader.upload.UploadListViewModel
 import kotlinx.coroutines.launch
 
-@ExperimentalPagerApi
 @Composable
 fun HomeContent(pagerState: PagerState) {
     val vm: UploadListViewModel = viewModel()
@@ -44,18 +42,17 @@ fun HomeContent(pagerState: PagerState) {
     }
 }
 
-@ExperimentalPagerApi
 @Composable
 fun Tabs(pagerState: PagerState, tabs: List<TabItem>) {
     val scope = rememberCoroutineScope()
 
     HomeNavBar(
         tabs = tabs,
-        selected = pagerState.targetPage,
+        selected = pagerState.currentPage,
         onChange = remember {
             { index ->
                 scope.launch {
-                    pagerState.animateScrollToPage(index)
+                    pagerState.scrollToPage(index)
                 }
             }
         },
@@ -89,10 +86,9 @@ fun HomeNavBar(tabs: List<TabItem>, selected: Int, onChange: (Int) -> Unit) {
     NavBar(items = items, selected = selected, onChange = onChange)
 }
 
-@ExperimentalPagerApi
 @Composable
 fun TabsContent(pagerState: PagerState, tabs: List<TabItem>) {
-    HorizontalPager(state = pagerState, count = tabs.size) { page ->
+    HorizontalPager(state = pagerState) { page ->
         Column(modifier = Modifier.fillMaxHeight()) {
             tabs[page].screen(page == pagerState.currentPage)
         }

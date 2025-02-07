@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.isdenmois.bookuploader.core.theme.AppTheme
 
 @Composable
@@ -32,7 +32,7 @@ fun ImageCover(bitmap: Bitmap, type: String) {
 
 @Composable
 fun ImageCover(url: String, type: String) {
-    ImageCover(painter = rememberImagePainter(url), type = type)
+    ImageCover(painter = rememberAsyncImagePainter(url), type = type)
 }
 
 @Composable

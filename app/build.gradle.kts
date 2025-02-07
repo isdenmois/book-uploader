@@ -72,13 +72,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
     implementation(libs.lifecycle.viewmodel.compose)
-//    implementation(JavaX.AnnotationApi)
-
-    // Accompanist
-    // Deprecated because Pager is now directly into androidx.compose.foundation.
-    //FIXME: Migrate using the following guide:
-    // https://google.github.io/accompanist/pager/
-    implementation(libs.accompanist.pager)
 
     // Project dependencies
     implementation(project(ModuleDependency.core))

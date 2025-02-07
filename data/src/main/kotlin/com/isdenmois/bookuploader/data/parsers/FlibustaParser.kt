@@ -1,12 +1,13 @@
 package com.isdenmois.bookuploader.data.parsers
 
-import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.domain.model.Book
 import com.isdenmois.bookuploader.domain.model.ProviderType
-import javax.inject.Inject
 import org.jsoup.nodes.Element
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FlibustaParser @Inject constructor(config: AppConfig) : BookParser() {
+@Singleton
+class FlibustaParser @Inject constructor() : BookParser() {
     companion object {
         private val translationPattern = "Перевод:\\s?(.+?)\\s*[&<]".toPattern()
         private val languagePattern = "Язык:\\s?(.+?)\\s*[&<]".toPattern()

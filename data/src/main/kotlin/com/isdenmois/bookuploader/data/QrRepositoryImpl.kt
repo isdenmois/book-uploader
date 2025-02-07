@@ -21,7 +21,7 @@ class QrRepositoryImpl @Inject constructor(
                 .addOnFailureListener {
                     cont.resume(null)
                 }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             cont.resume(null)
         }
     }
