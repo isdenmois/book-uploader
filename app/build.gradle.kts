@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -46,7 +47,16 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += arrayOf(
+                "README.txt",
+                "META-INF/*.md",
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+                "**/attach_hotspot_windows.dll",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/licenses/ASM"
+            )
         }
     }
 }

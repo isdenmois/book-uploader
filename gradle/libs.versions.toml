@@ -1,44 +1,42 @@
 [versions]
-agp = "8.3.2"
-kotlin = "1.9.22"
-coroutines = "1.9.0"
-ksp = "1.9.22-1.0.17"
-
-# Accompanist
-accompanist = "0.34.0"
+agp = "8.7.3"
+kotlin = "2.1.10"
+coroutines = "1.10.1"
+ksp = "2.1.10-1.0.29"
 
 # AndroidX
-activityCompose = "1.9.0"
-coreKtx = "1.13.1"
-espresso = "3.5.1"
-lifecycle = "2.8.1"
+activityCompose = "1.10.0"
+coreKtx = "1.15.0"
+espresso = "3.6.1"
+lifecycle = "2.8.7"
 
 # Compose
-composeBom = "2024.09.02"
+composeBom = "2025.01.01"
 composeCompiler = "1.5.8"
-composeMaterial = "1.7.6"
+composeMaterial = "1.7.7"
 
 # Miscellaneous Libraries
 retrofit = "2.11.0"
-moshi = "1.15.1"
+moshi = "1.15.2"
 junit = "4.13.2"
-junitExt = "1.1.5"
+junitExt = "1.2.1"
 ebookparser = "0.7.2"
-dotenv = "1.2.0"
+dotenv = "4.0.0"
 jsoup="1.18.3"
 okhttp = "4.12.0"
 
 # Hilt
-hiltAndroid = "2.50"
+hiltAndroid = "2.55"
 
 # Coil
-coil = "2.5.0"
+coil = "2.7.0"
 
 code-scanner = "16.1.0"
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }

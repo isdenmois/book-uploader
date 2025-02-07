@@ -2,7 +2,9 @@
 plugins {
 //    alias(libs.plugins.ktlint) apply false
 //    alias(libs.plugins.kotlin.android) apply false
-//    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
+//    alias(libs.plugins.compose.compiler) apply false
+
+    alias(libs.plugins.dotenv)
 }
 
 repositories {
