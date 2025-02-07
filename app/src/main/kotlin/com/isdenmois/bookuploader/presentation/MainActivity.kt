@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                Surface(color = AppTheme.colors.background, modifier = Modifier.fillMaxSize()) {
+                Surface(color = AppTheme.colors.background, modifier = Modifier.fillMaxSize().safeDrawingPadding()) {
                     HomeContent(pagerState = mainViewModel.pagerState)
                 }
             }
