@@ -31,7 +31,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                Surface(color = AppTheme.colors.background, modifier = Modifier.fillMaxSize().safeDrawingPadding()) {
+                Surface(
+                    color = AppTheme.colors.background,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .safeDrawingPadding()
+                ) {
                     HomeContent(pagerState = mainViewModel.pagerState)
                 }
             }
