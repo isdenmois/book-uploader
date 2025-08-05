@@ -34,7 +34,9 @@ fun UploadList(vm: UploadListViewModel = viewModel()) {
             items(list) { book ->
                 FileItem(
                     ebook = book,
+                    selected = book.file.name in vm.selected.value,
                     disabled = vm.uploading.value,
+                    onSelect = { vm.toggleBook(book) },
                     onShare = { vm.openEbook(book) },
                     onRemove = { toRemove.value = book },
                 )

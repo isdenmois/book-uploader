@@ -1,11 +1,15 @@
 package com.isdenmois.bookuploader.upload.presentation.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.isdenmois.bookuploader.core.R
 import com.isdenmois.bookuploader.core.presentational.FileCover
 import com.isdenmois.bookuploader.core.presentational.ImageCover
@@ -18,12 +22,27 @@ import com.isdenmois.bookuploader.domain.model.UploadEbook
 import java.io.File
 
 @Composable
-fun FileItem(ebook: UploadEbook, disabled: Boolean, onShare: () -> Unit, onRemove: () -> Unit) {
+fun FileItem(
+    ebook: UploadEbook,
+    disabled: Boolean = false,
+    selected: Boolean = false,
+    onSelect: () -> Unit = {},
+    onShare: () -> Unit = {},
+    onRemove: () -> Unit = {},
+) {
     Item(onClick = onShare, disabled = disabled, progress = { ItemProgress(progress = ebook.progress) }) {
-        if (ebook.cover !== null) {
-            ImageCover(bitmap = ebook.cover!!, type = getExt(ebook.file))
-        } else {
-            FileCover(file = ebook.file)
+        Column(modifier = Modifier.clickable(!disabled){onSelect()}) {
+            if (selected) {
+                Image(
+                    modifier = Modifier.padding(12.dp, 18.dp),
+                    painter = painterResource(id = R.drawable.ic_check),
+                    contentDescription = "Selected",
+                )
+            } else if (ebook.cover !== null) {
+                ImageCover(bitmap = ebook.cover!!, type = getExt(ebook.file))
+            } else {
+                FileCover(file = ebook.file)
+            }
         }
 
         val subTitle = if (ebook.file.name != ebook.title) ebook.file.name else null
@@ -45,15 +64,9 @@ private fun FileItemPreview() {
         Column {
             FileItem(
                 ebook = UploadEbook(title = "Harry Potter", author = "Some Person", file = File("/tmp/h1.epub")),
-                disabled = false,
-                onShare = {},
-                onRemove = {},
             )
             FileItem(
                 ebook = UploadEbook(title = "Harry Potter", file = File("/tmp/hp.fb2")),
-                disabled = false,
-                onShare = {},
-                onRemove = {},
             )
 
             val withProgress = UploadEbook(title = "Harry Potter", author = "Some Person", file = File("/tmp/hp.pdf"))
@@ -61,9 +74,6 @@ private fun FileItemPreview() {
 
             FileItem(
                 ebook = withProgress,
-                disabled = false,
-                onShare = {},
-                onRemove = {},
             )
         }
     }

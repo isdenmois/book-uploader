@@ -11,11 +11,11 @@ import com.isdenmois.bookuploader.domain.usecase.upload.RemoveEbookUseCase
 import com.isdenmois.bookuploader.domain.usecase.upload.ScanQrUseCase
 import com.isdenmois.bookuploader.domain.usecase.upload.UploadEbookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class UploadListViewModel @Inject constructor(
@@ -28,12 +28,25 @@ class UploadListViewModel @Inject constructor(
 ) : ViewModel() {
     val bookList = mutableStateOf<List<UploadEbook>?>(null)
     val uploading = mutableStateOf(false)
+    val selected = mutableStateOf(emptySet<String>())
     val address = preferences.uploadUrl
 
     private var fetching = false
 
     init {
         loadBookList()
+    }
+
+    fun toggleBook(book: UploadEbook) {
+        if (book.file.name in selected.value) {
+            selected.value = selected.value.minusElement(book.file.name)
+        } else {
+            selected.value = selected.value + book.file.name
+        }
+    }
+
+    fun isSelected(book: UploadEbook): Boolean {
+        return book.file.name in selected.value
     }
 
     fun loadBookList() {
@@ -52,16 +65,18 @@ class UploadListViewModel @Inject constructor(
             ?.filter { it.progress.value < 100 }
             ?.onEach { it.clearProgress() }
 
-        bookList.value?.forEachIndexed { index, book ->
-            emit(index)
+        bookList.value
+            ?.filter { selected.value.isEmpty() || isSelected(it) }
+            ?.forEachIndexed { index, book ->
+                emit(index)
 
-            try {
-                uploadEbook(book)
-            } catch (e: Exception) {
-                book.progress.value = -1f
-                book.error.value = e.message
+                try {
+                    uploadEbook(book)
+                } catch (e: Exception) {
+                    book.progress.value = -1f
+                    book.error.value = e.message
+                }
             }
-        }
 
         uploading.value = false
     }.flowOn(Dispatchers.IO)
