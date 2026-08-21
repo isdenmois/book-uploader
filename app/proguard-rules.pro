@@ -5,3 +5,9 @@
 # keep everything in this package from being renamed only
 -keepnames class com.isdenmois.** { *; }
 -allowaccessmodification
+
+# ML Kit core (CRITICAL)
+-keep class com.google.mlkit.common.** { *; }
+
+# Barcode API
+-keep class com.google.mlkit.vision.barcode.** { *; }

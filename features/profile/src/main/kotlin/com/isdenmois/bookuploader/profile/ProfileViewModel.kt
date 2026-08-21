@@ -23,6 +23,7 @@ class ProfileViewModel @Inject constructor(
     val zlibAuth = preferences.zlibAuth
 
     val useDirectDownloads = preferences.useDirectDownloads
+    val hideSearchFilters = preferences.hideSearchFilters
     val showFlibustaFirst = derivedStateOf {
         preferences.initialSearchEngine.value == "flibusta"
     }
@@ -41,6 +42,10 @@ class ProfileViewModel @Inject constructor(
 
     fun setUseDirectDownloads(value: Boolean) {
         preferences.setUseDirectDownloads(value)
+    }
+
+    fun setHideSearchFilters(value: Boolean) {
+        preferences.setHideSearchFilters(value)
     }
 
     fun loadProfileInfo() {

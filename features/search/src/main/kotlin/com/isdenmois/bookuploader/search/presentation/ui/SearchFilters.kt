@@ -22,9 +22,12 @@ fun SearchFilters(vm: SearchViewModel = viewModel()) {
     val zlibAuth by vm.zlibAuth
     val provider by vm.provider
     val extension by vm.extension
+    val hideFilters by vm.hideSearchFilters
     val isSearching = vm.isSearching
 
     Log.d("SearchFilters", "change")
+
+    if (hideFilters) return
 
     Row(
         modifier = Modifier

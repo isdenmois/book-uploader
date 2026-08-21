@@ -17,6 +17,7 @@ class AppPreferences @Inject constructor(
     private val zlib_auth_key = context.getString(R.string.zlib_auth_key)
     private val initial_search_engine_key = "initial_search_engine"
     private val use_direct_downloads = "use_direct_downloads"
+    private val hide_search_filters = "hide_search_filters"
 
     private val _uploadUrl = mutableStateOf(getInitialUploadUrl() ?: "")
     val uploadUrl: State<String> = _uploadUrl
@@ -26,6 +27,9 @@ class AppPreferences @Inject constructor(
 
     private val _useDirectDownloads = mutableStateOf(preferences.getBoolean(use_direct_downloads, false))
     val useDirectDownloads: State<Boolean> = _useDirectDownloads
+
+    private val _hideSearchFilters = mutableStateOf(preferences.getBoolean(hide_search_filters, true))
+    val hideSearchFilters: State<Boolean> = _hideSearchFilters
 
     private val _initialSearchEngine = mutableStateOf(getInitialSearchEngine() ?: "flibusta")
     val initialSearchEngine: State<String> = _initialSearchEngine
@@ -62,6 +66,11 @@ class AppPreferences @Inject constructor(
     fun setUseDirectDownloads(value: Boolean) {
         preferences.setBoolean(use_direct_downloads, value)
         _useDirectDownloads.value = value
+    }
+
+    fun setHideSearchFilters(value: Boolean) {
+        preferences.setBoolean(hide_search_filters, value)
+        _hideSearchFilters.value = value
     }
 }
 

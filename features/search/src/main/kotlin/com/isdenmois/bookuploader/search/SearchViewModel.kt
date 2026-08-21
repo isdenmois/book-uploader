@@ -1,7 +1,9 @@
 package com.isdenmois.bookuploader.search
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,18 +21,35 @@ import kotlinx.coroutines.launch
 class SearchViewModel @Inject constructor(
     private val searchBooksUseCase: SearchBooksUseCase,
     private val downloadBookUseCase: DownloadBookUseCase,
-    appPreferences: AppPreferences,
+    private val appPreferences: AppPreferences,
 ) : ViewModel() {
     val zlibAuth = appPreferences.zlibAuth
+    val hideSearchFilters = appPreferences.hideSearchFilters
 
     var query by mutableStateOf("")
 
-    val provider = mutableStateOf(
+    private val selectedProvider = mutableStateOf(initialProvider())
+
+    val provider = derivedStateOf {
+        if (appPreferences.hideSearchFilters.value) ProviderType.FLIBUSTA else selectedProvider.value
+    }
+    val extension = mutableStateOf<Extension?>(Extension.EPUB)
+
+    init {
+        viewModelScope.launch {
+            snapshotFlow { appPreferences.hideSearchFilters.value }
+                .collect { hidden ->
+                    if (!hidden) {
+                        selectedProvider.value = initialProvider()
+                    }
+                }
+        }
+    }
+
+    private fun initialProvider(): ProviderType =
         if (zlibAuth.value.isNullOrBlank() || appPreferences.initialSearchEngine.value == "flibusta")
             ProviderType.FLIBUSTA
         else ProviderType.ZLIBRARY
-    )
-    val extension = mutableStateOf<Extension?>(Extension.EPUB)
 
     var isSearching by mutableStateOf(false)
         private set
@@ -76,8 +95,8 @@ class SearchViewModel @Inject constructor(
     }
 
     fun setProvider(value: ProviderType) {
-        if (provider.value != value) {
-            provider.value = value
+        if (selectedProvider.value != value) {
+            selectedProvider.value = value
             books = null
         }
     }

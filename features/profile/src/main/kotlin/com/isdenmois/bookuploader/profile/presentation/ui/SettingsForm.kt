@@ -39,4 +39,14 @@ fun SettingsForm(vm: ProfileViewModel = viewModel()) {
             vm.toggleShowFlibustaFirst(it)
         }
     )
+
+    SwitchRow(
+        text = "Hide search filters",
+        textColor = AppTheme.colors.profileText,
+        colors = colors,
+        checked = vm.hideSearchFilters.value,
+        onCheckedChange = {
+            vm.setHideSearchFilters(it)
+        }
+    )
 }
