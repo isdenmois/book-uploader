@@ -26,13 +26,13 @@ class TransliteratorTest {
     fun shouldWorkWithEnglish() {
         assertEquals("qwertyuiop", Transliterator.transliterate("qwertyuiop[]{}|\\"))
         assertEquals("asdfghjkl", Transliterator.transliterate("asdfghjkl;':\""))
-        assertEquals("zxcvbnm", Transliterator.transliterate("zxcvbnm,./<>?"))
+        assertEquals("zxcvbnm.", Transliterator.transliterate("zxcvbnm,./<>?"))
     }
 
     @Test
     fun shouldWorkWithCyrillic() {
         assertEquals("ytsukengshschzh", Transliterator.transliterate("йцукенгшщзхъ"))
         assertEquals("fivaproldzhe", Transliterator.transliterate("фывапролджэ"))
-        assertEquals("yachsmitbyu", Transliterator.transliterate("ячсмитьбю."))
+        assertEquals("yachsmitbyu.", Transliterator.transliterate("ячсмитьбю."))
     }
 }
