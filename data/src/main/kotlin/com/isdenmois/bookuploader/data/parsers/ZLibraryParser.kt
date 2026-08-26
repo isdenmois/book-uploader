@@ -5,6 +5,7 @@ import com.isdenmois.bookuploader.core.AppPreferences
 import com.isdenmois.bookuploader.data.model.ZDownloadLinkResponse
 import com.isdenmois.bookuploader.data.model.ZSearchResponse
 import com.isdenmois.bookuploader.data.remote.TorApi
+import com.isdenmois.bookuploader.data.remote.ZLibraryApi
 import com.isdenmois.bookuploader.domain.model.Book
 import com.isdenmois.bookuploader.domain.model.ProviderType
 import com.squareup.moshi.JsonAdapter
@@ -18,6 +19,7 @@ import javax.inject.Singleton
 class ZLibraryParser @Inject constructor(
     private val config: AppConfig,
     private val torApi: TorApi,
+    private val zLibraryApi: ZLibraryApi,
     private val preferences: AppPreferences,
     moshi: Moshi,
 ) {
@@ -46,7 +48,7 @@ class ZLibraryParser @Inject constructor(
     }
 
     suspend fun getFilePath(link: String): String = withContext(Dispatchers.Default) {
-        val body = torApi.textRequest(host = config.ZLIB_HOST, path = link, cookie = preferences.zlibAuth.value)
+        val body = zLibraryApi.textRequest(path = link, cookie = preferences.zlibAuth.value)
         val result = downloadLinkAdapter.fromJson(body)
 
         if (result?.success == 1 && result.file?.allowDownload == true) {

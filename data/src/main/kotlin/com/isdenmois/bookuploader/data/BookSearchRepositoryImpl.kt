@@ -21,6 +21,7 @@ import com.isdenmois.bookuploader.data.parsers.FlibustaParser
 import com.isdenmois.bookuploader.data.parsers.ZLibraryParser
 import com.isdenmois.bookuploader.data.remote.FlibustaApi
 import com.isdenmois.bookuploader.data.remote.TorApi
+import com.isdenmois.bookuploader.data.remote.ZLibraryApi
 import com.isdenmois.bookuploader.data.remote.downloadToFileWithProgress
 import com.isdenmois.bookuploader.data.remote.downloadToStreamWithProgress
 import com.isdenmois.bookuploader.domain.model.Book
@@ -46,6 +47,7 @@ class BookSearchRepositoryImpl @Inject constructor(
     private val config: AppConfig,
     private val torApi: TorApi,
     private val flibustaApi: FlibustaApi,
+    private val zLibraryApi: ZLibraryApi,
     private val flibustaParser: FlibustaParser,
     private val zLibraryParser: ZLibraryParser,
     private val preferences: AppPreferences,
@@ -106,15 +108,13 @@ class BookSearchRepositoryImpl @Inject constructor(
     override suspend fun searchBooksInZLibrary(query: String, extension: Extension?): List<Book> =
         withContext(Dispatchers.Default) {
             val queryMap = if (extension == null) mapOf() else mapOf("extensions" to extension.value)
-            val response = torApi.postForm(
-                host = config.ZLIB_HOST,
-                path = "/eapi/book/search",
-                body = queryMap + mapOf(
+            val response = zLibraryApi.search(
+                data = queryMap + mapOf(
                     "message" to query,
                     "limit" to "50",
                     "order" to "popular",
                 ),
-                cookie = preferences.zlibAuth.value,
+                cookie = preferences.zlibAuth.value ?: "",
             )
 
             return@withContext zLibraryParser.parseBody(response.body() ?: "{\"success\": 0}", extension?.value)
@@ -124,7 +124,6 @@ class BookSearchRepositoryImpl @Inject constructor(
         val url = zLibraryParser.getFilePath(book.link)
 
         return withContext(Dispatchers.Default) {
-
             val request = Request.Builder().url(url).build();
             val response = httpClient.newCall(request).execute()
             val body = response.body ?: return@withContext flowOf(100.0f)

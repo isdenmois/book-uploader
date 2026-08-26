@@ -1,24 +1,18 @@
 package com.isdenmois.bookuploader.data
 
-import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.core.AppPreferences
-import com.isdenmois.bookuploader.data.remote.TorApi
+import com.isdenmois.bookuploader.data.remote.ZLibraryApi
 import com.isdenmois.bookuploader.domain.model.User
 import com.isdenmois.bookuploader.domain.repository.UserRepository
-import javax.inject.Inject
 import org.json.JSONObject
+import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val torApi: TorApi,
+    private val zLibraryApi: ZLibraryApi,
     private val preferences: AppPreferences,
-    private val config: AppConfig,
 ) : UserRepository {
     override suspend fun loadProfile(): User {
-        val body = torApi.textRequest(
-            host = config.ZLIB_HOST,
-            path = "/papi/user/dstats",
-            cookie = preferences.zlibAuth.value,
-        )
+        val body = zLibraryApi.getProfile(cookie = preferences.zlibAuth.value ?: "")
         val obj = JSONObject(body)
 
         return User(
@@ -29,10 +23,17 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun login(email: String, password: String): String {
-        val response = torApi.postForm(
-            host = config.ZLIB_HOST,
-            path = "/rpc.php",
-            body = mapOf("email" to email, "password" to password, "action" to "login")
+        val response = zLibraryApi.login(
+            data = mapOf(
+                "isModal" to "true",
+                "email" to email,
+                "password" to password,
+                "site_mode" to "books",
+                "action" to "login",
+                "isSingleLogin" to "1",
+                "redirectUrl" to "",
+                "gg_json_mode" to "1",
+            )
         )
 
         val headers = response.headers().toMultimap()
