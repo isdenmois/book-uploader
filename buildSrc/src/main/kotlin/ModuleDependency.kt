@@ -3,6 +3,7 @@ object ModuleDependency {
     const val core = ":core"
     const val data = ":data"
     const val domain = ":domain"
+    const val zlibrary = ":zlibrary"
 
     object Feature {
         private const val directory = ":features"
