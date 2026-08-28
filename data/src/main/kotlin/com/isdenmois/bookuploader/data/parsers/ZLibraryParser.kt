@@ -4,7 +4,6 @@ import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.core.AppPreferences
 import com.isdenmois.bookuploader.data.model.ZDownloadLinkResponse
 import com.isdenmois.bookuploader.data.model.ZSearchResponse
-import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.data.remote.ZLibraryApi
 import com.isdenmois.bookuploader.domain.model.Book
 import com.isdenmois.bookuploader.domain.model.ProviderType
@@ -18,7 +17,6 @@ import javax.inject.Singleton
 @Singleton
 class ZLibraryParser @Inject constructor(
     private val config: AppConfig,
-    private val torApi: TorApi,
     private val zLibraryApi: ZLibraryApi,
     private val preferences: AppPreferences,
     moshi: Moshi,

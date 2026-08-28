@@ -11,16 +11,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.core.AppPreferences
 import com.isdenmois.bookuploader.core.Extension
 import com.isdenmois.bookuploader.core.R
 import com.isdenmois.bookuploader.core.Transliterator
 import com.isdenmois.bookuploader.data.model.toBook
-import com.isdenmois.bookuploader.data.parsers.FlibustaParser
 import com.isdenmois.bookuploader.data.parsers.ZLibraryParser
 import com.isdenmois.bookuploader.data.remote.FlibustaApi
-import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.data.remote.ZLibraryApi
 import com.isdenmois.bookuploader.data.remote.downloadToFileWithProgress
 import com.isdenmois.bookuploader.data.remote.downloadToStreamWithProgress
@@ -45,10 +44,8 @@ class BookSearchRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val contentResolver: ContentResolver,
     private val config: AppConfig,
-    private val torApi: TorApi,
     private val flibustaApi: FlibustaApi,
     private val zLibraryApi: ZLibraryApi,
-    private val flibustaParser: FlibustaParser,
     private val zLibraryParser: ZLibraryParser,
     private val preferences: AppPreferences,
     private val httpClient: OkHttpClient,
@@ -60,47 +57,8 @@ class BookSearchRepositoryImpl @Inject constructor(
         return@withContext response.map { it.toBook() }
     }
 
-    override suspend fun searchBooksInFlibustaOld(query: String): List<Book> = withContext(Dispatchers.Default) {
-        val body = torApi.textRequest(
-            host = config.FLIBUSTA_OLD_HOST,
-            path = flibustaParser.path,
-            query = flibustaParser.query + mapOf("searchTerm" to query, "noproxy" to "true"),
-        )
-
-        return@withContext flibustaParser.parse(body)
-    }
-
-    override suspend fun searchBooksInFlibustaTor(query: String): List<Book> = withContext(Dispatchers.Default) {
-        val body = torApi.textRequest(
-            host = config.FLIBUSTA_TOR_HOST,
-            path = flibustaParser.path,
-            query = flibustaParser.query + mapOf("searchTerm" to query),
-        )
-
-        return@withContext flibustaParser.parse(body)
-    }
-
     override suspend fun downloadFlibustaBook(book: Book): Flow<Float> {
         val body = flibustaApi.downloadBook(book.id)
-
-        return downloadFile(book, body)
-    }
-
-    override suspend fun downloadFlibustaOldBook(book: Book): Flow<Float> {
-        val body = torApi.downloadFile(
-            host = config.FLIBUSTA_OLD_HOST,
-            query = mapOf("noproxy" to "true"),
-            path = book.link,
-        )
-
-        return downloadFile(book, body)
-    }
-
-    override suspend fun downloadFlibustaTorBook(book: Book): Flow<Float> {
-        val body = torApi.downloadFile(
-            host = config.FLIBUSTA_TOR_HOST,
-            path = book.link,
-        )
 
         return downloadFile(book, body)
     }
@@ -122,6 +80,8 @@ class BookSearchRepositoryImpl @Inject constructor(
 
     override suspend fun downloadZLibraryBook(book: Book): Flow<Float> {
         val url = zLibraryParser.getFilePath(book.link)
+
+        Log.i("BookSearchRepository", "Download zlib book with url = $url")
 
         return withContext(Dispatchers.Default) {
             val request = Request.Builder().url(url).build();

@@ -1,5 +1,7 @@
 package com.isdenmois.bookuploader.upload.presentation.ui
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -7,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.isdenmois.bookuploader.domain.model.UploadEbook
 import com.isdenmois.bookuploader.upload.UploadListViewModel
@@ -21,8 +24,9 @@ fun UploadList(vm: UploadListViewModel = viewModel()) {
     val uploadEbook = remember {
         {
             coroutineScope.launch {
-                vm.uploadBooks().collect {
-                    listState.animateScrollToItem(index = it)
+                vm.uploadBooks().collect { book ->
+                    val index = vm.bookList.value?.indexOf(book) ?: return@collect
+                    listState.animateScrollToItem(index = index)
                 }
             }
             Unit
@@ -30,22 +34,22 @@ fun UploadList(vm: UploadListViewModel = viewModel()) {
     }
 
     vm.bookList.value?.let { list ->
-        LazyColumn(state = listState) {
-            items(list) { book ->
-                FileItem(
-                    ebook = book,
-                    selected = book.file.name in vm.selected.value,
-                    disabled = vm.uploading.value,
-                    onSelect = { vm.toggleBook(book) },
-                    onShare = { vm.openEbook(book) },
-                    onRemove = { toRemove.value = book },
-                )
+        Column(modifier = Modifier.fillMaxHeight()) {
+            LazyColumn(state = listState, modifier = Modifier.weight(1f)) {
+                items(list) { book ->
+                    FileItem(
+                        ebook = book,
+                        selected = book.file.name in vm.selected.value,
+                        disabled = vm.uploading.value,
+                        onSelect = { vm.toggleBook(book) },
+                        onShare = { vm.openEbook(book) },
+                        onRemove = { toRemove.value = book },
+                    )
+                }
             }
 
-            item {
-                if (!vm.uploading.value && list.isNotEmpty() && vm.address.value.isNotBlank()) {
-                    UploadButton(onUpload = uploadEbook)
-                }
+            if (list.isNotEmpty() && vm.address.value.isNotBlank()) {
+                UploadButton(enabled = !vm.uploading.value, onUpload = uploadEbook)
             }
         }
     }

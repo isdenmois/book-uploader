@@ -67,11 +67,12 @@ class UploadListViewModel @Inject constructor(
 
         bookList.value
             ?.filter { selected.value.isEmpty() || isSelected(it) }
-            ?.forEachIndexed { index, book ->
-                emit(index)
+            ?.forEach { book ->
+                emit(book)
 
                 try {
                     uploadEbook(book)
+                    toggleBook(book)
                 } catch (e: Exception) {
                     book.progress.value = -1f
                     book.error.value = e.message

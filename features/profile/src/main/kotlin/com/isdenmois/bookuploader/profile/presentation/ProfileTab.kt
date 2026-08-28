@@ -46,10 +46,12 @@ fun ProfileTab(isActive: Boolean, vm: ProfileViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (vm.zlibAuth.value.isNullOrBlank()) {
-                LoginForm(vm)
-            } else {
-                UserProfile(vm)
+            if (!vm.hideSearchFilters.value) {
+                if (vm.zlibAuth.value.isNullOrBlank()) {
+                    LoginForm(vm)
+                } else {
+                    UserProfile(vm)
+                }
             }
         }
     }

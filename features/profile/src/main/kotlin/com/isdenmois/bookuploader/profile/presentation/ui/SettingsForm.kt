@@ -12,6 +12,7 @@ import com.isdenmois.bookuploader.profile.ProfileViewModel
 fun SettingsForm(vm: ProfileViewModel = viewModel()) {
     val useDirectDownloads by vm.useDirectDownloads
     val showFlibustaFirst by vm.showFlibustaFirst
+    val hideSearchFilters by vm.hideSearchFilters
 
     val colors = SwitchDefaults.colors(
         checkedThumbColor = AppTheme.colors.profileSelected,
@@ -31,22 +32,24 @@ fun SettingsForm(vm: ProfileViewModel = viewModel()) {
     )
 
     SwitchRow(
-        text = "Show Flibusta first",
-        textColor = AppTheme.colors.profileText,
-        colors = colors,
-        checked = showFlibustaFirst,
-        onCheckedChange = {
-            vm.toggleShowFlibustaFirst(it)
-        }
-    )
-
-    SwitchRow(
         text = "Hide search filters",
         textColor = AppTheme.colors.profileText,
         colors = colors,
-        checked = vm.hideSearchFilters.value,
+        checked = hideSearchFilters,
         onCheckedChange = {
             vm.setHideSearchFilters(it)
         }
     )
+
+    if (!hideSearchFilters) {
+        SwitchRow(
+            text = "Show Flibusta first",
+            textColor = AppTheme.colors.profileText,
+            colors = colors,
+            checked = showFlibustaFirst,
+            onCheckedChange = {
+                vm.toggleShowFlibustaFirst(it)
+            }
+        )
+    }
 }

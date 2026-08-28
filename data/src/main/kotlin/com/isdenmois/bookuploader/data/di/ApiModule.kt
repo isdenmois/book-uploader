@@ -3,7 +3,6 @@ package com.isdenmois.bookuploader.data.di
 import android.content.Context
 import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.data.remote.FlibustaApi
-import com.isdenmois.bookuploader.data.remote.TorApi
 import com.isdenmois.bookuploader.data.remote.UploadApi
 import com.isdenmois.bookuploader.data.remote.UploadHostInterceptor
 import com.isdenmois.bookuploader.data.remote.ZLibraryApi
@@ -65,15 +64,6 @@ object ApiModule {
         .connectTimeout(Duration.ofSeconds(60))
         .readTimeout(Duration.ofSeconds(60))
         .build()
-
-    @Singleton
-    @Provides
-    fun provideTorApi(config: AppConfig, okHttpClient: OkHttpClient): TorApi = Retrofit.Builder()
-        .baseUrl(config.TOR_HOST)
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .client(okHttpClient)
-        .build()
-        .create(TorApi::class.java)
 
     @Singleton
     @Provides

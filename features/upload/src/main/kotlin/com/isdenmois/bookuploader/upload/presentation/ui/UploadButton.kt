@@ -14,12 +14,16 @@ import androidx.compose.ui.unit.dp
 import com.isdenmois.bookuploader.core.theme.AppTheme
 
 @Composable
-fun UploadButton(onUpload: () -> Unit) {
+fun UploadButton(enabled: Boolean = true, onUpload: () -> Unit) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Button(
+            enabled = enabled,
             onClick = { onUpload(); },
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = AppTheme.colors.uploadSelected),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = AppTheme.colors.uploadSelected,
+                disabledBackgroundColor = AppTheme.colors.secondary,
+            ),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Start Upload", color = Color.White)

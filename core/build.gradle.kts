@@ -17,9 +17,6 @@ android {
 
         resValue("string", "ZLIB_HOST", env.ZLIB_HOST.value)
         resValue("string", "FLIBUSTA_HOST", env.FLIBUSTA_HOST.value)
-        resValue("string", "FLIBUSTA_OLD_HOST", env.FLIBUSTA_OLD_HOST.value)
-        resValue("string", "FLIBUSTA_HOST_TOR", env.FLIBUSTA_HOST_TOR.value)
-        resValue("string", "TOR_HOST", env.TOR_HOST.value)
         resValue("string", "USER_AGENT", env.USER_AGENT.value)
         resValue("string", "INITIAL_EMAIL", env.INITIAL_EMAIL.value)
         resValue("string", "INITIAL_PASSWORD", env.INITIAL_PASSWORD.value)

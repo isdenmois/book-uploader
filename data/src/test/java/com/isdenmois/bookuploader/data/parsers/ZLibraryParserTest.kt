@@ -2,7 +2,7 @@ package com.isdenmois.bookuploader.data.parsers
 
 import com.isdenmois.bookuploader.core.AppConfig
 import com.isdenmois.bookuploader.core.AppPreferences
-import com.isdenmois.bookuploader.data.remote.TorApi
+import com.isdenmois.bookuploader.data.remote.ZLibraryApi
 import com.isdenmois.bookuploader.domain.model.Book
 import com.isdenmois.bookuploader.domain.model.ProviderType
 import com.squareup.moshi.Moshi
@@ -13,11 +13,11 @@ import org.junit.Test
 
 class ZLibraryParserTest {
     private val config = mockk<AppConfig>(relaxed = true)
-    private val api = mockk<TorApi>()
+    private val api = mockk<ZLibraryApi>()
     private val preferences = mockk<AppPreferences>(relaxed = true)
     private val parser = ZLibraryParser(
         config = config,
-        torApi = api,
+        zLibraryApi = api,
         preferences = preferences,
         moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build(),
     )

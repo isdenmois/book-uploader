@@ -10,8 +10,8 @@ import com.isdenmois.bookuploader.domain.model.User
 import com.isdenmois.bookuploader.domain.usecase.profile.LoadUserProfileUseCase
 import com.isdenmois.bookuploader.domain.usecase.profile.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -46,10 +46,11 @@ class ProfileViewModel @Inject constructor(
 
     fun setHideSearchFilters(value: Boolean) {
         preferences.setHideSearchFilters(value)
+        loadProfileInfo()
     }
 
     fun loadProfileInfo() {
-        if (zlibAuth.value?.isNotBlank() == true) {
+        if (zlibAuth.value?.isNotBlank() == true && !hideSearchFilters.value) {
             isLoading.value = true
             user.value = null
 
